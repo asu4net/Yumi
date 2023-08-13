@@ -2,6 +2,5 @@
 
 int main()
 {
-    Yumi::Engine engine;
-    return 1;
+    Yumi::Engine::CreateInstance();
 }

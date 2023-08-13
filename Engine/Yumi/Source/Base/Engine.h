@@ -2,9 +2,11 @@
 
 namespace Yumi
 {
-    class Engine
+    class Engine : public Singleton<Engine>
     {
-    public:
-        Engine();
+        YUMI_SINGLETON(Engine)
+
+    protected:
+        void OnCreateInstance() override;
     };
 }

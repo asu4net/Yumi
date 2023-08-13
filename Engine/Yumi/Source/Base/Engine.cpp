@@ -2,7 +2,7 @@
 
 namespace Yumi
 {
-    Engine::Engine()
+    void Engine::OnCreateInstance()
     {
         printf("Yumi Engine started!");
         std::cin.get();

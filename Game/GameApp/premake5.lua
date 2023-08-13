@@ -4,6 +4,10 @@ project "GameApp"
     cppdialect "C++17"
     staticruntime "off"
 
+    pchheader "GameAppPCH.h"
+    pchsource "Source/GameAppPCH.cpp"
+    forceincludes { "GameAppPCH.h" }
+
     targetdir (targetroot .. "%{prj.name}")
     objdir (objroot .. "%{prj.name}")
 
