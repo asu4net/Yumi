@@ -1,0 +1,45 @@
+#pragma once
+
+namespace Yumi
+{
+    class Window
+    {
+    public:
+        enum class CursorMode { Normal, Disabled, Hidden, Captured };
+
+        struct Configuration
+        {
+            String Title{"Yumi Window"};
+            int Width{ 1280 }, Height{ 720 };
+            bool VSync{ true };
+            CursorMode CursorMode{ CursorMode::Normal };
+        };
+
+        virtual ~Window() = default;
+
+        virtual void SetTitle(const String title) = 0;
+        virtual const String& GetTitle() const = 0;
+
+        virtual uint32_t GetWidth() const = 0;
+        
+        virtual uint32_t GetHeight() const = 0;
+
+        virtual void SetVSync(bool enabled) = 0;
+        virtual bool IsVSync() const = 0;
+
+        virtual void SetCursorMode(const CursorMode mode) = 0;
+        virtual CursorMode GetCursorMode() const = 0;
+
+        virtual bool IsCreated() const = 0;
+        
+        virtual bool IsOpened() const = 0;
+        
+        virtual void Open() = 0;
+        
+        virtual void Close() = 0;
+
+        virtual void ProcessMessages() = 0;
+
+        static Unique<Window> Create(const Configuration& config = {});
+    };
+}

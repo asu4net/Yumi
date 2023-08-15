@@ -2,7 +2,6 @@
 
 #define YUMI_SINGLETON(_CLASS_NAME) \
     private: \
-        _CLASS_NAME() = default; \
         _CLASS_NAME(_CLASS_NAME&&) = delete; \
         friend class Yumi::Singleton<_CLASS_NAME>;
 
@@ -24,22 +23,16 @@ namespace Yumi
         {
             assert(!m_Instance && "Instance already exists!");
             m_Instance = new T();
-            m_Instance->OnCreateInstance();
             return GetInstance();
         }
 
         static void DestroyInstance()
         {
             assert(m_Instance && "There is no instance to destroy!");
-            m_Instance->OnDestroyInstance();
             delete m_Instance;
         }
 
     private:
         inline static T* m_Instance = nullptr;
-
-    protected:
-        virtual void OnCreateInstance() {}
-        virtual void OnDestroyInstance() {}
     };
 }

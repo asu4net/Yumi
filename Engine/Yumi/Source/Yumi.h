@@ -1,3 +1,8 @@
 #pragma once
 
-#include "Base/Engine.h"
+// Core
+#include "Core/Engine.h"
+#include "Core/Time.h"
+
+// Window
+#include "Window/Window.h"

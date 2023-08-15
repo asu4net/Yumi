@@ -83,6 +83,6 @@ namespace Yumi
 
 /// -------- INTERNAL --------
 
-#include "Base/Singleton.h"
+#include "Core/Singleton.h"
 
 /// --------------------------
