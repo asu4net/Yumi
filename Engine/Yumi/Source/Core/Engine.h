@@ -1,5 +1,4 @@
 #pragma once
-#include "Window/Window.h"
 
 namespace Yumi
 {
@@ -12,6 +11,7 @@ namespace Yumi
         ~Engine();
 
         Unique<class Window> m_Window;
+        Unique<class Time> m_Time;
 
     public:
         void Start();
