@@ -14,7 +14,7 @@ namespace Yumi
 #endif
 
     OpenGLRenderingContext::OpenGLRenderingContext(void* windowHandler)
-        : m_WindowHandler(nullptr)
+        : m_WindowHandler(static_cast<GLFWwindow*>(windowHandler))
     {
         if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
         {
