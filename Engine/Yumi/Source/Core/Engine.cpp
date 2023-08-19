@@ -36,8 +36,6 @@ namespace Yumi
             windowTitle.append(" | DeltaTime: " + std::to_string(Time::DeltaTime()));
             windowTitle.append(" | FixedUpdateCalls: " + std::to_string(Time::FixedUpdateCalls()));
 
-            std::cout << Time::FixedUpdateCalls() << std::endl;
-
             m_Window->SetTitle(windowTitle);
             m_Window->Update();
         }
