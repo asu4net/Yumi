@@ -88,6 +88,11 @@ namespace Yumi
         }
     }
 
+    bool WindowsWindow::IsOpened() const
+    {
+        return !glfwWindowShouldClose(m_WindowHandler);
+    }
+
     void WindowsWindow::Close()
     {
         if (!m_IsOpened)

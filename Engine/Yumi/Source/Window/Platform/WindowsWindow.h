@@ -28,7 +28,7 @@ namespace Yumi
         void SetCursorMode(const CursorMode mode) override;
         CursorMode GetCursorMode() const override { return m_Config.CursorMode; };
     
-        bool IsOpened() const override { return m_IsOpened; };
+        bool IsOpened() const override;
         void Close() override;
 
         void Update();
