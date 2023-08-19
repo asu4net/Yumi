@@ -1,6 +1,8 @@
 #pragma once
 #include "Rendering/RenderingContext.h"
 
+struct GLFWwindow;
+
 namespace Yumi
 {
     class OpenGLRenderingContext : public RenderingContext
@@ -18,6 +20,6 @@ namespace Yumi
         void SwapBuffers() const override;
 
     private:
-        void* m_WindowHandler = nullptr;
+        GLFWwindow* m_WindowHandler;
     };
 }

@@ -13,20 +13,15 @@ namespace Yumi
     }
 #endif
 
-    namespace InternalOpenGLRenderingContext
-    {
-        static GLFWwindow* GetGlfWwindow(void* windowHandler)
-        {
-            static GLFWwindow* glfWwindowHandler = static_cast<GLFWwindow*>(windowHandler);
-            return glfWwindowHandler;
-        }
-    }
-
     OpenGLRenderingContext::OpenGLRenderingContext(void* windowHandler)
-        : m_WindowHandler(windowHandler)
+        : m_WindowHandler(nullptr)
     {
-        assert(gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) && "Failed to initialize glad!");
-
+        if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+        {
+            assert(false && "Failed to initialize glad!");
+            return;
+        }
+        
 #ifdef YUMI_DEBUG
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -36,6 +31,6 @@ namespace Yumi
 
     void OpenGLRenderingContext::SwapBuffers() const
     {
-        glfwSwapBuffers(InternalOpenGLRenderingContext::GetGlfWwindow(m_WindowHandler));
+        glfwSwapBuffers(m_WindowHandler);
     }
 }
