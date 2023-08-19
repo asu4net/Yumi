@@ -29,13 +29,9 @@ namespace Yumi
 
         virtual void SetCursorMode(const CursorMode mode) = 0;
         virtual CursorMode GetCursorMode() const = 0;
-
-        virtual bool IsCreated() const = 0;
         
         virtual bool IsOpened() const = 0;
-        
-        virtual void Open() = 0;
-        
+                
         virtual void Close() = 0;
 
         virtual void ProcessMessages() = 0;

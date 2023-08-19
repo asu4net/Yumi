@@ -1,34 +1,21 @@
-project "Yumi"
+project "GLAD"
     kind "StaticLib"
-    language "C++"
-    cppdialect "C++17"
+    language "C"
     staticruntime "off"
-
-    pchheader "YumiPCH.h"
-    pchsource "Source/YumiPCH.cpp"
-    forceincludes { "YumiPCH.h" }
 
     targetdir (targetroot .. "%{prj.name}")
     objdir (objroot .. "%{prj.name}")
 
     files
     {
-        "Source/**.h",
-        "Source/**.cpp"
+        "include/glad/glad.h",
+        "include/KHR/khrplatform.h",
+        "src/glad.c"
     }
 
     includedirs
     {
-        "Source",
-        "%{IncludeDirs.GLFW}",
-        "%{IncludeDirs.GLAD}"
-    }
-
-    links
-    {
-        "GLFW",
-        "opengl32.lib",
-        "GLAD"
+        "include"
     }
 
     filter "system:windows"

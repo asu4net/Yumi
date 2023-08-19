@@ -1,13 +1,16 @@
 #pragma once
 #include "Window/Window.h"
 
+struct GLFWwindow;
+
 namespace Yumi
 {
+    class RenderingContext;
+
     class WindowsWindow : public Window
     {
-
     public:
-        WindowsWindow(const Configuration& config);
+        WindowsWindow(const Configuration& config = {});
         WindowsWindow(const Window&) = delete;
         WindowsWindow& operator = (const WindowsWindow&) = delete;
 
@@ -17,7 +20,6 @@ namespace Yumi
         const String& GetTitle() const override { return m_Config.Title; }
         
         uint32_t GetWidth() const override { return m_Config.Width; };
-
         uint32_t GetHeight() const override { return m_Config.Height; };
         
         void SetVSync(bool enabled) override;
@@ -26,21 +28,15 @@ namespace Yumi
         void SetCursorMode(const CursorMode mode) override;
         CursorMode GetCursorMode() const override { return m_Config.CursorMode; };
     
-        bool IsCreated() const override { return m_IsCreated; }
-
         bool IsOpened() const override { return m_IsOpened; };
-
-        void Open() override;
-
         void Close() override;
 
         void ProcessMessages();
 
     private:
         Configuration m_Config;
-        HINSTANCE m_HandlerInstance;
-        HWND m_WindowHandler;
-        bool m_IsCreated;
+        GLFWwindow* m_WindowHandler;
+        Unique<RenderingContext> m_RenderingContext;
         bool m_IsOpened;
     };
 }

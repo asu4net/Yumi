@@ -20,8 +20,6 @@ namespace Yumi
     {
         printf("Yumi Engine started!\n");
 
-        m_Window->Open();
-
         // MAIN LOOP
         while (m_Window->IsOpened())
         {

@@ -14,6 +14,11 @@ group "Engine"
     include "Engine/Yumi/premake5.lua"
 group ""
 
+group "ThirdParty"
+    include "ThirdParty/GLFW/premake5.lua"
+    include "ThirdParty/GLAD/premake5.lua"
+group ""
+
 group "Game"
     include "Game/GameApp/premake5.lua"
 group ""
