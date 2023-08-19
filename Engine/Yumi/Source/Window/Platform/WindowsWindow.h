@@ -16,6 +16,8 @@ namespace Yumi
 
         ~WindowsWindow() override;
 
+        void* GetHandler() const override { return static_cast<void*>(m_WindowHandler); }
+
         void SetTitle(const String title) override;
         const String& GetTitle() const override { return m_Config.Title; }
         

@@ -1,6 +1,8 @@
 #include "Engine.h"
 #include "Window/Window.h"
 #include "Time.h"
+#include "Input/KeyCodes.h"
+#include "Input/Input.h"
 
 namespace Yumi
 {
@@ -20,6 +22,7 @@ namespace Yumi
         printf("Yumi Engine started!\n");
 
         Time::Start();
+        Input::Start(m_Window);
 
         //TODO: Frame by frame mode
         // MAIN LOOP

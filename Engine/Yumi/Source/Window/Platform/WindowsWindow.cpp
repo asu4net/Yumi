@@ -35,6 +35,10 @@ namespace Yumi
         printf("Windows window created!\n");
 
         m_IsOpened = true;
+        
+        SetVSync(config.VSync);
+        SetTitle(config.Title);
+        SetCursorMode(config.CursorMode);
     }
 
     WindowsWindow::~WindowsWindow()

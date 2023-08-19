@@ -26,9 +26,10 @@ namespace Yumi
         inline static uint32_t s_FixedUpdateCalls = 0;
 
         inline static double s_FixedUpdateTimer = 0;
-        inline static LARGE_INTEGER s_LastTime{};
-        inline static LARGE_INTEGER s_Frec{};
+        inline static double s_LastTime = 0;
+        //inline static LARGE_INTEGER s_LastTime{};
+        //inline static LARGE_INTEGER s_Frec{};
 
-        static LARGE_INTEGER GetTime();
+        //static LARGE_INTEGER GetTime();
     };
 }
