@@ -2,43 +2,33 @@
 
 namespace Yumi
 {
-    struct TimeStep
-    {
-        float DeltaTime = 0;
-        float FixedDeltaTime = 0;
-        float GameTime = 0;
-        int FixedUpdateCalls = 0;
-    };
-
     class Time
     {
     public:
-        static constexpr float MaxDeltaTime = 1.f / 15.f;
+        static void Start();
+        static void CalculateTimeStep();
 
-        Time();
-        TimeStep CalculateTimeStep();
+        inline static float MaxDeltaTime = 1.f / 15.f;
+        inline static float FixedDeltaTime = 0.0166f;
+        inline static uint32_t TargetFrameRate = 60;
 
-        float  GetDeltaTime() const { return static_cast<float>(m_DeltaTime); }
-        float  GetTargetFrameRate() const { return static_cast<float>(m_TargetFrameRate); }
-        float  GetFixedDeltaTime() const { return static_cast<float>(m_FixedDeltaTime); }
-        float  GetFrameRate() const { return 1.f / static_cast<float>(m_DeltaTime); }
-        float  GetGameTime() const { return static_cast<float>(m_GameTime); }
-
-        void SetTargetFrameRate(const float frameRate)
-        {
-            m_TargetFrameRate = static_cast<double>(frameRate);
-            m_FixedDeltaTime = 1 / m_TargetFrameRate;
-        }
+        inline static float  DeltaTime() { return static_cast<float>(s_DeltaTime); }
+        inline static float  ApplicationTime() { return static_cast<float>(s_ApplicationTime); }
+        
+        inline static uint32_t FrameRate() { return (uint32_t) ((double) s_ApplicationFrames / s_ApplicationTime); }
+        inline static uint32_t ApplicationFrames() { return s_ApplicationFrames; }
+        inline static uint32_t FixedUpdateCalls() { return s_FixedUpdateCalls; }
 
     private:
-        double m_TargetFrameRate = 60;
-        double m_GameTime = 0;
-        double m_Elapsed = 0;
-        double m_DeltaTime = 0;
-        double m_FixedDeltaTime = 0;
-        LARGE_INTEGER m_LastTime{};
-        LARGE_INTEGER m_Frec{};
+        inline static double s_DeltaTime = 0;
+        inline static double s_ApplicationTime = 0;
+        inline static uint32_t s_ApplicationFrames = 0;
+        inline static uint32_t s_FixedUpdateCalls = 0;
 
-        LARGE_INTEGER GetTime();
+        inline static double s_FixedUpdateTimer = 0;
+        inline static LARGE_INTEGER s_LastTime{};
+        inline static LARGE_INTEGER s_Frec{};
+
+        static LARGE_INTEGER GetTime();
     };
 }

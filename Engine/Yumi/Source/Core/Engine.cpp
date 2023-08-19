@@ -6,7 +6,6 @@ namespace Yumi
 {
     Engine::Engine()
         : m_Window(Window::Create())
-        , m_Time(CreateUnique<Time>())
     {
         printf("Yumi Engine created!\n");
     }
@@ -20,11 +19,27 @@ namespace Yumi
     {
         printf("Yumi Engine started!\n");
 
+        Time::Start();
+
+        //TODO: Frame by frame mode
         // MAIN LOOP
         while (m_Window->IsOpened())
         {
+            Time::CalculateTimeStep();
+
+            //render stuff
+
+            String windowTitle = "Yumi Window";
+            windowTitle.append(" | FPS: " + std::to_string(Time::FrameRate()));
+            windowTitle.append(" | AppTime: " + std::to_string(Time::ApplicationTime()));
+            windowTitle.append(" | AppFrames: " + std::to_string(Time::ApplicationFrames()));
+            windowTitle.append(" | DeltaTime: " + std::to_string(Time::DeltaTime()));
+            windowTitle.append(" | FixedUpdateCalls: " + std::to_string(Time::FixedUpdateCalls()));
+
+            std::cout << Time::FixedUpdateCalls() << std::endl;
+
+            m_Window->SetTitle(windowTitle);
             m_Window->Update();
-            m_Time->CalculateTimeStep();
         }
     }
 }

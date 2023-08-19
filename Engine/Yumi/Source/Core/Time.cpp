@@ -1,42 +1,37 @@
 #include "Time.h"
 
+//TODO: Implement target frame rate
+
 namespace Yumi
 {
-    Time::Time()
+    void Time::Start()
     {
-        m_FixedDeltaTime = 1 / m_TargetFrameRate;
-
-        m_LastTime = GetTime();
+        s_LastTime = GetTime();
 
         LARGE_INTEGER frec;
         QueryPerformanceFrequency(&frec);
-        m_Frec = frec;
+        s_Frec = frec;
     }
 
-    TimeStep Time::CalculateTimeStep()
+    void Time::CalculateTimeStep()
     {
+        s_FixedUpdateCalls = 0;
+        s_ApplicationFrames++;
+
         const LARGE_INTEGER time = GetTime();
+        const double timeBetweenFrames = static_cast<double>(time.QuadPart - s_LastTime.QuadPart) /
+            static_cast<double>(s_Frec.QuadPart);
+        s_LastTime = time;
 
-        const double timeBetweenFrames = static_cast<double>(time.QuadPart - m_LastTime.QuadPart) /
-            static_cast<double>(m_Frec.QuadPart);
+        s_ApplicationTime += timeBetweenFrames;
+        s_DeltaTime = std::clamp(timeBetweenFrames, 0., static_cast<double>(MaxDeltaTime));
+        s_FixedUpdateTimer += s_DeltaTime;
 
-        m_LastTime = time;
-
-        m_GameTime += timeBetweenFrames;
-
-        m_Elapsed += timeBetweenFrames;
-        m_Elapsed = std::clamp(m_Elapsed, 0., static_cast<double>(MaxDeltaTime));
-
-        m_DeltaTime = m_Elapsed;
-        TimeStep timeStep = { GetDeltaTime(), GetFixedDeltaTime(), GetGameTime() };
-
-        while (m_Elapsed >= m_FixedDeltaTime)
+        while (s_FixedUpdateTimer >= FixedDeltaTime)
         {
-            timeStep.FixedUpdateCalls++;
-            m_Elapsed -= m_FixedDeltaTime;
+            s_FixedUpdateCalls++;
+            s_FixedUpdateTimer -= FixedDeltaTime;
         }
-
-        return timeStep;
     }
 
     LARGE_INTEGER Time::GetTime()

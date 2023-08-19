@@ -6,14 +6,13 @@ namespace Yumi
     {
         YUMI_SINGLETON(Engine)
     
+    public:
+        void Start();
+
     private:
         Engine();
         ~Engine();
 
         Unique<class Window> m_Window;
-        Unique<class Time> m_Time;
-
-    public:
-        void Start();
     };
 }
