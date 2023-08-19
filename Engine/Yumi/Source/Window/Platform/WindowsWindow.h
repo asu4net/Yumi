@@ -31,7 +31,7 @@ namespace Yumi
         bool IsOpened() const override { return m_IsOpened; };
         void Close() override;
 
-        void ProcessMessages();
+        void Update();
 
     private:
         Configuration m_Config;

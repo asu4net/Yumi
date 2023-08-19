@@ -34,7 +34,7 @@ namespace Yumi
                 
         virtual void Close() = 0;
 
-        virtual void ProcessMessages() = 0;
+        virtual void Update() = 0;
 
         static Unique<Window> Create(const Configuration& config = {});
     };

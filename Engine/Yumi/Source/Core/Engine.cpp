@@ -23,7 +23,7 @@ namespace Yumi
         // MAIN LOOP
         while (m_Window->IsOpened())
         {
-            m_Window->ProcessMessages();
+            m_Window->Update();
             m_Time->CalculateTimeStep();
         }
     }

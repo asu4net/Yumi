@@ -100,7 +100,7 @@ namespace Yumi
         printf("Windows window closed!\n");
     }
 
-    void WindowsWindow::ProcessMessages()
+    void WindowsWindow::Update()
     {
         glfwPollEvents();
         m_RenderingContext->SwapBuffers();
