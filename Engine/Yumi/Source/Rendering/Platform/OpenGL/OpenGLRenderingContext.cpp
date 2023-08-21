@@ -22,7 +22,7 @@ namespace Yumi
             return;
         }
         
-        printf("OpenGL rendering context created!\n");
+        YLOG_TRACE("OpenGL rendering context created!\n");
 
 #ifdef YUMI_DEBUG
         glEnable(GL_DEBUG_OUTPUT);

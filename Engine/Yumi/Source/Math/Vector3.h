@@ -33,6 +33,7 @@ namespace Yumi
         float Magnitude() const;
         Vector3 Normalized() const;
         void Normalize();
+        String ToString() const;
 
         //static Vector3 LookAt(const glm::quat& rot, const Vector3& axis);
         static float Dot(const Vector3& a, const Vector3& b);

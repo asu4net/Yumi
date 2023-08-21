@@ -9,17 +9,17 @@ namespace Yumi
     Engine::Engine()
         : m_Window(Window::Create())
     {
-        printf("Yumi Engine created!\n");
+        YLOG_TRACE("Yumi Engine created!\n");
     }
 
     Engine::~Engine()
     {
-        printf("Yumi Engine destroyed!\n");
+        YLOG_TRACE("Yumi Engine destroyed!\n");
     }
 
     void Engine::Start()
     {
-        printf("Yumi Engine started!\n");
+        YLOG_TRACE("Yumi Engine started!\n");
 
         Time::Start();
         Input::Start(m_Window);
@@ -33,10 +33,12 @@ namespace Yumi
             //render stuff
 
             String windowTitle = "Yumi Window";
+            windowTitle.append(" | MousePos: " + Input::MousePosition().ToString());
             windowTitle.append(" | FPS: " + std::to_string(Time::FrameRate()));
             windowTitle.append(" | AppTime: " + std::to_string(Time::ApplicationTime()));
             windowTitle.append(" | AppFrames: " + std::to_string(Time::ApplicationFrames()));
             windowTitle.append(" | DeltaTime: " + std::to_string(Time::DeltaTime()));
+            windowTitle.append(" | FixedUpdateCalls: " + std::to_string(Time::FixedUpdateCalls()));
             windowTitle.append(" | FixedUpdateCalls: " + std::to_string(Time::FixedUpdateCalls()));
 
             m_Window->SetTitle(windowTitle);

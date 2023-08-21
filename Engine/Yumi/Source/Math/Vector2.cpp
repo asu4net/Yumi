@@ -75,6 +75,11 @@ namespace Yumi
         *this = this->Normalized();
     }
 
+    String Vector2::ToString() const
+    {
+        return std::to_string(X) + ", " + std::to_string(Y);
+    }
+
     float Vector2::Dot(const Vector2& a, const Vector2& b)
     {
         return a.X * b.X + a.Y * b.Y;

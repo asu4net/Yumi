@@ -27,7 +27,8 @@ namespace Yumi
         float Magnitude() const;
         Vector2 Normalized() const;
         void Normalize();
-        
+        String ToString() const;
+
         static float Dot(const Vector2& a, const Vector2& b);
         static float Distance(const Vector2& a, const Vector2& b);
         static float Angle(const Vector2& a, const Vector2& b);

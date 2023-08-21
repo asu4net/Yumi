@@ -81,10 +81,38 @@ namespace Yumi
     using Map = std::unordered_map<K, V>;
 }
 
+/// -------- LOGGING --------
+
+//TODO: Add date/time at the log beginning
+//TODO: Add YCHECK debug_break with logerror
+//TODO: Substitude Yumi macros for y
+//TODO: Add final config without logs and stats
+//TODO: Set logging levels
+
+#define YLOG(...) \
+    printf("Yumi Engine: "); \
+    printf(__VA_ARGS__)
+
+#define YLOG_TRACE(...) \
+    printf("\x1B[96m"); \
+    YLOG(__VA_ARGS__); \
+    printf("\033[0m")
+
+#define YLOG_WARN(...) \
+    printf("\x1B[93m"); \
+    YLOG(__VA_ARGS__); \
+    printf("\033[0m")
+
+#define YLOG_ERR(...) \
+    printf("\x1B[91m"); \
+    YLOG(__VA_ARGS__); \
+    printf("\033[0m")
+
 /// -------- INTERNAL --------
 
 #include "Core/Singleton.h"
-
+#include "Core/Delegate/Delegate.h"
+#include "Core/Delegate/MulticastDelegate.h"
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
 

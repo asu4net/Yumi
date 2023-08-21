@@ -13,7 +13,7 @@ namespace Yumi
         , m_RenderingContext(nullptr)
         , m_IsOpened(false)
     {
-        printf("Windows window begin create...\n");
+        YLOG_TRACE("Windows window begin create...\n");
 
         if (!glfwInit())
         {
@@ -32,7 +32,7 @@ namespace Yumi
         glfwMakeContextCurrent(m_WindowHandler);
 
         m_RenderingContext = RenderingContext::Create(m_WindowHandler);
-        printf("Windows window created!\n");
+        YLOG_TRACE("Windows window created!\n");
 
         m_IsOpened = true;
         
@@ -54,7 +54,8 @@ namespace Yumi
 
         glfwDestroyWindow(m_WindowHandler);
         m_WindowHandler = nullptr;
-        printf("Windows window destroyed!\n");
+        YLOG_TRACE("Windows window destroyed!\n");
+        glfwTerminate();
     }
 
     //TODO: Finish
@@ -106,7 +107,7 @@ namespace Yumi
         }
 
         m_IsOpened = false;
-        printf("Windows window closed!\n");
+        YLOG_TRACE("Windows window closed!\n");
     }
 
     void WindowsWindow::Update()

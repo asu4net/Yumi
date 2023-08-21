@@ -114,6 +114,11 @@ namespace Yumi
         *this = this->Normalized();
     }
 
+    String Vector3::ToString() const
+    {
+        return std::to_string(X) + ", " + std::to_string(Y) + ", " + std::to_string(Z);
+    }
+
     float Vector3::Dot(const Vector3& a, const Vector3& b)
     {
         return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
