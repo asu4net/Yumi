@@ -4,7 +4,7 @@ namespace Yumi
 {
     class Engine : public Singleton<Engine>
     {
-        YUMI_SINGLETON(Engine)
+        YSINGLETON_FRIEND(Engine)
     
     public:
         void Start();

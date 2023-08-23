@@ -12,7 +12,6 @@
 #include <cmath>
 #include <random>
 #include <filesystem>
-#include <cassert>
 
 /// -------- MEMORY ---------
 
@@ -84,8 +83,6 @@ namespace Yumi
 /// -------- LOGGING --------
 
 //TODO: Add date/time at the log beginning
-//TODO: Add YCHECK debug_break with logerror
-//TODO: Substitude Yumi macros for y
 //TODO: Add final config without logs and stats
 //TODO: Set logging levels
 
@@ -107,6 +104,9 @@ namespace Yumi
     printf("\x1B[91m"); \
     YLOG(__VA_ARGS__); \
     printf("\033[0m")
+
+#define YCHECK(_CONDITION, ...) \
+    if (!_CONDITION) { YLOG_ERR(__VA_ARGS__); __debugbreak(); }
 
 /// -------- INTERNAL --------
 

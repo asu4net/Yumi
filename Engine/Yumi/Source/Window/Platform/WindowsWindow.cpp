@@ -14,20 +14,11 @@ namespace Yumi
         , m_IsOpened(false)
     {
         YLOG_TRACE("Windows window begin create...\n");
-
-        if (!glfwInit())
-        {
-            assert(false && "GLFW Window initialisation failed!");
-            return;
-        }
+        YCHECK(glfwInit(), "GLFW Window initialisation failed!");
 
         m_WindowHandler = glfwCreateWindow(m_Config.Width, m_Config.Height, m_Config.Title.c_str(), nullptr, nullptr);
         
-        if (!m_WindowHandler)
-        {
-            assert(false && "GLFW Window creation failed!");
-            return;
-        }
+        YCHECK(m_WindowHandler, "GLFW Window creation failed!");
         
         glfwMakeContextCurrent(m_WindowHandler);
 
@@ -47,12 +38,7 @@ namespace Yumi
         if (IsOpened())
             Close();
 
-        if (!m_WindowHandler)
-        {
-            assert(false && "GLFW Window handler empty!");
-            return;
-        }
-
+        YCHECK(m_WindowHandler, "GLFW Window handler empty!");
         glfwDestroyWindow(m_WindowHandler);
         m_WindowHandler = nullptr;
         YLOG_TRACE("Windows window destroyed!\n");
@@ -101,12 +87,7 @@ namespace Yumi
 
     void WindowsWindow::Close()
     {
-        if (!m_IsOpened)
-        {
-            assert(false && "Window is already closed!");
-            return;
-        }
-
+        YCHECK(!m_IsOpened, "Window is already closed!");
         m_IsOpened = false;
         YLOG_TRACE("Windows window closed!\n");
     }

@@ -18,7 +18,7 @@ namespace Yumi
     {
         if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
         {
-            assert(false && "Failed to initialize glad!");
+            YCHECK(false, "Failed to initialize glad!");
             return;
         }
         
