@@ -5,7 +5,7 @@ namespace Yumi
     struct Vector3;
     struct Vector2
     {
-        float X, Y;
+        float x, y;
 
         static const Vector2 zero;
         static const Vector2 one;

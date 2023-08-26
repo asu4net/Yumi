@@ -12,78 +12,78 @@ namespace Yumi
     const Vector3 Vector3::forward = { 0, 0, 1 };
 
     Vector3::Vector3()
-        : X(0)
-        , Y(0)
-        , Z(0)
+        : x(0)
+        , y(0)
+        , z(0)
     {}
 
     Vector3::Vector3(float x, float y, float z)
-        : X(x)
-        , Y(y)
-        , Z(z)
+        : x(x)
+        , y(y)
+        , z(z)
     {}
 
     Vector3::Vector3(const Vector2& other, float z)
-        : X(other.X)
-        , Y(other.Y)
-        , Z(z)
+        : x(other.x)
+        , y(other.y)
+        , z(z)
     {}
 
     Vector3& Vector3::operator+=(const Vector3& other)
     {
-        X += other.X;
-        Y += other.Y;
-        Z += other.Z;
+        x += other.x;
+        y += other.y;
+        z += other.z;
         return *this;
     }
 
     bool Vector3::operator<=(const Vector3& other)
     {
-        return X <= other.X && Y <= other.Y && Z <= other.Z;
+        return x <= other.x && y <= other.y && z <= other.z;
     }
 
     Vector3& Vector3::operator-=(const Vector3& other)
     {
-        X -= other.X;
-        Y -= other.Y;
-        Z -= other.Z;
+        x -= other.x;
+        y -= other.y;
+        z -= other.z;
         return *this;
     }
 
     Vector3 Vector3::operator+(const Vector3& other) const
     {
-        return { X + other.X, Y + other.Y, Z + other.Z };
+        return { x + other.x, y + other.y, z + other.z };
     }
 
     Vector3 Vector3::operator-(const Vector3& other) const
     {
-        return { X - other.X, Y - other.Y, Z - other.Z };
+        return { x - other.x, y - other.y, z - other.z };
     }
 
     Vector3 Vector3::operator*(float num) const
     {
-        return { X * num, Y * num, Z * num };
+        return { x * num, y * num, z * num };
     }
 
     Vector3& Vector3::operator*=(float num)
     {
-        X *= num;
-        Y *= num;
-        Z *= num;
+        x *= num;
+        y *= num;
+        z *= num;
         return *this;
     }
 
     Vector3& Vector3::operator/=(float num)
     {
-        X /= num;
-        Y /= num;
-        Z /= num;
+        x /= num;
+        y /= num;
+        z /= num;
         return *this;
     }
 
     Vector3 Vector3::operator/(float num) const
     {
-        return { X / num, Y / num, Z / num };
+        return { x / num, y / num, z / num };
     }
 
     /*Vector3 Vector3::LookAt(const glm::quat& rot, const Vector3& axis)
@@ -95,18 +95,18 @@ namespace Yumi
 
     Vector3 Vector3::Abs() const
     {
-        return { std::abs(X), std::abs(Y), std::abs(Z) };
+        return { std::abs(x), std::abs(y), std::abs(z) };
     }
 
     float Vector3::Magnitude() const
     {
-        return std::sqrt(std::powf(X, 2) + std::powf(Y, 2) + std::powf(Z, 2));
+        return std::sqrt(std::powf(x, 2) + std::powf(y, 2) + std::powf(z, 2));
     }
 
     Vector3 Vector3::Normalized() const
     {
         float mag = Magnitude();
-        return { X / mag, Y / mag, Z / mag };
+        return { x / mag, y / mag, z / mag };
     }
 
     void Vector3::Normalize()
@@ -116,16 +116,16 @@ namespace Yumi
 
     String Vector3::ToString() const
     {
-        return std::to_string(X) + ", " + std::to_string(Y) + ", " + std::to_string(Z);
+        return std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z);
     }
 
     float Vector3::Dot(const Vector3& a, const Vector3& b)
     {
-        return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+        return a.x * b.x + a.y * b.y + a.z * b.z;
     }
 
     float Vector3::Distance(const Vector3& a, const Vector3& b)
     {
-        return std::sqrtf(std::powf(a.X - b.X, 2) + std::powf(a.Y - b.Y, 2) + std::powf(a.Z - b.Z, 2));
+        return std::sqrtf(std::powf(a.x - b.x, 2) + std::powf(a.y - b.y, 2) + std::powf(a.z - b.z, 2));
     }
 }

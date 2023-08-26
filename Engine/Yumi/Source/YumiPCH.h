@@ -115,5 +115,6 @@ namespace Yumi
 #include "Core/Delegate/MulticastDelegate.h"
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
+#include "Math/Matrix4.h"
 
 /// --------------------------

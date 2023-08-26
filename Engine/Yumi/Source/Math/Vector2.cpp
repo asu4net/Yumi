@@ -10,64 +10,64 @@ namespace Yumi
     const Vector2 Vector2::down = { 0, -1 };
 
     Vector2::Vector2()
-        : X(0)
-        , Y(0)
+        : x(0)
+        , y(0)
     {}
 
     Vector2::Vector2(float x, float y)
-        : X(x)
-        , Y(y)
+        : x(x)
+        , y(y)
     {}
 
     Vector2::Vector2(const Vector3& other)
-        : X(other.X)
-        , Y(other.Y)
+        : x(other.x)
+        , y(other.y)
     {}
 
     bool Vector2::operator==(const Vector2& other)
     {
-        return X == other.X && Y == other.Y;
+        return x == other.x && y == other.y;
     }
 
     bool Vector2::operator!=(const Vector2& other)
     {
-        return X != other.X || Y != other.Y;
+        return x != other.x || y != other.y;
     }
 
     Vector2 Vector2::operator+(const Vector2& other) const
     {
-        return { X + other.X, Y + other.Y };
+        return { x + other.x, y + other.y };
     }
 
     Vector2 Vector2::operator-(const Vector2& other) const
     {
-        return { X - other.X, Y - other.Y };
+        return { x - other.x, y - other.y };
     }
 
     Vector2 Vector2::operator*(float _float) const
     {
-        return { X * _float, Y * _float };
+        return { x * _float, y * _float };
     }
 
     Vector2 Vector2::operator/(float _float) const
     {
-        return { X / _float, Y / _float };
+        return { x / _float, y / _float };
     }
 
     Vector2 Vector2::Abs() const
     {
-        return { std::abs(X), std::abs(Y) };
+        return { std::abs(x), std::abs(y) };
     }
 
     float Vector2::Magnitude() const
     {
-        return std::sqrt(std::powf(X, 2) + std::powf(Y, 2));
+        return std::sqrt(std::powf(x, 2) + std::powf(y, 2));
     }
 
     Vector2 Vector2::Normalized() const
     {
         float mag = Magnitude();
-        return { X / mag, Y / mag };
+        return { x / mag, y / mag };
     }
 
     void Vector2::Normalize()
@@ -77,17 +77,17 @@ namespace Yumi
 
     String Vector2::ToString() const
     {
-        return std::to_string(X) + ", " + std::to_string(Y);
+        return std::to_string(x) + ", " + std::to_string(y);
     }
 
     float Vector2::Dot(const Vector2& a, const Vector2& b)
     {
-        return a.X * b.X + a.Y * b.Y;
+        return a.x * b.x + a.y * b.y;
     }
 
     float Vector2::Distance(const Vector2& a, const Vector2& b)
     {
-        return std::sqrtf(std::powf(a.X - b.X, 2) + std::powf(a.Y - b.Y, 2));
+        return std::sqrtf(std::powf(a.x - b.x, 2) + std::powf(a.y - b.y, 2));
     }
 
     float Vector2::Angle(const Vector2& a, const Vector2& b)
