@@ -21,7 +21,8 @@ project "Yumi"
     {
         "Source",
         "%{IncludeDirs.GLFW}",
-        "%{IncludeDirs.GLAD}"
+        "%{IncludeDirs.GLAD}",
+        "%{IncludeDirs.STB}"
     }
 
     links

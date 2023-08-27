@@ -8,3 +8,4 @@ IncludeDirs = {}
 IncludeDirs["Yumi"] = "%{wks.location}/Engine/Yumi/Source"
 IncludeDirs["GLFW"] = "%{wks.location}/ThirdParty/GLFW/include"
 IncludeDirs["GLAD"] = "%{wks.location}/ThirdParty/GLAD/include"
+IncludeDirs["STB"] = "%{wks.location}/ThirdParty/STB/include"

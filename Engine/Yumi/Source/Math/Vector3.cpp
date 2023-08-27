@@ -29,30 +29,14 @@ namespace Yumi
         , z(z)
     {}
 
-    Vector3& Vector3::operator+=(const Vector3& other)
-    {
-        x += other.x;
-        y += other.y;
-        z += other.z;
-        return *this;
-    }
-
-    bool Vector3::operator<=(const Vector3& other)
-    {
-        return x <= other.x && y <= other.y && z <= other.z;
-    }
-
-    Vector3& Vector3::operator-=(const Vector3& other)
-    {
-        x -= other.x;
-        y -= other.y;
-        z -= other.z;
-        return *this;
-    }
-
     Vector3 Vector3::operator+(const Vector3& other) const
     {
-        return { x + other.x, y + other.y, z + other.z };
+        return { x + other.x, y + other.y, z };
+    }
+
+    void Vector3::operator+=(const Vector3& other)
+    {
+        *this = *this + other;
     }
 
     Vector3 Vector3::operator-(const Vector3& other) const
@@ -60,30 +44,34 @@ namespace Yumi
         return { x - other.x, y - other.y, z - other.z };
     }
 
+    void Vector3::operator-=(const Vector3& other)
+    {
+        *this = *this - other;
+    }
+
     Vector3 Vector3::operator*(float num) const
     {
         return { x * num, y * num, z * num };
     }
 
-    Vector3& Vector3::operator*=(float num)
+    void Vector3::operator*=(float num)
     {
-        x *= num;
-        y *= num;
-        z *= num;
-        return *this;
-    }
-
-    Vector3& Vector3::operator/=(float num)
-    {
-        x /= num;
-        y /= num;
-        z /= num;
-        return *this;
+        *this = *this * num;
     }
 
     Vector3 Vector3::operator/(float num) const
     {
         return { x / num, y / num, z / num };
+    }
+
+    void Vector3::operator/=(float num)
+    {
+        *this = *this / num;
+    }
+
+    bool Vector3::operator<=(const Vector3& other)
+    {
+        return x <= other.x && y <= other.y && z <= other.z;
     }
 
     /*Vector3 Vector3::LookAt(const glm::quat& rot, const Vector3& axis)

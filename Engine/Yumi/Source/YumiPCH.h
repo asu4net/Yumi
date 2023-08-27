@@ -110,11 +110,13 @@ namespace Yumi
 
 /// -------- INTERNAL --------
 
+#include "Core/Id.h"
 #include "Core/Singleton.h"
 #include "Core/Delegate/Delegate.h"
 #include "Core/Delegate/MulticastDelegate.h"
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
+#include "Math/Vector4.h"
 #include "Math/Matrix4.h"
 
 /// --------------------------

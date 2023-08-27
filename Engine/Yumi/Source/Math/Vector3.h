@@ -20,15 +20,17 @@ namespace Yumi
         Vector3();
         Vector3(float x, float y, float z);
         Vector3(const Vector2& other, float z = 0);
-        Vector3& operator+=(const Vector3& other);
-        bool operator<=(const Vector3& other);
-        Vector3& operator-=(const Vector3& other);
+
         Vector3 operator+(const Vector3& other) const;
+        void operator+=(const Vector3& other);
         Vector3 operator-(const Vector3& other) const;
+        void operator-=(const Vector3& other);
         Vector3 operator*(float num) const;
-        Vector3& operator*=(float num);
-        Vector3& Vector3::operator/=(float num);
+        void operator*=(float num);
         Vector3 operator/(float num) const;
+        void operator/=(float num);
+        bool operator<=(const Vector3& other);
+        
         Vector3 Abs() const;
         float Magnitude() const;
         Vector3 Normalized() const;

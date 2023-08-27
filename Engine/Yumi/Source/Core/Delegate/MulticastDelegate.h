@@ -92,6 +92,6 @@ namespace Yumi
         }
         
     private:
-        std::vector<Delegate<void(TArgs...)>> m_delegates;
+        DynamicArray<Delegate<void(TArgs...)>> m_delegates;
     };
 }

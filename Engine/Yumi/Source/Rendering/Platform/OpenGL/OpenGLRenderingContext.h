@@ -10,7 +10,7 @@ namespace Yumi
     public:
 #ifdef YUMI_DEBUG
         inline static bool EnableDebugMessages = true;
-        inline static std::function<void(const std::string& message)> OnDebugMessage = [](const std::string& message)
+        inline static std::function<void(const String& message)> OnDebugMessage = [](const String& message)
         {
            YLOG("%s \n", message.c_str());
         };
