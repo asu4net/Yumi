@@ -3,8 +3,8 @@
 
 namespace Yumi
 {
-    RenderCommand::RenderCommand()
+    RenderCommand::RenderCommand(const Shared<RendererAPI>& api)
+        : m_RendererAPI(api)
     {
-        m_RendererAPI.reset(RendererAPI::Create());
     }
 }

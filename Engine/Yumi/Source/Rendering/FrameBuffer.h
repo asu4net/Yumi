@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "GraphicsAPI.h"
 
 namespace Yumi
 {
@@ -10,20 +11,15 @@ namespace Yumi
             uint32_t Width{1280}, Height{720};
         };
         
-        FrameBuffer(const Configuration& configuration);
-        ~FrameBuffer();
+        static Shared<FrameBuffer> Create(GraphicsAPI api, const Configuration& configuration);
+        
+        virtual ~FrameBuffer() = 0;
 
-        uint32_t GetColorAttachment() const { return m_ColorAttachment; }
+        virtual uint32_t GetColorAttachment() const = 0;
         
-        void Invalidate();
-        void Bind();
-        void Unbind();
-        void Resize(const Vector2& size);
-        
-    private:
-        uint32_t m_FrameBufferId = 0;
-        uint32_t m_ColorAttachment = 0;
-        uint32_t m_DepthAttachment = 0;
-        Configuration m_Configuration;
+        virtual void Invalidate() = 0;
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
+        virtual void Resize(const Vector2& size) = 0;
     };
 }

@@ -1,34 +1,18 @@
 ﻿#include "IndexBuffer.h"
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLIndexBuffer.h"
 
 namespace Yumi
 {
-    Shared<IndexBuffer> IndexBuffer::Create(const uint32_t* indices, const uint32_t count)
+    Shared<IndexBuffer> IndexBuffer::Create(GraphicsAPI api, const uint32_t* indices, const uint32_t count)
     {
-        return std::make_shared<IndexBuffer>(indices, count);
-    }
-
-    IndexBuffer::IndexBuffer(const uint32_t* indices, const uint32_t count)
-        : m_BufferId(0)
-        , m_Count(count)
-    {
-        glCreateBuffers(1, &m_BufferId);
-        Bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
-    }
-
-    IndexBuffer::~IndexBuffer()
-    {
-        glDeleteBuffers(1, &m_BufferId);
-    }
-
-    void IndexBuffer::Bind() const
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferId);
-    }
-
-    void IndexBuffer::Unbind() const
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        switch (api)
+        {
+        case GraphicsAPI::OpenGL:
+            return CreateShared<OpenGLIndexBuffer>(indices, count);
+        case GraphicsAPI::None:
+        default:
+            YCHECK(false, "Invalid API");
+            return nullptr;
+        }
     }
 }

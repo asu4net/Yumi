@@ -3,8 +3,16 @@
 
 namespace Yumi
 {
-    Unique<RenderingContext> RenderingContext::Create(void* windowHandler)
+    Unique<RenderingContext> RenderingContext::Create(GraphicsAPI api, void* windowHandler)
     {
-        return CreateUnique<OpenGLRenderingContext>(windowHandler);
+        switch (api)
+        {
+        case GraphicsAPI::OpenGL:
+            return CreateUnique<OpenGLRenderingContext>(windowHandler);
+        case GraphicsAPI::None:
+        default:
+            YCHECK(false, "Invalid API");
+            return nullptr;
+        }
     }
 }

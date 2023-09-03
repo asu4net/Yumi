@@ -1,56 +1,23 @@
-﻿#include "VertexBuffer.h"
-#include <glad/glad.h>
+#include "VertexBuffer.h"
+#include "Platform/OpenGL/OpenGLVertexBuffer.h"
 
 namespace Yumi
 {
-    Shared<VertexBuffer> VertexBuffer::Create(const void* vertices, const uint32_t size)
+    Shared<VertexBuffer> VertexBuffer::Create(GraphicsAPI api, const void* vertices, const uint32_t size)
     {
-        return std::make_shared<VertexBuffer>(vertices, size);
+        switch (api)
+        {
+        case GraphicsAPI::OpenGL:
+            return CreateShared<OpenGLVertexBuffer>(vertices, size);
+        case GraphicsAPI::None:
+        default:
+            YCHECK(false, "Invalid API");
+            return nullptr;
+        }
     }
 
-    Shared<VertexBuffer> VertexBuffer::Create(const uint32_t size)
+    Shared<VertexBuffer> VertexBuffer::Create(GraphicsAPI api, const uint32_t size)
     {
-        return std::make_shared<VertexBuffer>(size);
-    }
-
-    VertexBuffer::VertexBuffer(const void* vertices, const uint32_t size)
-        : m_BufferId(0)
-    {
-        glCreateBuffers(1, &m_BufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, m_BufferId);
-        glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
-    }
-
-    VertexBuffer::VertexBuffer(const uint32_t size)
-    {
-        glCreateBuffers(1, &m_BufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, m_BufferId);
-        glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
-    }
-
-    VertexBuffer::~VertexBuffer()
-    {
-        glDeleteBuffers(1, &m_BufferId);
-    }
-
-    void VertexBuffer::Bind() const
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, m_BufferId);
-    }
-
-    void VertexBuffer::Unbind() const
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-
-    void VertexBuffer::SetData(const void* data, const uint32_t size) const
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, m_BufferId);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
-    }
-
-    void VertexBuffer::SetLayout(const BufferLayout& bufferLayout)
-    {
-        m_Layout = bufferLayout;
+        return CreateShared<OpenGLVertexBuffer>(size);
     }
 }

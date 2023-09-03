@@ -1,28 +1,22 @@
-﻿#pragma once
-
-#include "BufferLayout.h"
+#pragma once
+#include "Rendering/BufferLayout.h"
+#include "Rendering/GraphicsAPI.h"
 
 namespace Yumi
 {
     class VertexBuffer
     {
     public:
-        static Shared<VertexBuffer> Create(const void* vertices, uint32_t size);
-        static Shared<VertexBuffer> Create(uint32_t size);
-        
-        VertexBuffer(const void* vertices, uint32_t size);
-        VertexBuffer(uint32_t size);
-        ~VertexBuffer();
-        
-        void Bind() const;
-        void Unbind() const;
-        void SetData(const void* data, uint32_t size) const;
-        
-        void SetLayout(const BufferLayout& bufferLayout);
-        const BufferLayout& GetLayout() const { return m_Layout; }
-    
-    private:
-        uint32_t m_BufferId{};
-        BufferLayout m_Layout;
+        static Shared<VertexBuffer> Create(GraphicsAPI api, const void* vertices, uint32_t size);
+        static Shared<VertexBuffer> Create(GraphicsAPI api, uint32_t size);
+
+        virtual ~VertexBuffer() = 0;
+
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
+        virtual void SetData(const void* data, uint32_t size) const = 0;
+
+        virtual void SetLayout(const BufferLayout& bufferLayout) = 0;
+        virtual const BufferLayout& GetLayout() const = 0;
     };
 }

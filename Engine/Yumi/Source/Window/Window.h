@@ -1,4 +1,5 @@
 #pragma once
+#include "Rendering/GraphicsAPI.h"
 
 namespace Yumi
 {
@@ -11,6 +12,7 @@ namespace Yumi
         {
             String Title{"Yumi Window"};
             int Width{ 1280 }, Height{ 720 };
+            GraphicsAPI API = GraphicsAPI::OpenGL;
             bool VSync{ true };
             CursorMode CursorMode{ CursorMode::Normal };
         };

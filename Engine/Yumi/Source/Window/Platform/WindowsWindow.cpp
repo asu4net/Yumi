@@ -22,7 +22,7 @@ namespace Yumi
         
         glfwMakeContextCurrent(m_WindowHandler);
 
-        m_RenderingContext = RenderingContext::Create(m_WindowHandler);
+        m_RenderingContext = RenderingContext::Create(m_Config.API, m_WindowHandler);
         YLOG_TRACE("Windows window created!\n");
 
         m_IsOpened = true;

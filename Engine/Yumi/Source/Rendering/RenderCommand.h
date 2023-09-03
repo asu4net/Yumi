@@ -8,23 +8,23 @@ namespace Yumi
     class RenderCommand
     {
     public:
-        RenderCommand();
+        RenderCommand(const Shared<RendererAPI>& api);
 
         virtual const char* GetName() const = 0;
         virtual void Execute() = 0;
         
     protected:
-        const Unique<RendererAPI>& GetRendererAPI() const { return m_RendererAPI; }
+        const Shared<RendererAPI>& GetRendererAPI() const { return m_RendererAPI; }
     
     private:
-        Unique<RendererAPI> m_RendererAPI; 
+        Shared<RendererAPI> m_RendererAPI;
     };
     
     class SetViewPortCommand : public RenderCommand
     {
     public:
-        SetViewPortCommand(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height)
-            : RenderCommand(), m_X(x), m_Y(y), m_Width(width), m_Height(height)
+        SetViewPortCommand(const Shared<RendererAPI>& api, const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height)
+            : RenderCommand(api), m_X(x), m_Y(y), m_Width(width), m_Height(height)
         {}
 
         const char* GetName() const override { return "SetViewport"; }
@@ -41,8 +41,8 @@ namespace Yumi
     class SetClearColorCommand : public RenderCommand
     {
     public:
-        SetClearColorCommand(const Vector4& clearColor)
-            : RenderCommand()
+        SetClearColorCommand(const Shared<RendererAPI>& api, const Vector4& clearColor)
+            : RenderCommand(api)
             , m_ClearColor(clearColor)
         {}
 
@@ -74,8 +74,8 @@ namespace Yumi
         const char* GetName() const override { return "Set Blending mode"; }
 
     public:
-        SetBlendingModeCommand(const BlendingMode blendingMode)
-            : RenderCommand()
+        SetBlendingModeCommand(const Shared<RendererAPI>& api, const BlendingMode blendingMode)
+            : RenderCommand(api)
             , m_BlendingMode(blendingMode)
         {}
         
@@ -93,8 +93,8 @@ namespace Yumi
         const char* GetName() const override { return "Set Blending enabled"; }
 
     public:
-        SetBlendingEnabledCommand(const bool enabled)
-            : RenderCommand()
+        SetBlendingEnabledCommand(const Shared<RendererAPI>& api, const bool enabled)
+            : RenderCommand(api)
             , m_Enabled(enabled)
         {}
         
@@ -112,8 +112,8 @@ namespace Yumi
         const char* GetName() const override { return "Set Blending enabled"; }
 
     public:
-        SetDepthTestEnabledCommand(const bool enabled)
-            : RenderCommand()
+        SetDepthTestEnabledCommand(const Shared<RendererAPI>& api, const bool enabled)
+            : RenderCommand(api)
             , m_Enabled(enabled)
         {}
         
@@ -130,8 +130,8 @@ namespace Yumi
     {
     public:
         
-        SetUniformCommand(const Shared<Shader>& shader, const char* uniformName)
-            : RenderCommand()
+        SetUniformCommand(const Shared<RendererAPI>& api, const Shared<Shader>& shader, const char* uniformName)
+            : RenderCommand(api)
             , m_Shader(shader)
             , m_UniformName(uniformName)
         {}
@@ -150,8 +150,8 @@ namespace Yumi
     {
     public:
         
-        SetUniformMat4Command(const Shared<Shader>& shader, const char* uniformName, const Matrix4& mat)
-            : SetUniformCommand(shader, uniformName)
+        SetUniformMat4Command(const Shared<RendererAPI>& api, const Shared<Shader>& shader, const char* uniformName, const Matrix4& mat)
+            : SetUniformCommand(api, shader, uniformName)
             , m_Mat(mat)
         {}
 
@@ -171,8 +171,8 @@ namespace Yumi
     {
     public:
         
-        SetUniformVec4Command(const Shared<Shader>& shader, const char* uniformName, const Vector4& vec)
-            : SetUniformCommand(shader, uniformName)
+        SetUniformVec4Command(const Shared<RendererAPI>& api, const Shared<Shader>& shader, const char* uniformName, const Vector4& vec)
+            : SetUniformCommand(api, shader, uniformName)
             , m_Vec4(vec)
         {}
 
@@ -192,8 +192,8 @@ namespace Yumi
     {
     public:
         
-        SetUniformIntCommand(const Shared<Shader>& shader, const char* uniformName, const int num)
-            : SetUniformCommand(shader, uniformName)
+        SetUniformIntCommand(const Shared<RendererAPI>& api, const Shared<Shader>& shader, const char* uniformName, const int num)
+            : SetUniformCommand(api, shader, uniformName)
             , m_Num(num)
         {}
 
@@ -212,8 +212,8 @@ namespace Yumi
     class DrawElementsCommand : public RenderCommand
     {
     public:
-        DrawElementsCommand(const Shared<VertexArray>& vertexArray, const uint32_t elementCount)
-            : RenderCommand()
+        DrawElementsCommand(const Shared<RendererAPI>& api, const Shared<VertexArray>& vertexArray, const uint32_t elementCount)
+            : RenderCommand(api)
             , m_VertexArray(vertexArray)
             , m_ElementCount(elementCount)
         {}

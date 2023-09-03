@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "GraphicsAPI.h"
 
 namespace Yumi
 {
@@ -23,31 +24,22 @@ namespace Yumi
     class Texture2D
     {
     public:
-        Texture2D(const String& name, const String& path, const Id& id);
+        static Shared<Texture2D> Create(GraphicsAPI api, const String& name, const String& path, const Id& id = Id());
 
-        bool Load();
-        void Initialize();
-        void UploadToGPU();
-        bool Unload();
-        
-        void Configure(const Texture2DSettings& settings) { m_Settings = settings; }
-        void SetData(const void* data, uint32_t size);
-        
-        uint32_t GetWidth() const { return m_Width; }
-        uint32_t GetHeight() const { return m_Height; }
-        uint32_t GetTextureID() const { return m_TextureID; }
-        
-        void Bind(uint32_t slot = 0) const;
+        virtual ~Texture2D() = 0;
 
-    private:
-        Texture2DSettings m_Settings;
-        uint32_t m_TextureID{0};
-        uint32_t m_Width{0};
-        uint32_t m_Height{0};
-        uint32_t m_Channels{0};
-        InternalFormat m_InternalFormat{InternalFormat::None};
-        DataFormat m_DataFormat{DataFormat::None};
-        unsigned char* m_Data{nullptr};
-        bool m_bUploaded{false};
+        virtual bool Load() = 0;
+        virtual void Initialize() = 0;
+        virtual void UploadToGPU() = 0;
+        virtual bool Unload() = 0;
+        
+        virtual void Configure(const Texture2DSettings& settings) = 0;
+        virtual void SetData(const void* data, uint32_t size) = 0;
+        
+        virtual uint32_t GetWidth() const = 0;
+        virtual uint32_t GetHeight() const = 0;
+        virtual uint32_t GetTextureID() const = 0;
+        
+        virtual void Bind(uint32_t slot = 0) const = 0;
     };
 }

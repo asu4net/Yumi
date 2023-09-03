@@ -1,35 +1,31 @@
 ﻿#pragma once
+#include "GraphicsAPI.h"
 
 namespace Yumi
 {
     class Shader
     {
     public:
-        Shader() = default;
-        Shader(const String& name, const String& path, const Id& id);
-        
-        bool Load();
-        void Initialize();
-        bool Unload();
-        
-        bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource);
-        bool Initialized() const { return m_bCompiled; }
+        static Shared<Shader> Create(GraphicsAPI api);
 
-        void Compile();
-        void Compile(const String& vertexSource, const String& fragmentSource);
+        virtual ~Shader() = 0;
+
+        virtual bool Load() = 0;
+        virtual void Initialize() = 0;
+        virtual bool Unload() = 0;
         
-        void SetUniformMat4(const char* uniformName, const Matrix4& mat) const;
-        void SetUniformVec4(const char* uniformName, const Vector4& vec) const;
-        void SetUniformInt(const char* uniformName, int num);
-        void SetUniformIntArray(const char* uniformName, const int32_t* array, int32_t size);
+        virtual bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource) = 0;
+        virtual bool Initialized() const = 0;
+
+        virtual void Compile() = 0;
+        virtual void Compile(const String& vertexSource, const String& fragmentSource) = 0;
         
-        void Bind() const;
-        void Unbind() const;
+        virtual void SetUniformMat4(const char* uniformName, const Matrix4& mat) const = 0;
+        virtual void SetUniformVec4(const char* uniformName, const Vector4& vec) const = 0;
+        virtual void SetUniformInt(const char* uniformName, int num) = 0;
+        virtual void SetUniformIntArray(const char* uniformName, const int32_t* array, int32_t size) = 0;
         
-    private:
-        uint32_t m_ShaderId{0};
-        bool m_bCompiled{false};
-        String m_VertexSource;
-        String m_FragmentSource;        
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;      
     };
 }
