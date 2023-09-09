@@ -114,6 +114,7 @@ namespace Yumi
 #include "Core/Singleton.h"
 #include "Core/Delegate/Delegate.h"
 #include "Core/Delegate/MulticastDelegate.h"
+#include "Core/Globals.h"
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"

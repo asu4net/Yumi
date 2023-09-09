@@ -7,12 +7,16 @@ namespace Yumi
         YSINGLETON_FRIEND(Engine)
     
     public:
-        void Start();
+        void StartMainLoop();
 
     private:
         Engine();
         ~Engine();
 
         Unique<class Window> m_Window;
+        
+        class Time& m_Time;
+        class Input& m_Input;
+        class AssetManager& m_AssetManager;
     };
 }

@@ -5,14 +5,15 @@
 
 namespace Yumi
 {
-    void Time::Start()
+    Time::Time()
+        : s_LastTime(glfwGetTime())
     {
-        s_LastTime = glfwGetTime();
-        /*s_LastTime = GetTime();
 
-        LARGE_INTEGER frec;
-        QueryPerformanceFrequency(&frec);
-        s_Frec = frec;*/
+    }
+
+    Time::~Time()
+    {
+
     }
 
     void Time::CalculateTimeStep()

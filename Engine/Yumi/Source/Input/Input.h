@@ -2,22 +2,22 @@
 
 namespace Yumi
 {
-    class Window;
-
-    class Input
+    class Input : public Singleton<Input>
     {
+        YSINGLETON_FRIEND(Input)
     public:
-        static bool IsKeyPressed(int key);
+        bool IsKeyPressed(int key);
 
-        static void SetConsumed(bool bConsumedByEditor);
-        static bool IsConsumed();
+        void SetConsumed(bool bConsumedByEditor);
+        bool IsConsumed();
 
-        static void Start(const Unique<Window>& window);
-        static bool IsMouseButtonPressed(int button);
-        static Vector2 MousePosition();
+        bool IsMouseButtonPressed(int button);
+        Vector2 MousePosition();
 
     private:
-        static bool m_bConsumedByEditor;
-        static bool m_bInitialized;
+        Input(const Unique<class Window>& window);
+        ~Input();
+
+        bool m_bConsumedByEditor = false;
     };
 }

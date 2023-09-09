@@ -19,10 +19,11 @@ namespace Yumi
             return *m_Instance;
         }
 
-        static T& CreateInstance()
+        template<typename... Args>
+        static T& CreateInstance(Args&&... args)
         {
             YCHECK(!m_Instance, "Instance already exists!");
-            m_Instance = new T();
+            m_Instance = new T(std::forward<Args>(args)...);
             return GetInstance();
         }
 

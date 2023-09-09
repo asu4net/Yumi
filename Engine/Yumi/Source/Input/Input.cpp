@@ -5,19 +5,17 @@
 namespace Yumi
 {
     static GLFWwindow* g_WindowHandler = nullptr;
-    
-    bool Input::m_bInitialized = false;
-    bool Input::m_bConsumedByEditor = false;
 
-    void Input::Start(const Unique<Window>& window)
+    Input::Input(const Unique<Window>& window)
     {
         g_WindowHandler = static_cast<GLFWwindow*>(window->GetHandler());
-        m_bInitialized = true;
     }
+
+    Input::~Input() = default;
 
     bool Input::IsKeyPressed(const int key)
     {
-        if (!m_bInitialized || m_bConsumedByEditor) return false;
+        if (m_bConsumedByEditor) return false;
         const auto state = glfwGetKey(g_WindowHandler, key);
         return state == GLFW_PRESS;
     }
@@ -34,15 +32,13 @@ namespace Yumi
 
     bool Input::IsMouseButtonPressed(const int button)
     {
-        if (!m_bInitialized || m_bConsumedByEditor) return false;
+        if (m_bConsumedByEditor) return false;
         const auto state = glfwGetMouseButton(g_WindowHandler, button);
         return state == GLFW_PRESS;
     }
 
     Vector2 Input::MousePosition()
     {
-        if (!m_bInitialized) return {};
-
         double xPos, yPos;
         glfwGetCursorPos(g_WindowHandler, &xPos, &yPos);
         return { static_cast<float>(xPos), static_cast<float>(yPos) };

@@ -4,6 +4,11 @@
 #include "Core/Engine.h"
 #include "Core/Time.h"
 
+// Asset
+#include "Asset/Asset.h"
+#include "Asset/AssetManager.h"
+#include "Asset/AssetLink.h"
+
 // Window
 #include "Window/Window.h"
 
