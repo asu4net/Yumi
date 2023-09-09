@@ -28,10 +28,22 @@ namespace Yumi
         void Bind() const override;
         void Unbind() const override;
 
+        String GetTypeName() const override { return m_TypeName; }
+        String GetName() const override { return m_Name; }
+        String GetPath() const override { return m_Path; }
+        String GetAbsolutePath() const override { return m_AbsolutePath; }
+        Id GetId() const override { return m_Id; }
+
     private:
         uint32_t m_ShaderId{ 0 };
         bool m_bCompiled{ false };
         String m_VertexSource;
         String m_FragmentSource;
+
+        String m_Name;
+        String m_Path;
+        String m_AbsolutePath;
+        String m_TypeName;
+        Id m_Id{ 0 };
     };
 }

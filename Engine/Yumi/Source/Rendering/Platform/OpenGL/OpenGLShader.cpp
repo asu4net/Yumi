@@ -4,12 +4,16 @@
 namespace Yumi
 {
     OpenGLShader::OpenGLShader(const String& name, const String& path, const Id& id)
+        : m_Name(name)
+        , m_Path(path.empty() ? "None" : path)
+        , m_AbsolutePath(path.empty() ? "None" : GetWorkingDirectory() + "\\" + path)
+        , m_Id(id)
     {
     }
 
     bool OpenGLShader::Load()
     {
-        const String absolutePath = "";
+        const String absolutePath = GetWorkingDirectory();
         if (absolutePath == "None")
             return true;
 

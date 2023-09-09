@@ -90,6 +90,10 @@ namespace Yumi
     }
 
     OpenGLTexture2D::OpenGLTexture2D(const String& name, const String& path, const Id& id)
+        : m_Name(name)
+        , m_Path(path.empty() ? "None" : path)
+        , m_AbsolutePath(path.empty() ? "None" : GetWorkingDirectory() + "\\" + path)
+        , m_Id(id)
     {
     }
 
@@ -104,12 +108,12 @@ namespace Yumi
 
     bool OpenGLTexture2D::Load()
     {
-        const String absolutePath = "";
+        const String absolutePath = GetAbsolutePath();
         if (absolutePath == "None") return true;
 
         int width, height, channels;
         stbi_set_flip_vertically_on_load(1);
-        m_Data = stbi_load("", &width, &height, &channels, 0);
+        m_Data = stbi_load(absolutePath.c_str(), &width, &height, &channels, 0);
 
         if (!m_Data)
             return false;

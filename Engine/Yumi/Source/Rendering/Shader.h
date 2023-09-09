@@ -1,19 +1,16 @@
 ﻿#pragma once
 #include "GraphicsAPI.h"
+#include "Asset/Asset.h"
 
 namespace Yumi
 {
-    class Shader
+    class Shader : public Asset
     {
     public:
         static Shared<Shader> Create(GraphicsAPI api);
 
         virtual ~Shader() = 0;
 
-        virtual bool Load() = 0;
-        virtual void Initialize() = 0;
-        virtual bool Unload() = 0;
-        
         virtual bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource) = 0;
         virtual bool Initialized() const = 0;
 

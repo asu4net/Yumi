@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "GraphicsAPI.h"
+#include "Asset/Asset.h"
 
 namespace Yumi
 {
@@ -21,17 +22,14 @@ namespace Yumi
         WrapMode WrapModeV{WrapMode::Repeat};
     };
     
-    class Texture2D
+    class Texture2D : public Asset
     {
     public:
         static Shared<Texture2D> Create(GraphicsAPI api, const String& name, const String& path, const Id& id = Id());
 
         virtual ~Texture2D() = 0;
 
-        virtual bool Load() = 0;
-        virtual void Initialize() = 0;
         virtual void UploadToGPU() = 0;
-        virtual bool Unload() = 0;
         
         virtual void Configure(const Texture2DSettings& settings) = 0;
         virtual void SetData(const void* data, uint32_t size) = 0;
