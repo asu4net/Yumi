@@ -6,7 +6,7 @@ namespace Yumi
 
     class File
     {
-        static void Start(const Unique<Window>& window);
+        static void Start(const UniquePtr<Window>& window);
 
         String OpenFile(const String& filter);
         String SaveFile(const String& filter);

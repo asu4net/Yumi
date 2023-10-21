@@ -15,15 +15,15 @@ namespace Yumi
         void Bind() const override;
         void Unbind() const override;
         
-        void AddVertexBuffer(const Shared<VertexBuffer>& vertexBuffer) override;
-        void SetIndexBuffer(const Shared<IndexBuffer>& indexBuffer) override;
+        void AddVertexBuffer(const SharedPtr<VertexBuffer>& vertexBuffer) override;
+        void SetIndexBuffer(const SharedPtr<IndexBuffer>& indexBuffer) override;
 
-        const DynamicArray<Shared<VertexBuffer>>& GetVertexBuffers() const override { return m_VertexBuffers; }
-        const Shared<IndexBuffer>& GetIndexBuffer() const override { return m_IndexBuffer; }
+        const DynamicArray<SharedPtr<VertexBuffer>>& GetVertexBuffers() const override { return m_VertexBuffers; }
+        const SharedPtr<IndexBuffer>& GetIndexBuffer() const override { return m_IndexBuffer; }
         
     private:
         uint32_t m_VertexArrayId;
-        DynamicArray<Shared<VertexBuffer>> m_VertexBuffers;
-        Shared<IndexBuffer> m_IndexBuffer;
+        DynamicArray<SharedPtr<VertexBuffer>> m_VertexBuffers;
+        SharedPtr<IndexBuffer> m_IndexBuffer;
     };
 }

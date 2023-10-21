@@ -3,12 +3,12 @@
 
 namespace Yumi
 {
-    Shared<Texture2D> Texture2D::Create(GraphicsAPI api, const String& name, const String& path, const Id& id)
+    SharedPtr<Texture2D> Texture2D::Create(GraphicsAPI api)
     {
         switch (api)
         {
         case GraphicsAPI::OpenGL:
-            return CreateShared<OpenGLTexture2D>(name, path, id);
+            return CreateShared<OpenGLTexture2D>();
         case GraphicsAPI::None:
         default:
             YCHECK(false, "Invalid API");

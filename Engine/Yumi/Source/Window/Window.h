@@ -40,6 +40,6 @@ namespace Yumi
 
         virtual void Update() = 0;
 
-        static Unique<Window> Create(const Configuration& config = {});
+        static UniquePtr<Window> Create(const Configuration& config = {});
     };
 }

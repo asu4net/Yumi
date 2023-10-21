@@ -3,7 +3,7 @@
 
 namespace Yumi
 {    
-    Shared<Shader> Shader::Create(GraphicsAPI api)
+    SharedPtr<Shader> Shader::Create(GraphicsAPI api)
     {
         switch (api)
         {

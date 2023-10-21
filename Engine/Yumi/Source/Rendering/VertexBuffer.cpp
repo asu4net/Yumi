@@ -3,7 +3,7 @@
 
 namespace Yumi
 {
-    Shared<VertexBuffer> VertexBuffer::Create(GraphicsAPI api, const void* vertices, const uint32_t size)
+    SharedPtr<VertexBuffer> VertexBuffer::Create(GraphicsAPI api, const void* vertices, const uint32_t size)
     {
         switch (api)
         {
@@ -16,7 +16,7 @@ namespace Yumi
         }
     }
 
-    Shared<VertexBuffer> VertexBuffer::Create(GraphicsAPI api, const uint32_t size)
+    SharedPtr<VertexBuffer> VertexBuffer::Create(GraphicsAPI api, const uint32_t size)
     {
         return CreateShared<OpenGLVertexBuffer>(size);
     }

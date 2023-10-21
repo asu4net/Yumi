@@ -6,7 +6,7 @@ namespace Yumi
     class IndexBuffer
     {
     public:
-        static Shared<IndexBuffer> Create(GraphicsAPI api, const uint32_t* indices, uint32_t count);
+        static SharedPtr<IndexBuffer> Create(GraphicsAPI api, const uint32_t* indices, uint32_t count);
 
         virtual ~IndexBuffer() = 0;
         

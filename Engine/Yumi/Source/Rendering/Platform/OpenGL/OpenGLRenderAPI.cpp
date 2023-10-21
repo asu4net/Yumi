@@ -43,7 +43,7 @@ namespace Yumi
         }
     }
 
-    void OpenGLRenderAPI::DrawElements(const Shared<VertexArray>& vertexArray, const uint32_t elementCount)
+    void OpenGLRenderAPI::DrawElements(const SharedPtr<VertexArray>& vertexArray, const uint32_t elementCount)
     {
         vertexArray->Bind();
         glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, nullptr);

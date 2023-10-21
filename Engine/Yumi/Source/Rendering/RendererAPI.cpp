@@ -4,7 +4,7 @@
 
 namespace Yumi
 {
-    Shared<RendererAPI> RendererAPI::Create(GraphicsAPI api)
+    SharedPtr<RendererAPI> RendererAPI::Create(GraphicsAPI api)
     {
         switch (api)
         {

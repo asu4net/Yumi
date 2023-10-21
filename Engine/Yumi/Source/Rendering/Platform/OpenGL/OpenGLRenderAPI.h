@@ -16,7 +16,7 @@ namespace Yumi
         void Clear() override;
         void SetBlendingEnabled(bool bEnabled) override;
         void SetBlendingMode(const BlendingMode blendingMode) override;
-        void DrawElements(const Shared<VertexArray>& vertexArray, uint32_t elementCount) override;
+        void DrawElements(const SharedPtr<VertexArray>& vertexArray, uint32_t elementCount) override;
         void SetDepthTestEnabled(bool bEnabled) override;
     };
 }

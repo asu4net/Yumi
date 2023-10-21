@@ -6,7 +6,7 @@ namespace Yumi
 {
     static GLFWwindow* g_WindowHandler = nullptr;
 
-    Input::Input(const Unique<Window>& window)
+    Input::Input(const UniquePtr<Window>& window)
     {
         g_WindowHandler = static_cast<GLFWwindow*>(window->GetHandler());
     }

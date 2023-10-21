@@ -9,17 +9,17 @@ namespace Yumi
     class VertexArray
     {
     public:
-        static Shared<VertexArray> Create(GraphicsAPI api);
+        static SharedPtr<VertexArray> Create(GraphicsAPI api);
 
         virtual ~VertexArray() = 0;
 
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
 
-        virtual void AddVertexBuffer(const Shared<VertexBuffer>& vertexBuffer) = 0;
-        virtual void SetIndexBuffer(const Shared<IndexBuffer>& indexBuffer) = 0;
+        virtual void AddVertexBuffer(const SharedPtr<VertexBuffer>& vertexBuffer) = 0;
+        virtual void SetIndexBuffer(const SharedPtr<IndexBuffer>& indexBuffer) = 0;
 
-        virtual const DynamicArray<Shared<VertexBuffer>>& GetVertexBuffers() const = 0;
-        virtual const Shared<IndexBuffer>& GetIndexBuffer() const = 0;
+        virtual const DynamicArray<SharedPtr<VertexBuffer>>& GetVertexBuffers() const = 0;
+        virtual const SharedPtr<IndexBuffer>& GetIndexBuffer() const = 0;
     };
 }

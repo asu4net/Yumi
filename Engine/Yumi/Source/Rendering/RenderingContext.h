@@ -6,7 +6,7 @@ namespace Yumi
     class RenderingContext
     {
     public:
-        static Unique<RenderingContext> Create(GraphicsAPI api, void* windowHandler);
+        static UniquePtr<RenderingContext> Create(GraphicsAPI api, void* windowHandler);
         
         virtual void SwapBuffers() const = 0;
     };

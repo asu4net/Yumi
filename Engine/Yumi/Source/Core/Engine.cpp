@@ -11,7 +11,7 @@ namespace Yumi
         : m_Window(Window::Create())
         , m_Time(Time::CreateInstance())
         , m_Input(Input::CreateInstance(m_Window))
-        , m_AssetManager(AssetManager::CreateInstance(GetWorkingDirectory()))
+        , m_AssetManager(AssetManager::CreateInstance(GetWorkingDirectory(), GraphicsAPI::OpenGL))
     {
         YLOG_TRACE("Yumi Engine created!\n");
     }

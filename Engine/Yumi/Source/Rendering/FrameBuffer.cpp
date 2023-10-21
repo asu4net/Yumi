@@ -3,7 +3,7 @@
 
 namespace Yumi
 {
-    Shared<FrameBuffer> FrameBuffer::Create(GraphicsAPI api, const Configuration& configuration)
+    SharedPtr<FrameBuffer> FrameBuffer::Create(GraphicsAPI api, const Configuration& configuration)
     {
         switch (api)
         {

@@ -3,7 +3,7 @@
 
 namespace Yumi
 {
-    Unique<RenderingContext> RenderingContext::Create(GraphicsAPI api, void* windowHandler)
+    UniquePtr<RenderingContext> RenderingContext::Create(GraphicsAPI api, void* windowHandler)
     {
         switch (api)
         {

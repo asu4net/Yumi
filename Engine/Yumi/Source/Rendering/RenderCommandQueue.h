@@ -12,13 +12,13 @@ namespace Yumi
         template<typename T, typename ...TArgs>
         void Submit(TArgs&& ...args)
         {
-            Shared<T> command = std::make_shared<T>(std::forward<TArgs>(args)...);
+            SharedPtr<T> command = std::make_shared<T>(std::forward<TArgs>(args)...);
             m_CommandQueue.push_back(command);
         }
 
         void ExecuteNext();
         
     private:
-        DynamicArray<Shared<RenderCommand>> m_CommandQueue; 
+        DynamicArray<SharedPtr<RenderCommand>> m_CommandQueue; 
     };
 }

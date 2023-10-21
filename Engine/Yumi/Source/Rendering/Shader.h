@@ -7,7 +7,7 @@ namespace Yumi
     class Shader : public Asset
     {
     public:
-        static Shared<Shader> Create(GraphicsAPI api);
+        static SharedPtr<Shader> Create(GraphicsAPI api);
 
         virtual ~Shader() = 0;
 

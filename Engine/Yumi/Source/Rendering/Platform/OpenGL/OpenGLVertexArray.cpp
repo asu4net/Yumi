@@ -46,7 +46,7 @@ namespace Yumi
         glBindVertexArray(0);
     }
 
-    void OpenGLVertexArray::AddVertexBuffer(const Shared<VertexBuffer>& vertexBuffer)
+    void OpenGLVertexArray::AddVertexBuffer(const SharedPtr<VertexBuffer>& vertexBuffer)
     {
         YCHECK(!vertexBuffer->GetLayout().GetElements().empty(), "Vertex buffer has no layout!");
         
@@ -70,7 +70,7 @@ namespace Yumi
         m_VertexBuffers.push_back(vertexBuffer);
     }
     
-    void OpenGLVertexArray::SetIndexBuffer(const Shared<IndexBuffer>& indexBuffer)
+    void OpenGLVertexArray::SetIndexBuffer(const SharedPtr<IndexBuffer>& indexBuffer)
     {
         glBindVertexArray(m_VertexArrayId);
         indexBuffer->Bind();

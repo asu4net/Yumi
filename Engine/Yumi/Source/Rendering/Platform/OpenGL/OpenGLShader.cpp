@@ -3,13 +3,7 @@
 
 namespace Yumi
 {
-    OpenGLShader::OpenGLShader(const String& name, const String& path, const Id& id)
-        : m_Name(name)
-        , m_Path(path.empty() ? "None" : path)
-        , m_AbsolutePath(path.empty() ? "None" : GetWorkingDirectory() + "\\" + path)
-        , m_Id(id)
-    {
-    }
+    OpenGLShader::OpenGLShader() = default;
 
     bool OpenGLShader::Load()
     {
@@ -17,20 +11,17 @@ namespace Yumi
         if (absolutePath == "None")
             return true;
 
-        return ReadFromFile(absolutePath, m_VertexSource, m_FragmentSource);
-    }
+        if (!ReadFromFile(absolutePath, m_VertexSource, m_FragmentSource))
+            return false;
 
-    void OpenGLShader::Initialize()
-    {
         Compile();
     }
 
-    bool OpenGLShader::Unload()
+    void OpenGLShader::Unload()
     {
         glDeleteProgram(m_ShaderId);
-        return true;
     }
-
+    
     void OpenGLShader::Compile()
     {
         Compile(m_VertexSource, m_FragmentSource);

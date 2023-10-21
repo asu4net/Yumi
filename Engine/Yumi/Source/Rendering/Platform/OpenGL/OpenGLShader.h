@@ -6,13 +6,11 @@ namespace Yumi
     class OpenGLShader : public Shader
     {
     public:
-        OpenGLShader() = default;
-        OpenGLShader(const String& name, const String& path, const Id& id);
+        OpenGLShader();
         ~OpenGLShader() override = default;
 
         bool Load() override;
-        void Initialize() override;
-        bool Unload() override;
+        void Unload() override;
 
         bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource) override;
         bool Initialized() const override { return m_bCompiled; }
@@ -28,22 +26,15 @@ namespace Yumi
         void Bind() const override;
         void Unbind() const override;
 
-        String GetTypeName() const override { return m_TypeName; }
-        String GetName() const override { return m_Name; }
-        String GetPath() const override { return m_Path; }
-        String GetAbsolutePath() const override { return m_AbsolutePath; }
-        Id GetId() const override { return m_Id; }
+        AssetData GetAssetData() const override { return m_AssetData; }
 
     private:
         uint32_t m_ShaderId{ 0 };
         bool m_bCompiled{ false };
         String m_VertexSource;
         String m_FragmentSource;
-
-        String m_Name;
-        String m_Path;
-        String m_AbsolutePath;
-        String m_TypeName;
-        Id m_Id{ 0 };
+        
+        AssetData m_AssetData;
+        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
     };
 }

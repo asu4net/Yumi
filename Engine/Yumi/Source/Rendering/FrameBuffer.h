@@ -11,7 +11,7 @@ namespace Yumi
             uint32_t Width{1280}, Height{720};
         };
         
-        static Shared<FrameBuffer> Create(GraphicsAPI api, const Configuration& configuration);
+        static SharedPtr<FrameBuffer> Create(GraphicsAPI api, const Configuration& configuration);
         
         virtual ~FrameBuffer() = 0;
 

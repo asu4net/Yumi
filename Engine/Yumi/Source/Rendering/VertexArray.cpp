@@ -3,7 +3,7 @@
 
 namespace Yumi
 {
-    Shared<VertexArray> VertexArray::Create(GraphicsAPI api)
+    SharedPtr<VertexArray> VertexArray::Create(GraphicsAPI api)
     {
         switch (api)
         {

@@ -15,7 +15,7 @@ namespace Yumi
         Vector2 MousePosition();
 
     private:
-        Input(const Unique<class Window>& window);
+        Input(const UniquePtr<class Window>& window);
         ~Input();
 
         bool m_bConsumedByEditor = false;

@@ -7,8 +7,8 @@ namespace Yumi
     class VertexBuffer
     {
     public:
-        static Shared<VertexBuffer> Create(GraphicsAPI api, const void* vertices, uint32_t size);
-        static Shared<VertexBuffer> Create(GraphicsAPI api, uint32_t size);
+        static SharedPtr<VertexBuffer> Create(GraphicsAPI api, const void* vertices, uint32_t size);
+        static SharedPtr<VertexBuffer> Create(GraphicsAPI api, uint32_t size);
 
         virtual ~VertexBuffer() = 0;
 

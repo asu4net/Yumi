@@ -13,7 +13,7 @@ namespace Yumi
         Engine();
         ~Engine();
 
-        Unique<class Window> m_Window;
+        UniquePtr<class Window> m_Window;
         
         class Time& m_Time;
         class Input& m_Input;

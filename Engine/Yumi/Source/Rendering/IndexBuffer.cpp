@@ -3,7 +3,7 @@
 
 namespace Yumi
 {
-    Shared<IndexBuffer> IndexBuffer::Create(GraphicsAPI api, const uint32_t* indices, const uint32_t count)
+    SharedPtr<IndexBuffer> IndexBuffer::Create(GraphicsAPI api, const uint32_t* indices, const uint32_t count)
     {
         switch (api)
         {

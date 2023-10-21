@@ -89,13 +89,7 @@ namespace Yumi
         return DataFormat::None;
     }
 
-    OpenGLTexture2D::OpenGLTexture2D(const String& name, const String& path, const Id& id)
-        : m_Name(name)
-        , m_Path(path.empty() ? "None" : path)
-        , m_AbsolutePath(path.empty() ? "None" : GetWorkingDirectory() + "\\" + path)
-        , m_Id(id)
-    {
-    }
+    OpenGLTexture2D::OpenGLTexture2D() = default;
 
     void OpenGLTexture2D::SetData(const void* data, const uint32_t size)
     {
@@ -108,7 +102,7 @@ namespace Yumi
 
     bool OpenGLTexture2D::Load()
     {
-        const String absolutePath = GetAbsolutePath();
+        const String absolutePath = m_AssetData.AbsolutePath;
         if (absolutePath == "None") return true;
 
         int width, height, channels;
@@ -122,12 +116,9 @@ namespace Yumi
         m_Height = height;
         m_Channels = channels;
 
-        return true;
-    }
-
-    void OpenGLTexture2D::Initialize()
-    {
         UploadToGPU();
+
+        return true;
     }
 
     void OpenGLTexture2D::UploadToGPU()
@@ -186,10 +177,9 @@ namespace Yumi
         m_bUploaded = true;
     }
 
-    bool OpenGLTexture2D::Unload()
+    void OpenGLTexture2D::Unload()
     {
         glDeleteTextures(1, &m_TextureID);
-        return true;
     }
 
     void OpenGLTexture2D::Bind(const uint32_t slot) const

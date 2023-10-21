@@ -44,7 +44,7 @@ namespace Yumi
         Configuration m_Config;
         GLFWwindow* m_WindowHandler;
         WindowEvents m_Events;
-        Unique<RenderingContext> m_RenderingContext;
+        UniquePtr<RenderingContext> m_RenderingContext;
         bool m_IsOpened;
     };
 }

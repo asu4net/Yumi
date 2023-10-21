@@ -25,7 +25,7 @@ namespace Yumi
     class Texture2D : public Asset
     {
     public:
-        static Shared<Texture2D> Create(GraphicsAPI api, const String& name, const String& path, const Id& id = Id());
+        static SharedPtr<Texture2D> Create(GraphicsAPI api);
 
         virtual ~Texture2D() = 0;
 

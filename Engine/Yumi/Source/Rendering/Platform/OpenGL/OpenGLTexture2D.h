@@ -6,13 +6,12 @@ namespace Yumi
     class OpenGLTexture2D : public Texture2D
     {
     public:
-        OpenGLTexture2D(const String& name, const String& path, const Id& id);
+        OpenGLTexture2D();
         ~OpenGLTexture2D() override = default;
 
         bool Load() override;
-        void Initialize() override;
         void UploadToGPU() override;
-        bool Unload() override;
+        void Unload() override;
 
         void Configure(const Texture2DSettings& settings) override { m_Settings = settings; }
         void SetData(const void* data, uint32_t size) override;
@@ -23,11 +22,7 @@ namespace Yumi
 
         void Bind(uint32_t slot = 0) const override;
 
-        String GetTypeName() const override { return m_TypeName; }
-        String GetName() const override { return m_Name; }
-        String GetPath() const override { return m_Path; }
-        String GetAbsolutePath() const override { return m_AbsolutePath; }
-        Id GetId() const override { return m_Id; }
+        AssetData GetAssetData() const override { return m_AssetData; }
 
     private:
         Texture2DSettings m_Settings;
@@ -40,10 +35,7 @@ namespace Yumi
         unsigned char* m_Data{ nullptr };
         bool m_bUploaded{ false };
 
-        String m_Name;
-        String m_Path;
-        String m_AbsolutePath;
-        String m_TypeName;
-        Id m_Id{ 0 };
+        AssetData m_AssetData;
+        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
     };
 }

@@ -7,7 +7,7 @@
 // Asset
 #include "Asset/Asset.h"
 #include "Asset/AssetManager.h"
-#include "Asset/AssetLink.h"
+#include "Asset/AssetRef.h"
 
 // Window
 #include "Window/Window.h"

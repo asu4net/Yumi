@@ -16,7 +16,7 @@ namespace Yumi
     class RendererAPI
     {
     public:
-        static Shared<RendererAPI> Create(GraphicsAPI api);
+        static SharedPtr<RendererAPI> Create(GraphicsAPI api);
         
         virtual ~RendererAPI() = 0;
         virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
@@ -24,7 +24,7 @@ namespace Yumi
         virtual void Clear() = 0;
         virtual void SetBlendingEnabled(bool bEnabled) = 0;
         virtual void SetBlendingMode(const BlendingMode blendingMode) = 0;
-        virtual void DrawElements(const Shared<VertexArray>& vertexArray, uint32_t elementCount) = 0;
+        virtual void DrawElements(const SharedPtr<VertexArray>& vertexArray, uint32_t elementCount) = 0;
         virtual void SetDepthTestEnabled(bool bEnabled) = 0;
     };
 }

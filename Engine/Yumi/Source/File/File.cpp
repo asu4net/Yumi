@@ -12,7 +12,7 @@ namespace Yumi
 
     bool File::m_bInitialized = false;
 
-    void File::Start(const Unique<Window>& window)
+    void File::Start(const UniquePtr<Window>& window)
     {
         g_WindowHandler = static_cast<GLFWwindow*>(window->GetHandler());
         m_bInitialized = true;
