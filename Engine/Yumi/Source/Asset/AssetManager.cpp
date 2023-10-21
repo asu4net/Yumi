@@ -7,16 +7,20 @@ namespace Yumi
         , m_AssetDirectory(m_WorkingDirectory + "\\" + GetAssetsFolderName())
         , m_GraphicsApi(api)
     {
+        YLOG_TRACE("AssetManager begin create...\n");
         ImportAndLoadAssets();
+        YLOG_TRACE("AssetManager created!\n");
     }
 
     AssetManager::~AssetManager()
     {
         UnloadAssets();
+        YLOG_TRACE("AssetManager destroyed!\n");
     }
 
     void AssetManager::ImportAndLoadAssets()
     {
+        YLOG_TRACE("Loading assets...\n");
         for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(m_AssetDirectory))
         {
             const std::filesystem::path& dirPath = dirEntry.path();
@@ -31,25 +35,25 @@ namespace Yumi
 
             if (dirPath.extension() == ".png" || dirPath.extension() == ".jpg")
             {
-                YCHECK(CreateAsset<Texture2D>(fileName, localPath)->Load(), "Failed loading: %s", fileName.c_str());
-                YLOG_TRACE("Texture2D loaded: %s\n", fileName.c_str());
+                TryLoadAsset(CreateAsset<Texture2D>(fileName, localPath));
             }
             else if (dirPath.extension() == ".glsl")
             {
-                YCHECK(CreateAsset<Shader>(fileName, localPath)->Load(), "Failed loading: %s", fileName.c_str());
-                YLOG_TRACE("Shader loaded: %s\n", fileName.c_str());
+                TryLoadAsset(CreateAsset<Shader>(fileName, localPath));
             }
         }
     }
 
     void AssetManager::UnloadAssets()
     {
+        YLOG_TRACE("Unloading assets...\n");
         for (auto [id, asset] : m_IdAssetMap)
         {
             asset->Unload();
         }
 
         m_IdAssetMap.clear();
+        YLOG_TRACE("Assets unloaded!\n");
     }
 
     void AssetManager::GetAssetDirectoryLocalPath(const String& path, String& localPath)
@@ -57,7 +61,7 @@ namespace Yumi
         DynamicArray<String> splitPath;
         String subString;
         std::stringstream ss(path);
-        bool bProceed{ false };
+        bool bProceed = false;
         while (std::getline(ss, subString, '\\'))
         {
             if (subString.find(GetAssetsFolderName()) != String::npos) 

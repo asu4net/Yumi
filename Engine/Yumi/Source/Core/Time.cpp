@@ -8,12 +8,12 @@ namespace Yumi
     Time::Time()
         : s_LastTime(glfwGetTime())
     {
-
+        YLOG_TRACE("Time created!\n");
     }
 
     Time::~Time()
     {
-
+        YLOG_TRACE("Time destroyed!\n");
     }
 
     void Time::CalculateTimeStep()

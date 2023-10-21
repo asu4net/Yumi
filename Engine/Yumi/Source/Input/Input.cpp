@@ -9,9 +9,13 @@ namespace Yumi
     Input::Input(const UniquePtr<Window>& window)
     {
         g_WindowHandler = static_cast<GLFWwindow*>(window->GetHandler());
+        YLOG_TRACE("Input created!\n");
     }
 
-    Input::~Input() = default;
+    Input::~Input() 
+    {
+        YLOG_TRACE("Input destroyed!\n");
+    };
 
     bool Input::IsKeyPressed(const int key)
     {

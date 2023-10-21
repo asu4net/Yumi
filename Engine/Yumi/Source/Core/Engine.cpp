@@ -18,15 +18,19 @@ namespace Yumi
 
     Engine::~Engine()
     {
-        Time::DestroyInstance();
-        Input::DestroyInstance();
+        YLOG_TRACE("Yumi Engine begin destroy...\n");
         AssetManager::DestroyInstance();
+        Input::DestroyInstance();
+        Time::DestroyInstance();
+        m_Window.reset();
         YLOG_TRACE("Yumi Engine destroyed!\n");
     }
 
     void Engine::StartMainLoop()
     {
-        YLOG_TRACE("Yumi Engine main loop started!\n");
+        YLOG_TRACE("******************************\n");
+        YLOG_TRACE("***** MAIN LOOP STARTED ******\n");
+        YLOG_TRACE("******************************\n");
 
         //TODO: Frame by frame mode
         // MAIN LOOP
@@ -47,5 +51,9 @@ namespace Yumi
             m_Window->SetTitle(windowTitle);
             m_Window->Update();
         }
+
+        YLOG_TRACE("******************************\n");
+        YLOG_TRACE("***** MAIN LOOP FINISHED *****\n");
+        YLOG_TRACE("******************************\n");
     }
 }

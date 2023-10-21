@@ -35,7 +35,7 @@ namespace Yumi
             assetData.Name = name;
             assetData.Path = path.empty() ? emptyPathString : path;
             assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
-            assetData.AssetType = "Unimplemented";
+            assetData.AssetType = "Shader";
             shader->SetAssetData(assetData);
             AssetRef assetRef(shader);
 
@@ -56,7 +56,7 @@ namespace Yumi
             assetData.Name = name;
             assetData.Path = path.empty() ? emptyPathString : path;
             assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
-            assetData.AssetType = "Unimplemented";
+            assetData.AssetType = "Texture2D";
             texture->SetAssetData(assetData);
             AssetRef<Texture2D> assetRef(texture);
 
@@ -69,6 +69,24 @@ namespace Yumi
 
         void ImportAndLoadAssets();
         void UnloadAssets();
+
+        template<typename T>
+        void TryLoadAsset(AssetRef<T> assetRef)
+        {
+            const AssetData assetData = assetRef->GetAssetData();
+            const char* fileName = assetData.Name.c_str();
+            const char* assetType = assetData.AssetType.c_str();
+
+            if (assetRef->Load())
+            {
+                YLOG_TRACE("%s loaded: %s\n", assetType, fileName);
+            }
+            else
+            {
+                YLOG_WARN("Failed to load %s: %s", assetType, fileName);
+                m_IdAssetMap.erase(assetData.AssetId);
+            }
+        }
 
         static void GetAssetDirectoryLocalPath(const String& filePath, String& localPath);
 
