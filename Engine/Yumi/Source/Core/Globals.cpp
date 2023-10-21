@@ -53,4 +53,10 @@ namespace Yumi
         }
         return workingDirectory;
     }
+
+    Yumi::String GetAssetsFolderName()
+    {
+        static const String s_AssetFolderName = "Assets";
+        return s_AssetFolderName;
+    }
 }

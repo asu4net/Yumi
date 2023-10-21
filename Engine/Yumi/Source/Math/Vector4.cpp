@@ -19,7 +19,7 @@ namespace Yumi
     Vector4::Vector4(const Vector3& other, float w)
         : x(other.x)
         , y(other.y)
-        , z(z)
+        , z(other.z)
         , w(w)
     {}
 

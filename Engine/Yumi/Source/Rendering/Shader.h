@@ -9,8 +9,6 @@ namespace Yumi
     public:
         static SharedPtr<Shader> Create(GraphicsAPI api);
 
-        virtual ~Shader() = 0;
-
         virtual bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource) = 0;
         virtual bool Initialized() const = 0;
 

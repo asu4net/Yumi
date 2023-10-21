@@ -25,7 +25,7 @@ namespace Yumi
         AssetRef<Shader> CreateAsset(const String& name, const String& path, const Id assetId)
         {
             YCHECK(!name.empty(), "Asset must have a name!");
-            YCHECK(m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
+            YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
 
             SharedPtr<Shader> shader = Shader::Create(m_GraphicsApi);
             m_IdAssetMap[assetId] = shader;
@@ -46,7 +46,7 @@ namespace Yumi
         AssetRef<Texture2D> CreateAsset(const String& name, const String& path, const Id assetId)
         {
             YCHECK(!name.empty(), "Asset must have a name!");
-            YCHECK(m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
+            YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
 
             SharedPtr<Texture2D> texture = Texture2D::Create(m_GraphicsApi);
             m_IdAssetMap[assetId] = texture;
@@ -67,8 +67,14 @@ namespace Yumi
         AssetManager(const String& workingDirectory, GraphicsAPI api);
         ~AssetManager();
 
-        GraphicsAPI m_GraphicsApi;
-        String m_WorkingDirectory;
+        void ImportAndLoadAssets();
+        void UnloadAssets();
+
+        static void GetAssetDirectoryLocalPath(const String& filePath, String& localPath);
+
+        const String m_WorkingDirectory;
+        const String m_AssetDirectory;
+        const GraphicsAPI m_GraphicsApi;
         
         Map<Id, SharedPtr<Asset>> m_IdAssetMap;
     };

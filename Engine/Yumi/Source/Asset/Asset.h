@@ -14,7 +14,7 @@ namespace Yumi
     class Asset
     {
     public:
-        virtual ~Asset() = 0;
+        virtual ~Asset() {};
 
         virtual bool Load() = 0;
         virtual void Unload() = 0;

@@ -7,7 +7,7 @@ namespace Yumi
 
     bool OpenGLShader::Load()
     {
-        const String absolutePath = GetWorkingDirectory();
+        const String absolutePath = GetAssetData().AbsolutePath;
         if (absolutePath == "None")
             return true;
 
@@ -15,6 +15,7 @@ namespace Yumi
             return false;
 
         Compile();
+        return true;
     }
 
     void OpenGLShader::Unload()

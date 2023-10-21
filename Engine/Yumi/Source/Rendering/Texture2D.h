@@ -27,8 +27,6 @@ namespace Yumi
     public:
         static SharedPtr<Texture2D> Create(GraphicsAPI api);
 
-        virtual ~Texture2D() = 0;
-
         virtual void UploadToGPU() = 0;
         
         virtual void Configure(const Texture2DSettings& settings) = 0;

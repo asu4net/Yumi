@@ -12,4 +12,5 @@ namespace Yumi
     class AssetManager& GetAssetManager();
 
     String GetWorkingDirectory();
+    String GetAssetsFolderName();
 }
