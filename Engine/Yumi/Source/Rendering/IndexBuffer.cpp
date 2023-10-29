@@ -8,7 +8,7 @@ namespace Yumi
         switch (api)
         {
         case GraphicsAPI::OpenGL:
-            return CreateShared<OpenGLIndexBuffer>(indices, count);
+            return CreateSharedPtr<OpenGLIndexBuffer>(indices, count);
         case GraphicsAPI::None:
         default:
             YCHECK(false, "Invalid API");

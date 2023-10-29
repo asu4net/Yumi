@@ -5,6 +5,6 @@ namespace Yumi
 {
     UniquePtr<Window> Window::Create(const Configuration& config)
     {
-        return CreateUnique<WindowsWindow>(config);
+        return CreateUniquePtr<WindowsWindow>(config);
     }
 }

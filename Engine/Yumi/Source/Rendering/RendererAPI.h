@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "GraphicsAPI.h"
 
 namespace Yumi
 {
@@ -19,12 +18,13 @@ namespace Yumi
         static SharedPtr<RendererAPI> Create(GraphicsAPI api);
         
         virtual ~RendererAPI() = 0;
-        virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
-        virtual void SetClearColor(const Vector4& clearColor) = 0;
-        virtual void Clear() = 0;
-        virtual void SetBlendingEnabled(bool bEnabled) = 0;
-        virtual void SetBlendingMode(const BlendingMode blendingMode) = 0;
-        virtual void DrawElements(const SharedPtr<VertexArray>& vertexArray, uint32_t elementCount) = 0;
-        virtual void SetDepthTestEnabled(bool bEnabled) = 0;
+        virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) const = 0;
+        virtual void SetClearColor(const Vector4& clearColor) const = 0;
+        virtual void Clear() const = 0;
+        virtual void SetBlendingEnabled(bool bEnabled) const = 0;
+        virtual void SetBlendingMode(const BlendingMode blendingMode) const = 0;
+        virtual void DrawElements(const SharedPtr<VertexArray>& vertexArray, uint32_t elementCount) const = 0;
+        virtual void SetDepthTestEnabled(bool bEnabled) const = 0;
+        virtual GraphicsAPI GetGraphicsAPI() const = 0;
     };
 }

@@ -8,7 +8,7 @@ namespace Yumi
         switch (api)
         {
         case GraphicsAPI::OpenGL:
-            return CreateShared<OpenGLShader>();
+            return CreateSharedPtr<OpenGLShader>();
         case GraphicsAPI::None:
         default:
             YCHECK(false, "Invalid API");

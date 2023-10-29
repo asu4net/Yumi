@@ -8,7 +8,7 @@ namespace Yumi
         switch (api)
         {
         case GraphicsAPI::OpenGL:
-            return CreateShared<OpenGLVertexBuffer>(vertices, size);
+            return CreateSharedPtr<OpenGLVertexBuffer>(vertices, size);
         case GraphicsAPI::None:
         default:
             YCHECK(false, "Invalid API");
@@ -18,6 +18,6 @@ namespace Yumi
 
     SharedPtr<VertexBuffer> VertexBuffer::Create(GraphicsAPI api, const uint32_t size)
     {
-        return CreateShared<OpenGLVertexBuffer>(size);
+        return CreateSharedPtr<OpenGLVertexBuffer>(size);
     }
 }

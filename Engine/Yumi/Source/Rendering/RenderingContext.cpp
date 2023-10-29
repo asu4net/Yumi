@@ -8,7 +8,7 @@ namespace Yumi
         switch (api)
         {
         case GraphicsAPI::OpenGL:
-            return CreateUnique<OpenGLRenderingContext>(windowHandler);
+            return CreateUniquePtr<OpenGLRenderingContext>(windowHandler);
         case GraphicsAPI::None:
         default:
             YCHECK(false, "Invalid API");

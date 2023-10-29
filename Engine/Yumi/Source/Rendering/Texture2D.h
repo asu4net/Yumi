@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "GraphicsAPI.h"
+
 #include "Asset/Asset.h"
 
 namespace Yumi
@@ -13,9 +13,9 @@ namespace Yumi
     
     struct Texture2DSettings
     {
-        bool CreateFromFile{true};
-        uint32_t Width{0};
-        uint32_t Height{0};
+        bool CreateFromFile = true;
+        uint32_t Width = 0;
+        uint32_t Height = 0;
         MagFilter MagFilter{MagFilter::Linear};
         MinFilter MinFilter{MinFilter::Linear};
         WrapMode WrapModeU{WrapMode::Repeat};

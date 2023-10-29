@@ -23,7 +23,7 @@ namespace Yumi
     using UniquePtr = std::unique_ptr<T>;
 
     template<typename T, typename ... Args>
-    constexpr UniquePtr<T> CreateUnique(Args&& ... args)
+    constexpr UniquePtr<T> CreateUniquePtr(Args&& ... args)
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
@@ -32,7 +32,7 @@ namespace Yumi
     using SharedPtr = std::shared_ptr<T>;
 
     template<typename T, typename ... Args>
-    constexpr SharedPtr<T> CreateShared(Args&& ... args)
+    constexpr SharedPtr<T> CreateSharedPtr(Args&& ... args)
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
@@ -119,5 +119,14 @@ namespace Yumi
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 #include "Math/Matrix4.h"
+#include "Math/Color.h"
+
+// Enums
+#include "Rendering/GraphicsAPI.h"
+
+enum class Flip
+{
+    None, X, Y, Both
+};
 
 /// --------------------------

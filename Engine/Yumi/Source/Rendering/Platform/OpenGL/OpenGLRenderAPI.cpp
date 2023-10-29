@@ -4,28 +4,28 @@
 
 namespace Yumi
 {
-    void OpenGLRenderAPI::SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height)
+    void OpenGLRenderAPI::SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height) const
     {
         glViewport(x, y, width, height);
     }
 
-    void OpenGLRenderAPI::SetClearColor(const Vector4& clearColor)
+    void OpenGLRenderAPI::SetClearColor(const Vector4& clearColor) const
     {
         glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
     }
 
-    void OpenGLRenderAPI::Clear()
+    void OpenGLRenderAPI::Clear() const
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void OpenGLRenderAPI::SetBlendingEnabled(const bool bEnabled)
+    void OpenGLRenderAPI::SetBlendingEnabled(const bool bEnabled) const
     {
         if (bEnabled) glEnable(GL_BLEND);
         else glDisable(GL_BLEND);
     }
 
-    void OpenGLRenderAPI::SetBlendingMode(const BlendingMode blendingMode)
+    void OpenGLRenderAPI::SetBlendingMode(const BlendingMode blendingMode) const
     {
         switch (blendingMode) {
         case BlendingMode::Solid:
@@ -43,14 +43,14 @@ namespace Yumi
         }
     }
 
-    void OpenGLRenderAPI::DrawElements(const SharedPtr<VertexArray>& vertexArray, const uint32_t elementCount)
+    void OpenGLRenderAPI::DrawElements(const SharedPtr<VertexArray>& vertexArray, const uint32_t elementCount) const 
     {
         vertexArray->Bind();
         glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, nullptr);
         vertexArray->Unbind();
     }
 
-    void OpenGLRenderAPI::SetDepthTestEnabled(const bool bEnabled)
+    void OpenGLRenderAPI::SetDepthTestEnabled(const bool bEnabled) const 
     {
         if (bEnabled) glEnable(GL_DEPTH_TEST);
         else glDisable(GL_DEPTH_TEST);
