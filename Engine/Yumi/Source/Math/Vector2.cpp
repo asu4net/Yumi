@@ -2,12 +2,12 @@
 
 namespace Yumi
 {
-    const Vector2 Vector2::zero = { 0, 0 };
-    const Vector2 Vector2::one = { 1, 1 };
-    const Vector2 Vector2::right = { 1, 0 };
-    const Vector2 Vector2::left = { -1, 0 };
-    const Vector2 Vector2::up = { 0, 1 };
-    const Vector2 Vector2::down = { 0, -1 };
+    const Vector2 Vector2::Zero = { 0, 0 };
+    const Vector2 Vector2::One = { 1, 1 };
+    const Vector2 Vector2::Right = { 1, 0 };
+    const Vector2 Vector2::Left = { -1, 0 };
+    const Vector2 Vector2::Up = { 0, 1 };
+    const Vector2 Vector2::Down = { 0, -1 };
 
     Vector2::Vector2()
         : x(0)
@@ -52,6 +52,12 @@ namespace Yumi
     Vector2 Vector2::operator/(float _float) const
     {
         return { x / _float, y / _float };
+    }
+
+    void Vector2::operator/=(float num)
+    {
+        x /= num;
+        y /= num;
     }
 
     Vector2 Vector2::Abs() const

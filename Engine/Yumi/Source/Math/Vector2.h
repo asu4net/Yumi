@@ -7,12 +7,12 @@ namespace Yumi
     {
         float x, y;
 
-        static const Vector2 zero;
-        static const Vector2 one;
-        static const Vector2 right;
-        static const Vector2 left;
-        static const Vector2 up;
-        static const Vector2 down;
+        static const Vector2 Zero;
+        static const Vector2 One;
+        static const Vector2 Right;
+        static const Vector2 Left;
+        static const Vector2 Up;
+        static const Vector2 Down;
 
         Vector2();
         Vector2(float x, float y);
@@ -23,6 +23,7 @@ namespace Yumi
         Vector2 operator-(const Vector2& other) const;
         Vector2 operator*(float num) const;
         Vector2 operator/(float num) const;
+        void operator/=(float num);
         Vector2 Abs() const;
         float Magnitude() const;
         Vector2 Normalized() const;

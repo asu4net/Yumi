@@ -114,6 +114,9 @@ namespace Yumi
 
         m_Width = width;
         m_Height = height;
+
+        m_Size = { (float)width, (float)height };
+
         m_Channels = channels;
 
         UploadToGPU();
@@ -159,6 +162,8 @@ namespace Yumi
 
         m_Width = m_Settings.Width;
         m_Height = m_Settings.Height;
+
+        m_Size = { (float)m_Width, (float)m_Height };
 
         constexpr GLenum internalFormat = GL_RGBA8;
         constexpr GLenum dataFormat = GL_RGBA;

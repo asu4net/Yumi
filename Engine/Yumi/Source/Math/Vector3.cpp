@@ -2,14 +2,14 @@
 
 namespace Yumi
 {
-    const Vector3 Vector3::zero = { 0, 0, 0 };
-    const Vector3 Vector3::one = { 1, 1, 1 };
-    const Vector3 Vector3::right = { 1, 0, 0 };
-    const Vector3 Vector3::left = { -1, 0, 0 };
-    const Vector3 Vector3::up = { 0, 1, 0 };
-    const Vector3 Vector3::down = { 0, -1, 0 };
-    const Vector3 Vector3::back = { 0, 0, -1 };
-    const Vector3 Vector3::forward = { 0, 0, 1 };
+    const Vector3 Vector3::Zero = { 0, 0, 0 };
+    const Vector3 Vector3::One = { 1, 1, 1 };
+    const Vector3 Vector3::Right = { 1, 0, 0 };
+    const Vector3 Vector3::Left = { -1, 0, 0 };
+    const Vector3 Vector3::Up = { 0, 1, 0 };
+    const Vector3 Vector3::Down = { 0, -1, 0 };
+    const Vector3 Vector3::Back = { 0, 0, -1 };
+    const Vector3 Vector3::Forward = { 0, 0, 1 };
 
     Vector3::Vector3()
         : x(0)
@@ -27,6 +27,12 @@ namespace Yumi
         : x(other.x)
         , y(other.y)
         , z(z)
+    {}
+
+    Vector3::Vector3(const Vector4& other)
+        : x(other.x)
+        , y(other.y)
+        , z(other.z)
     {}
 
     Vector3 Vector3::operator+(const Vector3& other) const

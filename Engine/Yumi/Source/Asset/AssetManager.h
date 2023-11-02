@@ -4,6 +4,7 @@
 #include "AssetRef.h"
 
 #include "Rendering/Texture2D.h"
+#include "Rendering/SubTexture2D.h"
 #include "Rendering/Shader.h"
 
 namespace Yumi
@@ -59,6 +60,27 @@ namespace Yumi
             assetData.AssetType = "Texture2D";
             texture->SetAssetData(assetData);
             AssetRef<Texture2D> assetRef(texture);
+
+            return assetRef;
+        }
+
+        template<>
+        AssetRef<SubTexture2D> CreateAsset(const String& name, const String& path, const Id assetId)
+        {
+            YCHECK(!name.empty(), "Asset must have a name!");
+            YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
+
+            SharedPtr<SubTexture2D> subTexture = CreateSharedPtr<SubTexture2D>();
+            m_IdAssetMap[assetId] = subTexture;
+
+            AssetData assetData;
+            assetData.AssetId = assetId;
+            assetData.Name = name;
+            assetData.Path = path.empty() ? emptyPathString : path;
+            assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
+            assetData.AssetType = "SubTexture2D";
+            subTexture->SetAssetData(assetData);
+            AssetRef<SubTexture2D> assetRef(subTexture);
 
             return assetRef;
         }

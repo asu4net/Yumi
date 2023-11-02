@@ -19,6 +19,7 @@ namespace Yumi
         uint32_t GetWidth() const override { return m_Width; }
         uint32_t GetHeight() const override { return m_Height; }
         uint32_t GetTextureID() const override { return m_TextureID; }
+        Vector2 GetSize() const override { return m_Size; }
 
         void Bind(uint32_t slot = 0) const override;
 
@@ -29,6 +30,7 @@ namespace Yumi
         uint32_t m_TextureID{ 0 };
         uint32_t m_Width{ 0 };
         uint32_t m_Height{ 0 };
+        Vector2 m_Size;
         uint32_t m_Channels{ 0 };
         InternalFormat m_InternalFormat{ InternalFormat::None };
         DataFormat m_DataFormat{ DataFormat::None };
