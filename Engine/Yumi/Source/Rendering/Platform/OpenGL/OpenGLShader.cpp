@@ -181,13 +181,13 @@ namespace Yumi
     void OpenGLShader::SetUniformMat4(const char* uniformName, const Matrix4& mat) const
     {
         const uint32_t id = glGetUniformLocation(m_ShaderId, uniformName);
-        //glUniformMatrix4fv(id, 1, false, glm::value_ptr(mat));
+        glUniformMatrix4fv(id, 1, false, &mat.m[0][0]);
     }
 
     void OpenGLShader::SetUniformVec4(const char* uniformName, const Vector4& vec) const
     {
         const uint32_t id = glGetUniformLocation(m_ShaderId, uniformName);
-        //glUniform4fv(id, 1, glm::value_ptr(vec));
+        glUniform4fv(id, 1, &vec.x);
     }
 
     void OpenGLShader::SetUniformInt(const char* uniformName, const int num)

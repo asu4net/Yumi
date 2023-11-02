@@ -32,6 +32,8 @@ namespace Yumi
         Vector3 operator/(float num) const;
         void operator/=(float num);
         bool operator<=(const Vector3& other);
+        bool operator==(const Vector3& other) const;
+        bool operator!=(const Vector3& other) const;
         
         Vector3 Abs() const;
         float Magnitude() const;

@@ -9,9 +9,9 @@ namespace Yumi
         glViewport(x, y, width, height);
     }
 
-    void OpenGLRenderAPI::SetClearColor(const Vector4& clearColor) const
+    void OpenGLRenderAPI::SetClearColor(const Color& clearColor) const
     {
-        glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+        glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
     }
 
     void OpenGLRenderAPI::Clear() const

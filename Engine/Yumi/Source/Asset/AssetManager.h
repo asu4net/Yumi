@@ -16,6 +16,18 @@ namespace Yumi
         inline static constexpr char* emptyPathString = "Pathless";
 
         template<typename T>
+        AssetRef<T> GetAssetByName(const String& name)
+        {
+            if (!m_AssetNameIdMap.count(name))
+                return AssetRef<T>();
+            const Id assetId = m_AssetNameIdMap[name];
+            YCHECK(m_IdAssetMap.count(assetId), "Turbo bug");
+            AssetRef<T> assetRef = AssetRef<T>(std::dynamic_pointer_cast<T>(m_IdAssetMap[assetId]));
+            YCHECK(assetRef.IsValid(), "Turbo bug");
+            return assetRef;
+        }
+
+        template<typename T>
         AssetRef<T> CreateAsset(const String& name, const String& path, const Id assetId = Id())
         {
             YCHECK(false, "Invalid asset type");
@@ -30,6 +42,7 @@ namespace Yumi
 
             SharedPtr<Shader> shader = Shader::Create(m_GraphicsApi);
             m_IdAssetMap[assetId] = shader;
+            m_AssetNameIdMap[name] = assetId;
 
             AssetData assetData;
             assetData.AssetId = assetId;
@@ -51,6 +64,7 @@ namespace Yumi
 
             SharedPtr<Texture2D> texture = Texture2D::Create(m_GraphicsApi);
             m_IdAssetMap[assetId] = texture;
+            m_AssetNameIdMap[name] = assetId;
 
             AssetData assetData;
             assetData.AssetId = assetId;
@@ -72,6 +86,7 @@ namespace Yumi
 
             SharedPtr<SubTexture2D> subTexture = CreateSharedPtr<SubTexture2D>();
             m_IdAssetMap[assetId] = subTexture;
+            m_AssetNameIdMap[name] = assetId;
 
             AssetData assetData;
             assetData.AssetId = assetId;
@@ -117,5 +132,6 @@ namespace Yumi
         const GraphicsAPI m_GraphicsApi;
         
         Map<Id, SharedPtr<Asset>> m_IdAssetMap;
+        Map<String, Id> m_AssetNameIdMap;
     };
 }

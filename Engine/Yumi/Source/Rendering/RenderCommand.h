@@ -41,7 +41,7 @@ namespace Yumi
     class SetClearColorCommand : public RenderCommand
     {
     public:
-        SetClearColorCommand(const SharedPtr<RendererAPI>& api, const Vector4& clearColor)
+        SetClearColorCommand(const SharedPtr<RendererAPI>& api, const Color& clearColor)
             : RenderCommand(api)
             , m_ClearColor(clearColor)
         {}
@@ -54,12 +54,15 @@ namespace Yumi
         }
 
     private:
-        Vector4 m_ClearColor;
+        Color m_ClearColor;
     };
 
     class ClearCommand : public RenderCommand
     {
     public:
+        ClearCommand(const SharedPtr<RendererAPI>& api)
+            : RenderCommand(api)
+        {}
 
         const char* GetName() const override { return "Clear"; }
         

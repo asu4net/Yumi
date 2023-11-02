@@ -9,6 +9,7 @@ namespace Yumi
     class VertexBuffer;
     class IndexBuffer;
     class Texture2D;
+    class Sprite;
 
     class Renderer2D
     {
@@ -40,7 +41,10 @@ namespace Yumi
             uint32_t maxSprites = 3000,
             uint32_t maxTextureSlots = 32);
 
+        ~Renderer2D();
+
         void Begin(RenderData& renderData);
+        void SubmitSprite(const SharedPtr<Sprite>& sprite);
         void End();
 
     private:
@@ -70,7 +74,7 @@ namespace Yumi
         uint32_t m_SpriteCount = 0;
         uint32_t m_IndexCount = 0;
         uint32_t m_LastTextureSlot = 1;
-        DynamicArray<SpriteVertex> m_Vertices;
+        SpriteVertex* m_Vertices;
         SpriteVertex* m_LastVertex;
         DynamicArray<SharedPtr<Texture2D>> m_Textures;
     };

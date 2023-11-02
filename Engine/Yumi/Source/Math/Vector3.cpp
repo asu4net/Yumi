@@ -80,6 +80,16 @@ namespace Yumi
         return x <= other.x && y <= other.y && z <= other.z;
     }
 
+    bool Vector3::operator==(const Vector3& other) const
+    {
+        return x == other.x && y == other.y && z == other.z;
+    }
+
+    bool Vector3::operator!=(const Vector3& other) const
+    {
+        return !(*this == other);
+    }
+
     /*Vector3 Vector3::LookAt(const glm::quat& rot, const Vector3& axis)
     {
         const glm::mat4 matRot = glm::toMat4(rot);

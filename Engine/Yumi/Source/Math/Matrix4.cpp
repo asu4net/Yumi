@@ -23,6 +23,11 @@ namespace Yumi
         m[3][2] = translation.z;
     }
 
+    Yumi::Vector3 Matrix4::GetTranslation() const
+    {
+        return { m[3][0], m[3][1], m[3][2] };
+    }
+
     void Matrix4::SetXRotation(float x)
     {
         m[1][1] =  cos(x);
@@ -86,11 +91,45 @@ namespace Yumi
 
     Vector4 Matrix4::operator*(const Vector4& other) const
     {
-        Vector4 result;
-        result.x = other.x * m[0][0] + other.y * m[0][1] + other.z * m[0][2] + other.w * m[0][3];
-        result.y = other.x * m[1][0] + other.y * m[1][1] + other.z * m[1][2] + other.w * m[1][3];
-        result.z = other.x * m[2][0] + other.y * m[2][1] + other.z * m[2][2] + other.w * m[2][3];
-        result.w = other.x * m[3][0] + other.y * m[3][1] + other.z * m[3][2] + other.w * m[3][3];
-        return result;
+        Matrix4 otherMat;
+        otherMat.SetTranslation(other);
+        Matrix4 resultMat = otherMat * (*this);
+        return resultMat.GetTranslation();
+    }
+
+    bool Matrix4::operator==(const Matrix4& other) const
+    {
+        bool isEqual = true;
+
+        for (uint32_t i = 0; i < 4; i++)
+        {
+            for (uint32_t j = 0; j < 4; j++)
+            {
+                if (m[i][j] == other.m[i][j])
+                {
+                    continue;
+                }
+                isEqual = false;
+                break;
+            }
+        }
+
+        return isEqual;
+    }
+
+    bool Matrix4::operator!=(const Matrix4& other) const
+    {
+        return !(*this == other);
+    }
+
+    Matrix4 Matrix4::GetOrthoProjection(float left, float right, float bottom, float top, float near, float far)
+    {
+        Matrix4 mat;
+        mat.m[0][0] = 2 / (right - left);
+        mat.m[1][1] = 2 / (top - bottom);
+        mat.m[2][2] = -1;
+        mat.m[3][0] = -(right + left) / (right - left);
+        mat.m[3][1] = -(top + bottom) / (top - bottom);
+        return mat;
     }
 }

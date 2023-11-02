@@ -53,6 +53,7 @@ namespace Yumi
         }
 
         m_IdAssetMap.clear();
+        m_AssetNameIdMap.clear();
         YLOG_TRACE("Assets unloaded!\n");
     }
 

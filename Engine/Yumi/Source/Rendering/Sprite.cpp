@@ -8,10 +8,10 @@ namespace Yumi
     {
         static Array<Vector2, 4> uv = 
         {
-            Vector2( -1, -1 ),
-            Vector2(  1, -1 ),
-            Vector2(  1,  1 ),
-            Vector2( -1,  1 )
+            Vector2(0, 0), // bottom-left
+            Vector2(1, 0), // bottom-right
+            Vector2(1, 1), // top-right
+            Vector2(0, 1), // top-left
         };
         return uv;
     }
@@ -28,37 +28,71 @@ namespace Yumi
         return vertexPositions;
     }
 
+    static void CalculateSpriteVertexPositions(const Vector2& textureSize, const Vector2& spriteSize, Array<Vector3, 4>& vertexPositions)
+    {
+        static Vector2 s_VertexMag = Vector2::One / 2;
+        Vector2 pos = s_VertexMag;
+
+        if (std::abs(textureSize.x - textureSize.y) > 0.0001f)
+            pos = textureSize.Normalized() / 2;
+
+        pos.x *= spriteSize.x;
+        pos.y *= spriteSize.y;
+
+        vertexPositions[0] = { -pos.x, -pos.y, 0 };
+        vertexPositions[1] = {  pos.x, -pos.y, 0 };
+        vertexPositions[2] = {  pos.x,  pos.y, 0 };
+        vertexPositions[3] = { -pos.x,  pos.y, 0 };
+    }
+
     Sprite::Sprite()
     {
-        InitSettings({});
-        m_VertexPositions = DefaultSpriteVertexPositions();
+        m_VertexLayout = DefaultSpriteVertexPositions();
+        m_VertexPositions = m_VertexLayout;
+
+        Settings settings;
+        SetTransform(settings.Transform);
         SetVertexUV(DefaultSpriteUV());
+        SetTintColor(settings.TintColor);
+        SetUVScale(settings.UVScale);
+        SetFlip(settings.FlipMode);
+        SetSize(settings.Size);
     }
 
     Sprite::Sprite(const Settings& settings)
     {
-        InitSettings(settings);
-        m_VertexPositions = DefaultSpriteVertexPositions();
-        ApplyTransformToVertexPositions();
+        SetSize(settings.Size);
+        SetTransform(settings.Transform);
         SetVertexUV(DefaultSpriteUV());
+        SetTintColor(settings.TintColor);
+        SetUVScale(settings.UVScale);
+        SetFlip(settings.FlipMode);
+        SetSize(settings.Size);
     }
 
     Sprite::Sprite(const SharedPtr<Texture2D> texture, const Settings& settings /*= {}*/)
         : m_Texture(texture)
     {
-        InitSettings(settings);
-        m_VertexPositions = DefaultSpriteVertexPositions();
-        ApplyTransformToVertexPositions();
+        YCHECK(texture, "A valid texture is required!");
+        SetSize(settings.Size);
+        SetTransform(settings.Transform);
         SetVertexUV(DefaultSpriteUV());
+        SetTintColor(settings.TintColor);
+        SetUVScale(settings.UVScale);
+        SetFlip(settings.FlipMode);
+        SetSize(settings.Size);
     }
 
     Sprite::Sprite(const SharedPtr<SubTexture2D> subTexture, const Settings& settings /*= {}*/)
         : m_SubTexture(subTexture)
     {
-        InitSettings(settings);
-        ReCalculateVertexPositions(subTexture->GetSize());
-        ApplyTransformToVertexPositions();
+        YCHECK(subTexture, "A valid SubTexture is required!");
+        SetSize(settings.Size);
+        SetTransform(settings.Transform);
         SetVertexUV(subTexture->GetVertexUV());
+        SetTintColor(settings.TintColor);
+        SetUVScale(settings.UVScale);
+        SetFlip(settings.FlipMode);
     }
 
     void Sprite::SetTexture(const SharedPtr<Texture2D> texture)
@@ -70,7 +104,7 @@ namespace Yumi
 
         if (m_Texture)
         {
-            ReCalculateVertexPositions(m_Texture->GetSize());
+            CalculateSpriteVertexPositions(texture->GetSize(), m_Size, m_VertexLayout);
         }
         else
         {
@@ -90,86 +124,62 @@ namespace Yumi
         m_Texture = parent.lock();
         m_SubTexture = subTexture;
 
-        ReCalculateVertexPositions(m_SubTexture->GetSize());
+        CalculateSpriteVertexPositions(subTexture->GetSize(), m_Size, m_VertexLayout);
+        m_VertexPositions = m_VertexLayout;
+
         SetVertexUV(m_SubTexture->GetVertexUV());
     }
 
     void Sprite::SetTransform(const Matrix4& transform)
     {
         m_Transform = transform;
-        ApplyTransformToVertexPositions();
+
+        for (uint32_t i = 0; i < 4; i++)
+        {
+            m_VertexPositions[i] = m_Transform * Vector4(m_VertexLayout[i], 1.);
+        }
     }
 
     void Sprite::SetTintColor(const Color& color)
     {
         m_TintColor = color;
-    }
-
-    void Sprite::InitSettings(const Settings& settings)
-    {
-        m_Transform = settings.Transform;
-        m_TintColor = settings.TintColor;
-        m_Size = settings.Size;
-        m_FlipMode = settings.FlipMode;
-        m_UVScale = settings.UVScale;
+        
+        for (Color& color : m_VertexColors)
+            color = m_TintColor;
     }
 
     void Sprite::SetVertexUV(const Array<Vector2, 4>& uv)
     {
-        m_VertexUV = uv;
+        m_VertexUVs = uv;
         SetFlip(m_FlipMode);
-        SetUVScale(m_UVScale);
-    }
-
-    void Sprite::ReCalculateVertexPositions(const Vector2& textureSize)
-    {
-        static Vector2 s_VertexMag = Vector2::One / 2;
-        Vector2 pos = s_VertexMag;
-
-        if (std::abs(textureSize.x - textureSize.y) > 0.0001f)
-            pos = textureSize.Normalized() / 2;
-
-        pos.x *= m_Size.x;
-        pos.y *= m_Size.y;
-
-        m_VertexPositions[0] = { -pos.x, -pos.y, 0 };
-        m_VertexPositions[1] = {  pos.x, -pos.y, 0 };
-        m_VertexPositions[2] = {  pos.x,  pos.y, 0 };
-        m_VertexPositions[3] = { -pos.x,  pos.y, 0 };
-    }
-
-    void Sprite::ApplyTransformToVertexPositions()
-    {
-        for (Vector3& vertexPosition : m_VertexPositions)
-            vertexPosition = m_Transform * Vector4(vertexPosition, 1.);
     }
 
     void Sprite::SetFlip(Flip flip)
     {
-        Array<Vector2, 4> uv = m_VertexUV;
+        Array<Vector2, 4> uv = m_VertexUVs;
 
         switch (flip)
         {
         case Flip::None:
-            m_VertexUV = uv;
+            m_VertexUVs = uv;
             return;
         case Flip::X:
-            m_VertexUV[0] = uv[1];
-            m_VertexUV[1] = uv[0];
-            m_VertexUV[2] = uv[3];
-            m_VertexUV[3] = uv[2];
+            m_VertexUVs[0] = uv[1];
+            m_VertexUVs[1] = uv[0];
+            m_VertexUVs[2] = uv[3];
+            m_VertexUVs[3] = uv[2];
             return;
         case Flip::Y:
-            m_VertexUV[0] = uv[2];
-            m_VertexUV[1] = uv[3];
-            m_VertexUV[2] = uv[0];
-            m_VertexUV[3] = uv[1];
+            m_VertexUVs[0] = uv[2];
+            m_VertexUVs[1] = uv[3];
+            m_VertexUVs[2] = uv[0];
+            m_VertexUVs[3] = uv[1];
             return;
         case Flip::Both:
-            m_VertexUV[0] = uv[3];
-            m_VertexUV[1] = uv[2];
-            m_VertexUV[2] = uv[1];
-            m_VertexUV[3] = uv[0];
+            m_VertexUVs[0] = uv[3];
+            m_VertexUVs[1] = uv[2];
+            m_VertexUVs[2] = uv[1];
+            m_VertexUVs[3] = uv[0];
         }
 
         m_FlipMode = flip;
@@ -177,18 +187,25 @@ namespace Yumi
 
     void Sprite::SetUVScale(const Vector2& scale)
     {
-        for (Vector2& uv : m_VertexUV)
-        {
-            uv.x *= scale.x;
-            uv.y *= scale.y;
-        }
+        m_UVScale = scale;
+
+        for (Vector2& uvScale : m_VertexUVScales)
+            uvScale = m_UVScale;
     }
 
     void Sprite::SetSize(const Vector2& size)
     {
         m_Size = size;
+        
         if (m_Texture)
-            ReCalculateVertexPositions(m_SubTexture ? m_SubTexture->GetSize() : m_Texture->GetSize());
+        {
+            CalculateSpriteVertexPositions(m_SubTexture ? m_SubTexture->GetSize() : m_Texture->GetSize(),
+                m_Size, m_VertexLayout);
+            m_VertexPositions = m_VertexLayout;
+        }
+        else
+        {
+            m_VertexLayout = DefaultSpriteVertexPositions();
+        }
     }
-
 }

@@ -10,7 +10,7 @@ namespace Yumi
         static SharedPtr<VertexBuffer> Create(GraphicsAPI api, const void* vertices, uint32_t size);
         static SharedPtr<VertexBuffer> Create(GraphicsAPI api, uint32_t size);
 
-        virtual ~VertexBuffer() = 0;
+        virtual ~VertexBuffer() {};
 
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;

@@ -17,9 +17,9 @@ namespace Yumi
     public:
         static SharedPtr<RendererAPI> Create(GraphicsAPI api);
         
-        virtual ~RendererAPI() = 0;
+        virtual ~RendererAPI() {};
         virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) const = 0;
-        virtual void SetClearColor(const Vector4& clearColor) const = 0;
+        virtual void SetClearColor(const Color& clearColor) const = 0;
         virtual void Clear() const = 0;
         virtual void SetBlendingEnabled(bool bEnabled) const = 0;
         virtual void SetBlendingMode(const BlendingMode blendingMode) const = 0;

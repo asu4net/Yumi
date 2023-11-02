@@ -44,13 +44,12 @@ namespace Yumi
         Vector2 GetUVScale() const { return m_UVScale; }
 
         const Array<Vector3, 4>& GetVertexPositions() const { return m_VertexPositions; }
-        const Array<Vector2, 4>& GetVertexUV() const { m_VertexUV; }
+        const Array<Vector2, 4>& GetVertexUVs() const { return m_VertexUVs; }
+        const Array<Vector2, 4>& GetVertexUVScales() const { return m_VertexUVScales; }
+        const Array<Color, 4>& GetVertexColors() const { return m_VertexColors; }
 
     private:
-        void InitSettings(const Settings& settings);
         void SetVertexUV(const Array<Vector2, 4>& uv);
-        void ReCalculateVertexPositions(const Vector2& textureSize);
-        void ApplyTransformToVertexPositions();
 
         SharedPtr<Texture2D> m_Texture;
         SharedPtr<SubTexture2D> m_SubTexture;
@@ -59,8 +58,11 @@ namespace Yumi
         Vector2 m_Size;
         Flip m_FlipMode = Flip::None;
         Vector2 m_UVScale;
+
         Array<Vector3, 4> m_VertexPositions;
-        Array<Vector2, 4> m_VertexUV;
+        Array<Vector3, 4> m_VertexLayout;
+        Array<Vector2, 4> m_VertexUVs;
+        Array<Vector2, 4> m_VertexUVScales;
         Array<Color, 4> m_VertexColors;
     };
 }

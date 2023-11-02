@@ -23,11 +23,12 @@ namespace Yumi
             m_AssetData = other.m_AssetData;
         }
         
-        SharedPtr<T> operator -> () { return m_Asset.expired() ? nullptr : m_Asset.lock(); }
+        SharedPtr<T> operator -> () { return Get(); }
+        SharedPtr<T> Get() { return m_Asset.expired() ? nullptr : m_Asset.lock(); }
 
         ~AssetRef() { Clear(); }
 
-        bool IsValid() const { return m_Asset.expired(); }
+        bool IsValid() const { return !m_Asset.expired(); }
 
         AssetData GetAssetData() const { return m_AssetData; }
 

@@ -4,6 +4,7 @@
 #include "IndexBuffer.h"
 #include "Texture2D.h"
 #include "FrameBuffer.h"
+#include "Sprite.h"
 
 namespace Yumi
 {
@@ -17,12 +18,18 @@ namespace Yumi
         , m_MaxSprites(maxSprites)
         , m_MaxTextureSlots(maxTextureSlots)
         , m_MaxVertices(maxSprites * s_VerticesPerSprite)
-        , m_Vertices(m_MaxVertices)
-        , m_LastVertex(&m_Vertices.front())
+        , m_Vertices(new SpriteVertex[m_MaxVertices])
+        , m_LastVertex(m_Vertices)
+        , m_Textures(maxTextureSlots)
     {
         CreateWhiteTexture();
         CreateTextureSlots();
         CreateRenderObjects();
+    }
+
+    Renderer2D::~Renderer2D()
+    {
+        delete[] m_Vertices;
     }
 
     void Renderer2D::Begin(RenderData& renderData)
@@ -35,6 +42,25 @@ namespace Yumi
         StartBatch();
     }
 
+    void Renderer2D::SubmitSprite(const SharedPtr<Sprite>& sprite)
+    {
+        YCHECK(sprite, "A valid sprite is required!");
+
+        for (int i = 0; i < 4; i++)
+        {
+            m_LastVertex->Position = sprite->GetVertexPositions()[i];
+            m_LastVertex->TintColor = sprite->GetVertexColors()[i];
+            m_LastVertex->UV = sprite->GetVertexUVs()[i];
+            m_LastVertex->UVScale = sprite->GetVertexUVScales()[i];
+            m_LastVertex->TextureSlot = CalculateTextureSlot(sprite->GetTexture());
+
+            m_LastVertex++;
+        }
+
+        m_IndexCount += 6;
+        m_SpriteCount++;
+    }
+
     void Renderer2D::End()
     {
         Flush();
@@ -42,7 +68,7 @@ namespace Yumi
 
     void Renderer2D::StartBatch()
     {
-        m_LastVertex = &m_Vertices.front();
+        m_LastVertex = m_Vertices;
         m_SpriteCount = 0;
         m_IndexCount = 0;
         m_LastTextureSlot = 1;
@@ -51,9 +77,9 @@ namespace Yumi
     void Renderer2D::Flush()
     {
         if (const uint32_t vertexDataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(m_LastVertex) -
-            reinterpret_cast<uint8_t*>(&m_Vertices.front())))
+            reinterpret_cast<uint8_t*>(m_Vertices)))
         {
-            m_VertexBuffer->SetData(&m_Vertices.front(), vertexDataSize);
+            m_VertexBuffer->SetData(m_Vertices, vertexDataSize);
 
             for (uint32_t i = 0; i < m_LastTextureSlot; i++)
                 m_Textures[i]->Bind(i);
@@ -82,6 +108,7 @@ namespace Yumi
         settings.Width = 1;
         settings.Height = 1;
 
+        m_WhiteTexture = Texture2D::Create(m_RendererAPI->GetGraphicsAPI());
         m_WhiteTexture->Configure(settings);
         m_WhiteTexture->UploadToGPU();
         constexpr uint32_t whiteTextureData = 0xffffffff;

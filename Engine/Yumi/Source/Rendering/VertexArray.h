@@ -11,7 +11,7 @@ namespace Yumi
     public:
         static SharedPtr<VertexArray> Create(GraphicsAPI api);
 
-        virtual ~VertexArray() = 0;
+        virtual ~VertexArray() {};
 
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
