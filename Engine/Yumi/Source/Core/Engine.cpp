@@ -56,8 +56,12 @@ namespace Yumi
         const float aspect = static_cast<float>(m_Window->GetWidth()) / static_cast<float>(m_Window->GetHeight());
         const float right = aspect * Size; //update aspect ratio
         const float left = -right;
-        data.ProjectionViewMat4 = Matrix4::GetOrthoProjection(left, right, -Size, Size,
-            NearPlane, FarPlane);
+
+        static Vector3 cameraPosition;
+
+        static Vector3 spritePosition;
+        static Vector3 spriteRotation;
+        static Vector3 spriteScale = Vector3::One;
 
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP STARTED ******\n");
@@ -69,19 +73,20 @@ namespace Yumi
         {
             m_Time.CalculateTimeStep();
 
-            static Vector3 spriteLocation;
-
             if (Input::GetInstance().IsKeyPressed(KEY_W))
-                spriteLocation += Vector3::Up * 0.5f * m_Time.DeltaTime();
+                cameraPosition += Vector3::Up * 0.5f * m_Time.DeltaTime();
             if (Input::GetInstance().IsKeyPressed(KEY_S))
-                spriteLocation += Vector3::Down * 0.5f * m_Time.DeltaTime();
+                cameraPosition += Vector3::Down * 0.5f * m_Time.DeltaTime();
             if (Input::GetInstance().IsKeyPressed(KEY_D))
-                spriteLocation += Vector3::Right * 0.5f * m_Time.DeltaTime();
+                cameraPosition += Vector3::Right * 0.5f * m_Time.DeltaTime();
             if (Input::GetInstance().IsKeyPressed(KEY_A))
-                spriteLocation += Vector3::Left * 0.5f * m_Time.DeltaTime();
+                cameraPosition += Vector3::Left * 0.5f * m_Time.DeltaTime();
 
-            Matrix4 spriteTransform;
-            spriteTransform.SetTranslation(spriteLocation);
+            Matrix4 spriteTransform = Matrix4::CreateTransform(spritePosition, spriteRotation, spriteScale);
+
+            data.ProjectionViewMat4 = Matrix4::OrthoProjection(left, right, -Size, Size,
+                NearPlane, FarPlane) * Matrix4::ViewProjection(cameraPosition, Vector3::Zero);
+
             sprite->SetTransform(spriteTransform);
 
             commandQueue->Submit<ClearCommand>(api);
