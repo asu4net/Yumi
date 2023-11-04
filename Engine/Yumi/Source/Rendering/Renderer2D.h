@@ -19,7 +19,6 @@ namespace Yumi
             Vector3 Position;
             Color TintColor;
             Vector2 UV;
-            Vector2 UVScale;
             uint32_t TextureSlot;
         };
 

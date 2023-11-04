@@ -47,97 +47,75 @@ namespace Yumi
 
     Sprite::Sprite()
     {
-        m_VertexLayout = DefaultSpriteVertexPositions();
-        m_VertexPositions = m_VertexLayout;
-
-        Settings settings;
-        SetTransform(settings.Transform);
-        SetVertexUV(DefaultSpriteUV());
-        SetTintColor(settings.TintColor);
-        SetUVScale(settings.UVScale);
-        SetFlip(settings.FlipMode);
-        SetSize(settings.Size);
+        Configuration cfg; // default configuration
+        SetConfiguration(cfg);
     }
 
-    Sprite::Sprite(const Settings& settings)
+    Sprite::Sprite(const Configuration& cfg)
     {
-        SetSize(settings.Size);
-        SetTransform(settings.Transform);
-        SetVertexUV(DefaultSpriteUV());
-        SetTintColor(settings.TintColor);
-        SetUVScale(settings.UVScale);
-        SetFlip(settings.FlipMode);
-        SetSize(settings.Size);
+        SetConfiguration(cfg);
     }
 
-    Sprite::Sprite(const SharedPtr<Texture2D> texture, const Settings& settings /*= {}*/)
+    Sprite::Sprite(const SharedPtr<Texture2D> texture, const Configuration& cfg /*= {}*/)
         : m_Texture(texture)
     {
         YCHECK(texture, "A valid texture is required!");
-        SetSize(settings.Size);
-        SetTransform(settings.Transform);
-        SetVertexUV(DefaultSpriteUV());
-        SetTintColor(settings.TintColor);
-        SetUVScale(settings.UVScale);
-        SetFlip(settings.FlipMode);
-        SetSize(settings.Size);
+        SetConfiguration(cfg);
     }
 
-    Sprite::Sprite(const SharedPtr<SubTexture2D> subTexture, const Settings& settings /*= {}*/)
+    Sprite::Sprite(const SharedPtr<SubTexture2D> subTexture, const Configuration& cfg /*= {}*/)
         : m_SubTexture(subTexture)
     {
         YCHECK(subTexture, "A valid SubTexture is required!");
-        SetSize(settings.Size);
-        SetTransform(settings.Transform);
-        SetVertexUV(subTexture->GetVertexUV());
-        SetTintColor(settings.TintColor);
-        SetUVScale(settings.UVScale);
-        SetFlip(settings.FlipMode);
+        SetConfiguration(cfg);
     }
 
     void Sprite::SetTexture(const SharedPtr<Texture2D> texture)
     {
-        if (m_SubTexture)
-            m_SubTexture = nullptr;
-        
         m_Texture = texture;
+        m_SubTexture = nullptr;
 
-        if (m_Texture)
+        UpdateLocalVertexPositions();
+        UpdateVertexPositions(m_Transform);
+        UpdateVertexUV();
+        FlipVertexUV(m_FlipMode);
+    }
+
+    void Sprite::SetTexture(const SharedPtr<SubTexture2D> subTexture)
+    {
+        m_SubTexture = subTexture;
+
+        if (m_SubTexture)
         {
-            CalculateSpriteVertexPositions(texture->GetSize(), m_Size, m_VertexLayout);
+            const WeakPtr<Texture2D>& parent = subTexture->GetParent();
+            YCHECK(parent.expired(), "Missing parent in subtexture");
+            m_Texture = parent.lock();
         }
         else
         {
-            m_VertexPositions = DefaultSpriteVertexPositions();
+            m_Texture = nullptr;
         }
-
-        SetVertexUV(DefaultSpriteUV());
+        
+        UpdateLocalVertexPositions();
+        UpdateVertexPositions(m_Transform);
+        UpdateVertexUV();
+        FlipVertexUV(m_FlipMode);
     }
 
-    void Sprite::SetSubTexture(const SharedPtr<SubTexture2D> subTexture)
+    void Sprite::SetConfiguration(const Configuration& cfg)
     {
-        YCHECK(subTexture, "Missing subtexture!");
-
-        const WeakPtr<Texture2D>& parent = subTexture->GetParent();
-        YCHECK(parent.expired(), "Missing parent in subtexture");
-
-        m_Texture = parent.lock();
-        m_SubTexture = subTexture;
-
-        CalculateSpriteVertexPositions(subTexture->GetSize(), m_Size, m_VertexLayout);
-        m_VertexPositions = m_VertexLayout;
-
-        SetVertexUV(m_SubTexture->GetVertexUV());
+        SetSize(cfg.Size);
+        SetTransform(cfg.Transform);
+        SetTintColor(cfg.TintColor);
+        UpdateVertexUV();
+        SetFlip(cfg.FlipMode);
+        SetUVScale(cfg.UVScale);
     }
 
     void Sprite::SetTransform(const Matrix4& transform)
     {
         m_Transform = transform;
-
-        for (uint32_t i = 0; i < 4; i++)
-        {
-            m_VertexPositions[i] = m_Transform * Vector4(m_VertexLayout[i], 1.);
-        }
+        UpdateVertexPositions(m_Transform);
     }
 
     void Sprite::SetTintColor(const Color& color)
@@ -148,13 +126,66 @@ namespace Yumi
             color = m_TintColor;
     }
 
-    void Sprite::SetVertexUV(const Array<Vector2, 4>& uv)
+    void Sprite::SetFlip(Flip flip)
     {
-        m_VertexUVs = uv;
-        SetFlip(m_FlipMode);
+        m_FlipMode = flip;
+        FlipVertexUV(flip);
     }
 
-    void Sprite::SetFlip(Flip flip)
+    void Sprite::SetUVScale(const Vector2& scale)
+    {
+        m_UVScale = scale;
+
+        for (Vector2& uv : m_VertexUVs)
+        {
+            uv.x *= scale.x;
+            uv.y *= scale.y;
+        }
+    }
+
+    void Sprite::SetSize(const Vector2& size)
+    {
+        m_Size = size;
+        UpdateLocalVertexPositions();
+    }
+
+    void Sprite::UpdateVertexUV()
+    {
+        if (!m_Texture || m_Texture && !m_SubTexture)
+        {
+            m_VertexUVs = DefaultSpriteUV();
+        }
+        else if (m_Texture && m_SubTexture)
+        {
+            m_VertexUVs = m_SubTexture->GetVertexUV();
+        }
+        else
+        {
+            YCHECK(false, "Unhandled case");
+        }        
+    }
+
+    void Sprite::UpdateLocalVertexPositions()
+    {
+        if (m_Texture)
+        {
+            CalculateSpriteVertexPositions(m_SubTexture ? m_SubTexture->GetSize() : m_Texture->GetSize(), m_Size, m_LocalVertexPositions);
+        }
+        else
+        {
+            m_LocalVertexPositions = DefaultSpriteVertexPositions();
+        }
+    }
+
+    void Sprite::UpdateVertexPositions(const Matrix4& transform)
+    {
+        for (uint32_t i = 0; i < 4; i++)
+        {
+            m_VertexPositions[i] = transform * Vector4(m_LocalVertexPositions[i], 1.);
+        }
+    }
+
+    void Sprite::FlipVertexUV(Flip flip)
     {
         Array<Vector2, 4> uv = m_VertexUVs;
 
@@ -180,32 +211,6 @@ namespace Yumi
             m_VertexUVs[1] = uv[2];
             m_VertexUVs[2] = uv[1];
             m_VertexUVs[3] = uv[0];
-        }
-
-        m_FlipMode = flip;
-    }
-
-    void Sprite::SetUVScale(const Vector2& scale)
-    {
-        m_UVScale = scale;
-
-        for (Vector2& uvScale : m_VertexUVScales)
-            uvScale = m_UVScale;
-    }
-
-    void Sprite::SetSize(const Vector2& size)
-    {
-        m_Size = size;
-        
-        if (m_Texture)
-        {
-            CalculateSpriteVertexPositions(m_SubTexture ? m_SubTexture->GetSize() : m_Texture->GetSize(),
-                m_Size, m_VertexLayout);
-            m_VertexPositions = m_VertexLayout;
-        }
-        else
-        {
-            m_VertexLayout = DefaultSpriteVertexPositions();
         }
     }
 }

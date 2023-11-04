@@ -34,10 +34,7 @@ namespace Yumi
     void Engine::StartMainLoop()
     {
         //render test stuff
-        SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>();
-        SharedPtr<Texture2D> texture = m_AssetManager.GetAssetByName<Texture2D>("Bola.jpg").Get();
-        sprite->SetTexture(texture);
-        
+        SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>(m_AssetManager.GetAssetByName<Texture2D>("Bola.jpg").Get());
         SharedPtr<Shader> shader = m_AssetManager.GetAssetByName<Shader>("Texture.glsl").Get();
         SharedPtr<RendererAPI> api = RendererAPI::Create(GraphicsAPI::OpenGL);
 

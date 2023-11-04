@@ -51,7 +51,6 @@ namespace Yumi
             m_LastVertex->Position = sprite->GetVertexPositions()[i];
             m_LastVertex->TintColor = sprite->GetVertexColors()[i];
             m_LastVertex->UV = sprite->GetVertexUVs()[i];
-            m_LastVertex->UVScale = sprite->GetVertexUVScales()[i];
             m_LastVertex->TextureSlot = CalculateTextureSlot(sprite->GetTexture());
 
             m_LastVertex++;
@@ -135,7 +134,6 @@ namespace Yumi
             {ShaderDataType::Float3, "a_Position"   },
             {ShaderDataType::Float4, "a_Color"      },
             {ShaderDataType::Float2, "a_UV"         },
-            {ShaderDataType::Float2, "a_UVScale"    },
             {ShaderDataType::Float , "a_TextureSlot"}
         });
 

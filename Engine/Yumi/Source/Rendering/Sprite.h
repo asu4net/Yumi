@@ -8,7 +8,7 @@ namespace Yumi
     class Sprite
     {
     public:
-        struct Settings
+        struct Configuration
         {
             Matrix4 Transform;
             Color TintColor = Color::White;
@@ -18,15 +18,17 @@ namespace Yumi
         };
 
         Sprite();
-        Sprite(const Settings& settings);
-        Sprite(const SharedPtr<Texture2D> texture, const Settings& settings = {});
-        Sprite(const SharedPtr<SubTexture2D> subTexture, const Settings& settings = {});
+        Sprite(const Configuration& cfg);
+        Sprite(const SharedPtr<Texture2D> texture, const Configuration& cfg = {});
+        Sprite(const SharedPtr<SubTexture2D> subTexture, const Configuration& cfg = {});
         
         void SetTexture(const SharedPtr<Texture2D> texture);
         SharedPtr<Texture2D> GetTexture() const { return m_Texture; }
 
-        void SetSubTexture(const SharedPtr<SubTexture2D> subTexture);
+        void SetTexture(const SharedPtr<SubTexture2D> subTexture);
         SharedPtr<SubTexture2D> GetSubTexture() const { return m_SubTexture; }
+        
+        void SetConfiguration(const Configuration& cfg);
 
         void SetTransform(const Matrix4& transform);
         Matrix4 GetTransform() const { return m_Transform; }
@@ -45,11 +47,13 @@ namespace Yumi
 
         const Array<Vector3, 4>& GetVertexPositions() const { return m_VertexPositions; }
         const Array<Vector2, 4>& GetVertexUVs() const { return m_VertexUVs; }
-        const Array<Vector2, 4>& GetVertexUVScales() const { return m_VertexUVScales; }
         const Array<Color, 4>& GetVertexColors() const { return m_VertexColors; }
 
     private:
-        void SetVertexUV(const Array<Vector2, 4>& uv);
+        void UpdateVertexUV();
+        void UpdateLocalVertexPositions();
+        void UpdateVertexPositions(const Matrix4& transform);
+        void FlipVertexUV(Flip flip);
 
         SharedPtr<Texture2D> m_Texture;
         SharedPtr<SubTexture2D> m_SubTexture;
@@ -58,11 +62,10 @@ namespace Yumi
         Vector2 m_Size;
         Flip m_FlipMode = Flip::None;
         Vector2 m_UVScale;
-
+        Array<Vector3, 4> m_LocalVertexPositions;
+        
         Array<Vector3, 4> m_VertexPositions;
-        Array<Vector3, 4> m_VertexLayout;
         Array<Vector2, 4> m_VertexUVs;
-        Array<Vector2, 4> m_VertexUVScales;
         Array<Color, 4> m_VertexColors;
     };
 }
