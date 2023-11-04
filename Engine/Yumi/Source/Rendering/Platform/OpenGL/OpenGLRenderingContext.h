@@ -12,7 +12,7 @@ namespace Yumi
         inline static bool EnableDebugMessages = true;
         inline static std::function<void(const String& message)> OnDebugMessage = [](const String& message)
         {
-           YLOG("%s \n", message.c_str());
+           YLOG_TRACE("[OpenGL] %s \n", message.c_str());
         };
 #endif
         OpenGLRenderingContext(void* windowHandler);

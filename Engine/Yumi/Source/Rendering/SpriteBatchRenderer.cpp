@@ -1,17 +1,16 @@
-#include "Renderer2D.h"
+#include "SpriteBatchRenderer.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Texture2D.h"
 #include "FrameBuffer.h"
-#include "Sprite.h"
 
 namespace Yumi
 {
     static constexpr uint32_t s_VerticesPerSprite = 4;
     static constexpr uint32_t s_IndicesPerSprite = 6;
 
-    Renderer2D::Renderer2D(const SharedPtr<RendererAPI> API, SharedPtr<RenderCommandQueue> commandQueue, const SharedPtr<FrameBuffer> frameBuffer, uint32_t maxSprites, uint32_t maxTextureSlots)
+    SpriteBatchRenderer::SpriteBatchRenderer(const SharedPtr<RendererAPI> API, SharedPtr<RenderCommandQueue> commandQueue, const SharedPtr<FrameBuffer> frameBuffer, uint32_t maxSprites, uint32_t maxTextureSlots)
         : m_RendererAPI(API)
         , m_CommandQueue(commandQueue)
         , m_FrameBuffer(frameBuffer)
@@ -27,12 +26,12 @@ namespace Yumi
         CreateRenderObjects();
     }
 
-    Renderer2D::~Renderer2D()
+    SpriteBatchRenderer::~SpriteBatchRenderer()
     {
         delete[] m_Vertices;
     }
 
-    void Renderer2D::Begin(RenderData& renderData)
+    void SpriteBatchRenderer::Begin(RenderData& renderData)
     {
         m_CurrentRenderTarget = renderData.CurrentRenderTarget;
         renderData.SpriteShader->Bind();
@@ -42,16 +41,14 @@ namespace Yumi
         StartBatch();
     }
 
-    void Renderer2D::SubmitSprite(const SharedPtr<Sprite>& sprite)
+    void SpriteBatchRenderer::SubmitSpriteData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, const SharedPtr<Texture2D>& texture, const Array<Vector2, 4>& vertexUV)
     {
-        YCHECK(sprite, "A valid sprite is required!");
-
         for (int i = 0; i < 4; i++)
         {
-            m_LastVertex->Position = sprite->GetVertexPositions()[i];
-            m_LastVertex->TintColor = sprite->GetVertexColors()[i];
-            m_LastVertex->UV = sprite->GetVertexUVs()[i];
-            m_LastVertex->TextureSlot = CalculateTextureSlot(sprite->GetTexture());
+            m_LastVertex->Position = vertexPositions[i];
+            m_LastVertex->TintColor = vertexColors[i];
+            m_LastVertex->UV = vertexUV[i];
+            m_LastVertex->TextureSlot = CalculateTextureSlot(texture);
 
             m_LastVertex++;
         }
@@ -60,12 +57,12 @@ namespace Yumi
         m_SpriteCount++;
     }
 
-    void Renderer2D::End()
+    void SpriteBatchRenderer::End()
     {
         Flush();
     }
 
-    void Renderer2D::StartBatch()
+    void SpriteBatchRenderer::StartBatch()
     {
         m_LastVertex = m_Vertices;
         m_SpriteCount = 0;
@@ -73,7 +70,7 @@ namespace Yumi
         m_LastTextureSlot = 1;
     }
 
-    void Renderer2D::Flush()
+    void SpriteBatchRenderer::Flush()
     {
         if (const uint32_t vertexDataSize = static_cast<uint32_t>(reinterpret_cast<uint8_t*>(m_LastVertex) -
             reinterpret_cast<uint8_t*>(m_Vertices)))
@@ -97,10 +94,9 @@ namespace Yumi
 
         if (m_CurrentRenderTarget == RenderTarget::FrameBuffer)
             m_FrameBuffer->Unbind();
-
     }
 
-    void Renderer2D::CreateWhiteTexture()
+    void SpriteBatchRenderer::CreateWhiteTexture()
     {
         Texture2DSettings settings;
         settings.CreateFromFile = false;
@@ -115,7 +111,7 @@ namespace Yumi
         m_Textures[0] = m_WhiteTexture;
     }
 
-    void Renderer2D::CreateTextureSlots()
+    void SpriteBatchRenderer::CreateTextureSlots()
     {
         DynamicArray<int32_t>* slots = const_cast<DynamicArray<int32_t>*>(&m_TextureSlots);
         slots->reserve(m_MaxTextureSlots);
@@ -123,7 +119,7 @@ namespace Yumi
             slots->push_back(i);
     }
 
-    void Renderer2D::CreateRenderObjects()
+    void SpriteBatchRenderer::CreateRenderObjects()
     {
         const GraphicsAPI API = m_RendererAPI->GetGraphicsAPI();
 
@@ -163,7 +159,7 @@ namespace Yumi
         delete[] indices;
     }
 
-    int Renderer2D::CalculateTextureSlot(const SharedPtr<Texture2D>& texture)
+    int SpriteBatchRenderer::CalculateTextureSlot(const SharedPtr<Texture2D>& texture)
     {
         int textureSlot = 0;
 

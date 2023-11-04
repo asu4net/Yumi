@@ -18,5 +18,6 @@ namespace Yumi
         class Time& m_Time;
         class Input& m_Input;
         class AssetManager& m_AssetManager;
+        class Renderer& m_Renderer;
     };
 }

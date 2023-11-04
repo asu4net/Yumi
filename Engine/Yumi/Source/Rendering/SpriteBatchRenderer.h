@@ -9,9 +9,8 @@ namespace Yumi
     class VertexBuffer;
     class IndexBuffer;
     class Texture2D;
-    class Sprite;
 
-    class Renderer2D
+    class SpriteBatchRenderer
     {
     public:
         struct SpriteVertex
@@ -22,11 +21,6 @@ namespace Yumi
             uint32_t TextureSlot;
         };
 
-        enum class RenderTarget
-        {
-            Default, FrameBuffer
-        };
-
         struct RenderData
         {
             RenderTarget CurrentRenderTarget;
@@ -34,16 +28,21 @@ namespace Yumi
             SharedPtr<Shader> SpriteShader;
         };
 
-        Renderer2D(const SharedPtr<RendererAPI> API, 
+        SpriteBatchRenderer(const SharedPtr<RendererAPI> API, 
             SharedPtr<RenderCommandQueue> commandQueue, 
             const SharedPtr<FrameBuffer> frameBuffer = nullptr,
             uint32_t maxSprites = 3000,
             uint32_t maxTextureSlots = 32);
 
-        ~Renderer2D();
+        ~SpriteBatchRenderer();
 
         void Begin(RenderData& renderData);
-        void SubmitSprite(const SharedPtr<Sprite>& sprite);
+        
+        void SubmitSpriteData(const Array<Vector3, 4>& vertexPositions, 
+            const Array<Color, 4>& vertexColors,
+            const SharedPtr<Texture2D>& texture = nullptr,
+            const Array<Vector2, 4>& vertexUV = Graphics::GetDefaultSpriteUVs());
+        
         void End();
 
     private:

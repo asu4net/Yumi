@@ -4,11 +4,12 @@
 #include "Input/KeyCodes.h"
 #include "Input/Input.h"
 #include "Asset/AssetManager.h"
-#include "Rendering/Renderer2D.h"
+#include "Rendering/SpriteBatchRenderer.h"
 #include "Rendering/Sprite.h"
 #include "Rendering/Shader.h"
 #include "Rendering/RendererAPI.h"
 #include "Rendering/RenderCommandQueue.h"
+#include "Rendering/Renderer.h"
 
 namespace Yumi
 {
@@ -17,6 +18,7 @@ namespace Yumi
         , m_Time(Time::CreateInstance())
         , m_Input(Input::CreateInstance(m_Window))
         , m_AssetManager(AssetManager::CreateInstance(GetWorkingDirectory(), GraphicsAPI::OpenGL))
+        , m_Renderer(Renderer::CreateInstance(GraphicsAPI::OpenGL))
     {
         YLOG_TRACE("Yumi Engine created!\n");
     }
@@ -34,19 +36,9 @@ namespace Yumi
     void Engine::StartMainLoop()
     {
         //render test stuff
-        SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>(m_AssetManager.GetAssetByName<Texture2D>("Bola.jpg").Get());
-        SharedPtr<Shader> shader = m_AssetManager.GetAssetByName<Shader>("Texture.glsl").Get();
-        SharedPtr<RendererAPI> api = RendererAPI::Create(GraphicsAPI::OpenGL);
 
-        SharedPtr<RenderCommandQueue> commandQueue = CreateSharedPtr<RenderCommandQueue>();
-        commandQueue->Submit<SetClearColorCommand>(api, Color::DarkGray);
-        commandQueue->Submit<SetBlendingEnabledCommand>(api, true);
-        commandQueue->Submit<SetBlendingModeCommand>(api, BlendingMode::Alpha);
-
-        Renderer2D renderer(api, commandQueue);
-        
-        Renderer2D::RenderData data = { Renderer2D::RenderTarget::Default, Matrix4(), shader };
-        
+        // Camera
+        static Vector3 cameraPosition;
         float Size = 1.f;
         float NearPlane = 0.1f;
         float FarPlane = 1000.f;
@@ -54,8 +46,8 @@ namespace Yumi
         const float right = aspect * Size; //update aspect ratio
         const float left = -right;
 
-        static Vector3 cameraPosition;
-
+        //Sprite
+        Id spriteId = m_Renderer.CreateSprite(m_AssetManager.GetAssetByName<Texture2D>("Bola.jpg").Get());
         static Vector3 spritePosition;
         static Vector3 spriteRotation;
         static Vector3 spriteScale = Vector3::One;
@@ -70,6 +62,7 @@ namespace Yumi
         {
             m_Time.CalculateTimeStep();
 
+            //render test stuff
             if (Input::GetInstance().IsKeyPressed(KEY_W))
                 cameraPosition += Vector3::Up * 0.5f * m_Time.DeltaTime();
             if (Input::GetInstance().IsKeyPressed(KEY_S))
@@ -78,22 +71,10 @@ namespace Yumi
                 cameraPosition += Vector3::Right * 0.5f * m_Time.DeltaTime();
             if (Input::GetInstance().IsKeyPressed(KEY_A))
                 cameraPosition += Vector3::Left * 0.5f * m_Time.DeltaTime();
-
-            Matrix4 spriteTransform = Matrix4::CreateTransform(spritePosition, spriteRotation, spriteScale);
-
-            data.ProjectionViewMat4 = Matrix4::OrthoProjection(left, right, -Size, Size,
-                NearPlane, FarPlane) * Matrix4::ViewProjection(cameraPosition, Vector3::Zero);
-
-            sprite->SetTransform(spriteTransform);
-
-            commandQueue->Submit<ClearCommand>(api);
             
-            //render test stuff
-            renderer.Begin(data);
-            renderer.SubmitSprite(sprite);
-            renderer.End();
-
-            //YLOG_WARN("location: %s \n", sprite->GetVertexPositions()[0].ToString().c_str());
+            m_Renderer.GetSprite(spriteId).SetTransform(Matrix4::CreateTransform(spritePosition, spriteRotation, spriteScale));
+            m_Renderer.SetProjectionViewMatrix(Matrix4::OrthoProjection(left, right, -Size, Size,
+                NearPlane, FarPlane) * Matrix4::ViewProjection(cameraPosition, Vector3::Zero));
 
             String windowTitle = "Yumi Window";
             windowTitle.append(" | MousePos: " + m_Input.MousePosition().ToString());
@@ -102,8 +83,9 @@ namespace Yumi
             windowTitle.append(" | AppFrames: " + std::to_string(m_Time.ApplicationFrames()));
             windowTitle.append(" | DeltaTime: " + std::to_string(m_Time.DeltaTime()));
             windowTitle.append(" | FixedUpdateCalls: " + std::to_string(m_Time.FixedUpdateCalls()));
-
             m_Window->SetTitle(windowTitle);
+            
+            m_Renderer.Update();
             m_Window->Update();
         }
 

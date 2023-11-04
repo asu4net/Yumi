@@ -14,13 +14,15 @@ project "GameApp"
     files
     {
         "Source/**.h",
-        "Source/**.cpp"
+        "Source/**.cpp",
+        "%{wks.location}/Game/Assets/**.glsl"
     }
 
     includedirs
     {
         "Source",
-        "%{IncludeDirs.Yumi}"
+        "%{IncludeDirs.Yumi}",
+        "%{IncludeDirs.entt}"
     }
 
     links

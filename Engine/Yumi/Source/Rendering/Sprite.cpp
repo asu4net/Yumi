@@ -4,47 +4,6 @@
 
 namespace Yumi
 {
-    static const Array<Vector2, 4>& DefaultSpriteUV()
-    {
-        static Array<Vector2, 4> uv = 
-        {
-            Vector2(0, 0), // bottom-left
-            Vector2(1, 0), // bottom-right
-            Vector2(1, 1), // top-right
-            Vector2(0, 1), // top-left
-        };
-        return uv;
-    }
-
-    static const Array<Vector3, 4>& DefaultSpriteVertexPositions()
-    {
-        static Array<Vector3, 4> vertexPositions =
-        {
-            Vector3(-.5f, -.5f, 0),
-            Vector3( .5f, -.5f, 0),
-            Vector3( .5f,  .5f, 0),
-            Vector3(-.5f,  .5f, 0)
-        };
-        return vertexPositions;
-    }
-
-    static void CalculateSpriteVertexPositions(const Vector2& textureSize, const Vector2& spriteSize, Array<Vector3, 4>& vertexPositions)
-    {
-        static Vector2 s_VertexMag = Vector2::One / 2;
-        Vector2 pos = s_VertexMag;
-
-        if (std::abs(textureSize.x - textureSize.y) > 0.0001f)
-            pos = textureSize.Normalized() / 2;
-
-        pos.x *= spriteSize.x;
-        pos.y *= spriteSize.y;
-
-        vertexPositions[0] = { -pos.x, -pos.y, 0 };
-        vertexPositions[1] = {  pos.x, -pos.y, 0 };
-        vertexPositions[2] = {  pos.x,  pos.y, 0 };
-        vertexPositions[3] = { -pos.x,  pos.y, 0 };
-    }
-
     Sprite::Sprite()
     {
         Configuration cfg; // default configuration
@@ -153,7 +112,7 @@ namespace Yumi
     {
         if (!m_Texture || m_Texture && !m_SubTexture)
         {
-            m_VertexUVs = DefaultSpriteUV();
+            m_VertexUVs = Graphics::GetDefaultSpriteUVs();
         }
         else if (m_Texture && m_SubTexture)
         {
@@ -169,11 +128,11 @@ namespace Yumi
     {
         if (m_Texture)
         {
-            CalculateSpriteVertexPositions(m_SubTexture ? m_SubTexture->GetSize() : m_Texture->GetSize(), m_Size, m_LocalVertexPositions);
+            Graphics::CalculateSpriteVertexPositions(m_SubTexture ? m_SubTexture->GetSize() : m_Texture->GetSize(), m_Size, m_LocalVertexPositions);
         }
         else
         {
-            m_LocalVertexPositions = DefaultSpriteVertexPositions();
+            m_LocalVertexPositions = Graphics::GetDefaultSpriteVertexPositions();
         }
     }
 

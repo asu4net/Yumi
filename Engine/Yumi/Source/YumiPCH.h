@@ -1,5 +1,9 @@
 #pragma once
 
+/// -------- PRE-WINDOWS.h STUFF ----------
+
+#include <entt/entt.hpp>
+
 /// -------- STUFF ----------
 
 #include <Windows.h>
@@ -114,12 +118,12 @@ namespace Yumi
 #include "Core/Singleton.h"
 #include "Core/Delegate/Delegate.h"
 #include "Core/Delegate/MulticastDelegate.h"
-#include "Core/Globals.h"
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
 #include "Math/Vector4.h"
 #include "Math/Matrix4.h"
 #include "Math/Color.h"
+#include "Core/Globals.h"
 
 // Enums
 #include "Rendering/GraphicsAPI.h"
