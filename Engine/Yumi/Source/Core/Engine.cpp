@@ -21,6 +21,11 @@ namespace Yumi
         , m_Renderer(Renderer::CreateInstance(GraphicsAPI::OpenGL))
     {
         YLOG_TRACE("Yumi Engine created!\n");
+        
+        // Viewport resizing for renderer
+        m_Window->Events().ResizeEvent.Add([&](int width, int height) { 
+            m_Renderer.SetViewport(0, 0, width, height); 
+        });
     }
 
     Engine::~Engine()
@@ -37,15 +42,6 @@ namespace Yumi
     {
         //render test stuff
 
-        // Camera
-        static Vector3 cameraPosition;
-        float Size = 1.f;
-        float NearPlane = 0.1f;
-        float FarPlane = 1000.f;
-        const float aspect = static_cast<float>(m_Window->GetWidth()) / static_cast<float>(m_Window->GetHeight());
-        const float right = aspect * Size; //update aspect ratio
-        const float left = -right;
-
         //Sprite
         Id spriteId = m_Renderer.CreateSprite(m_AssetManager.GetAssetByName<Texture2D>("Bola.jpg").Get());
         static Vector3 spritePosition;
@@ -61,6 +57,15 @@ namespace Yumi
         while (m_Window->IsOpened())
         {
             m_Time.CalculateTimeStep();
+
+            // Camera
+            static Vector3 cameraPosition;
+            float Size = 1.f;
+            float NearPlane = 0.1f;
+            float FarPlane = 1000.f;
+            const float aspect = static_cast<float>(m_Window->GetWidth()) / static_cast<float>(m_Window->GetHeight());
+            const float right = aspect * Size; //update aspect ratio
+            const float left = -right;
 
             //render test stuff
             if (Input::GetInstance().IsKeyPressed(KEY_W))

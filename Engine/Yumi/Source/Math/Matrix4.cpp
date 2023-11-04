@@ -265,7 +265,7 @@ namespace Yumi
     {
         Vector3 tweakedPosition = position;
         tweakedPosition.z *= -1;
-        Matrix4 viewMatrix = Matrix4::Translate(Matrix4(), position) * Matrix4::Rotate(Matrix4(), rotation);
+        Matrix4 viewMatrix = Matrix4::CreateTransform(position, rotation);
         return viewMatrix.GetInverse();
     }
 }

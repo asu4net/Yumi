@@ -1,5 +1,6 @@
 #pragma once
 #include "Rendering/GraphicsAPI.h"
+#include "WindowEvents.h"
 
 namespace Yumi
 {
@@ -20,6 +21,8 @@ namespace Yumi
         virtual ~Window() = default;
 
         virtual void* GetHandler() const = 0;
+
+        virtual WindowEvents& Events() = 0;
 
         virtual void SetTitle(const String title) = 0;
         virtual const String& GetTitle() const = 0;

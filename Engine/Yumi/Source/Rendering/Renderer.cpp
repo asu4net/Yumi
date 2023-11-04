@@ -11,19 +11,22 @@ namespace Yumi
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         m_CommandQueue->Submit<SetBlendingEnabledCommand>(m_RendererAPI, true);
-        m_CommandQueue->Submit<SetClearColorCommand>(m_RendererAPI, m_clearColor);
+        m_CommandQueue->Submit<SetClearColorCommand>(m_RendererAPI, Color::DarkGrey);
     }
 
     void Renderer::SetBlendingMode(BlendingMode blendingMode)
     {
-        m_BlendingMode = blendingMode;
         m_CommandQueue->Submit<SetBlendingModeCommand>(m_RendererAPI, blendingMode);
     }
 
     void Renderer::SetClearColor(const Color& clearColor)
     {
-        m_clearColor = clearColor;
-        m_CommandQueue->Submit<SetClearColorCommand>(m_RendererAPI, m_clearColor);
+        m_CommandQueue->Submit<SetClearColorCommand>(m_RendererAPI, clearColor);
+    }
+
+    void Renderer::SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height)
+    {
+        m_CommandQueue->Submit<SetViewPortCommand>(m_RendererAPI, x, y, width, height);
     }
 
     void Renderer::Update()

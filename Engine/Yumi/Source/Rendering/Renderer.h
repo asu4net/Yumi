@@ -14,6 +14,7 @@ namespace Yumi
         void SetRenderTarget(RenderTarget renderTarget) { m_CurrentRenderTarget = renderTarget; }
         void SetBlendingMode(BlendingMode blendingMode);
         void SetClearColor(const Color& clearColor);
+        void SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height);
 
         template<typename ...TArgs>
         Id CreateSprite(TArgs&& ...args)
@@ -43,8 +44,6 @@ namespace Yumi
         
         Matrix4 m_ProjectionViewMatrix;
         RenderTarget m_CurrentRenderTarget = RenderTarget::Default;
-        BlendingMode m_BlendingMode = BlendingMode::Alpha;
-        Color m_clearColor = Color::DarkGrey;
 
         SharedPtr<RendererAPI> m_RendererAPI;
         SharedPtr<RenderCommandQueue> m_CommandQueue;

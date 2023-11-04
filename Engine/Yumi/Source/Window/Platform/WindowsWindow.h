@@ -1,6 +1,5 @@
 #pragma once
 #include "Window/Window.h"
-#include "../WindowEvents.h"
 
 struct GLFWwindow;
 
@@ -19,7 +18,7 @@ namespace Yumi
 
         void* GetHandler() const override { return static_cast<void*>(m_WindowHandler); }
 
-        WindowEvents& Events() { return m_Events; }
+        WindowEvents& Events() override { return m_Events; }
 
         void SetTitle(const String title) override;
         const String& GetTitle() const override { return m_Config.Title; }

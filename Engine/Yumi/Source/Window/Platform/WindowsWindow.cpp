@@ -31,6 +31,11 @@ namespace Yumi
         SetTitle(config.Title);
         SetCursorMode(config.CursorMode);
         SetWindowCallbacks();
+
+        Events().ResizeEvent.Add([&](int width, int height) {
+            m_Config.Width = width;
+            m_Config.Height = height;
+        });
     }
 
     WindowsWindow::~WindowsWindow()
