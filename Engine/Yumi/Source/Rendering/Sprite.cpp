@@ -15,24 +15,24 @@ namespace Yumi
         SetConfiguration(cfg);
     }
 
-    Sprite::Sprite(const SharedPtr<Texture2D> texture, const Configuration& cfg /*= {}*/)
+    Sprite::Sprite(const AssetLink<Texture2D>& texture, const Configuration& cfg /*= {}*/)
         : m_Texture(texture)
     {
-        YCHECK(texture, "A valid texture is required!");
+        YCHECK(texture.IsValid(), "A valid texture is required!");
         SetConfiguration(cfg);
     }
 
-    Sprite::Sprite(const SharedPtr<SubTexture2D> subTexture, const Configuration& cfg /*= {}*/)
+    Sprite::Sprite(const AssetLink<SubTexture2D>& subTexture, const Configuration& cfg /*= {}*/)
         : m_SubTexture(subTexture)
     {
-        YCHECK(subTexture, "A valid SubTexture is required!");
+        YCHECK(subTexture.IsValid(), "A valid SubTexture is required!");
         SetConfiguration(cfg);
     }
 
-    void Sprite::SetTexture(const SharedPtr<Texture2D> texture)
+    void Sprite::SetTexture(const AssetLink<Texture2D>& texture)
     {
         m_Texture = texture;
-        m_SubTexture = nullptr;
+        m_SubTexture.Clear();
 
         UpdateLocalVertexPositions();
         UpdateVertexPositions(m_Transform);
@@ -40,19 +40,19 @@ namespace Yumi
         FlipVertexUV(m_FlipMode);
     }
 
-    void Sprite::SetTexture(const SharedPtr<SubTexture2D> subTexture)
+    void Sprite::SetTexture(const AssetLink<SubTexture2D>& subTexture)
     {
         m_SubTexture = subTexture;
 
-        if (m_SubTexture)
+        if (m_SubTexture.IsValid())
         {
-            const WeakPtr<Texture2D>& parent = subTexture->GetParent();
-            YCHECK(parent.expired(), "Missing parent in subtexture");
-            m_Texture = parent.lock();
+            const AssetLink<Texture2D>& parent = subTexture->GetParent();
+            YCHECK(parent.IsValid(), "Missing parent in subtexture");
+            m_Texture = parent;
         }
         else
         {
-            m_Texture = nullptr;
+            m_Texture.Clear();
         }
         
         UpdateLocalVertexPositions();
@@ -69,6 +69,8 @@ namespace Yumi
         UpdateVertexUV();
         SetFlip(cfg.FlipMode);
         SetUVScale(cfg.UVScale);
+        SetVisible(cfg.IsVisible);
+        SetOrderInLayer(cfg.OrderInLayer);
     }
 
     void Sprite::SetTransform(const Matrix4& transform)
@@ -110,11 +112,11 @@ namespace Yumi
 
     void Sprite::UpdateVertexUV()
     {
-        if (!m_Texture || m_Texture && !m_SubTexture)
+        if (!m_Texture.IsValid() || m_Texture.IsValid() && !m_SubTexture.IsValid())
         {
             m_VertexUVs = Graphics::GetDefaultSpriteUVs();
         }
-        else if (m_Texture && m_SubTexture)
+        else if (m_Texture.IsValid() && m_SubTexture.IsValid())
         {
             m_VertexUVs = m_SubTexture->GetVertexUV();
         }
@@ -126,9 +128,10 @@ namespace Yumi
 
     void Sprite::UpdateLocalVertexPositions()
     {
-        if (m_Texture)
+        if (m_Texture.IsValid())
         {
-            Graphics::CalculateSpriteVertexPositions(m_SubTexture ? m_SubTexture->GetSize() : m_Texture->GetSize(), m_Size, m_LocalVertexPositions);
+            Graphics::CalculateSpriteVertexPositions(m_SubTexture.IsValid() ? m_SubTexture->GetSize() : m_Texture->GetSize(), 
+                m_Size, m_LocalVertexPositions);
         }
         else
         {

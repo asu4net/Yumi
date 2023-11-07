@@ -92,6 +92,16 @@ namespace Yumi
         return r <= other.r && g <= other.g && b <= other.b && a <= other.a;
     }
 
+    bool Color::operator==(const Color& other)
+    {
+        return r == other.r && g== other.g && b == other.b && a == other.a;
+    }
+
+    bool Color::operator!=(const Color& other)
+    {
+        return r != other.r && g != other.g && b != other.b && a != other.a;
+    }
+
     String Color::ToString() const
     {
         return std::to_string(r) + ", " + std::to_string(g) + ", " + std::to_string(b) + ", " + std::to_string(a);

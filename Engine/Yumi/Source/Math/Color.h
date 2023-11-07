@@ -37,6 +37,8 @@ namespace Yumi
         Color operator/(float num) const;
         void operator/=(float num);
         bool operator<=(const Color& other);
+        bool operator==(const Color& other);
+        bool operator!=(const Color& other);
 
         String ToString() const;
     };

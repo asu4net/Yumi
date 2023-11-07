@@ -43,7 +43,7 @@ namespace Yumi
         //render test stuff
 
         //Sprite
-        Id spriteId = m_Renderer.CreateSprite(m_AssetManager.GetAssetByName<Texture2D>("Bola.jpg").Get());
+        Id spriteId = m_Renderer.CreateSprite(m_AssetManager.GetAssetByName<Texture2D>("Bola.jpg"));
         static Vector3 spritePosition;
         static Vector3 spriteRotation;
         static Vector3 spriteScale = Vector3::One;

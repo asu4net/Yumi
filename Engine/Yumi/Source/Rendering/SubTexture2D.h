@@ -1,5 +1,6 @@
 #pragma once
 #include "Asset/Asset.h"
+#include "Asset\AssetLink.h"
 
 namespace Yumi
 {
@@ -8,13 +9,13 @@ namespace Yumi
     class SubTexture2D : public Asset
     {
     public:
-        static SharedPtr<SubTexture2D> Create(const SharedPtr<Texture2D>& parentTexture, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
-        static SharedPtr<SubTexture2D> CreateFromAtlasLocation(const SharedPtr<Texture2D>& parentTexture, const Vector2& locationInAtlas, const Vector2& size);
+        static SharedPtr<SubTexture2D> Create(const AssetLink<Texture2D>& parentTexture, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
+        static SharedPtr<SubTexture2D> CreateFromAtlasLocation(const AssetLink<Texture2D>& parentTexture, const Vector2& locationInAtlas, const Vector2& size);
 
         SubTexture2D() = default;
-        SubTexture2D(const SharedPtr<Texture2D>& parentTexture, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
+        SubTexture2D(const AssetLink<Texture2D>& parentTexture, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
 
-        const WeakPtr<Texture2D>& GetParent() const { return m_ParentTexture; }
+        AssetLink<Texture2D> GetParent() const { return m_ParentTexture; }
         const Array<Vector2, 4>& GetVertexUV() const { return m_VertexUV; }
         Vector2 GetSize() const { return m_Size; }
 
@@ -24,7 +25,7 @@ namespace Yumi
         AssetData GetAssetData() const override { return m_AssetData; }
 
     private:
-        WeakPtr<Texture2D> m_ParentTexture;
+        AssetLink<Texture2D> m_ParentTexture;
         Array<Vector2, 4> m_VertexUV;
         Vector2 m_Size;
         AssetData m_AssetData;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Asset.h"
-#include "AssetRef.h"
+#include "AssetLink.h"
 
 #include "Rendering/Texture2D.h"
 #include "Rendering/SubTexture2D.h"
@@ -16,26 +16,26 @@ namespace Yumi
         inline static constexpr char* emptyPathString = "Pathless";
 
         template<typename T>
-        AssetRef<T> GetAssetByName(const String& name)
+        AssetLink<T> GetAssetByName(const String& name)
         {
             if (!m_AssetNameIdMap.count(name))
-                return AssetRef<T>();
+                return AssetLink<T>();
             const Id assetId = m_AssetNameIdMap[name];
             YCHECK(m_IdAssetMap.count(assetId), "Turbo bug");
-            AssetRef<T> assetRef = AssetRef<T>(std::dynamic_pointer_cast<T>(m_IdAssetMap[assetId]));
-            YCHECK(assetRef.IsValid(), "Turbo bug");
-            return assetRef;
+            AssetLink<T> assetLink = AssetLink<T>(std::dynamic_pointer_cast<T>(m_IdAssetMap[assetId]));
+            YCHECK(assetLink.IsValid(), "Turbo bug");
+            return assetLink;
         }
 
         template<typename T>
-        AssetRef<T> CreateAsset(const String& name, const String& path, const Id assetId = Id())
+        AssetLink<T> CreateAsset(const String& name, const String& path, const Id assetId = Id())
         {
             YCHECK(false, "Invalid asset type");
-            return AssetRef<T>();
+            return AssetLink<T>();
         }
 
         template<>
-        AssetRef<Shader> CreateAsset(const String& name, const String& path, const Id assetId)
+        AssetLink<Shader> CreateAsset(const String& name, const String& path, const Id assetId)
         {
             YCHECK(!name.empty(), "Asset must have a name!");
             YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
@@ -51,13 +51,13 @@ namespace Yumi
             assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
             assetData.AssetType = "Shader";
             shader->SetAssetData(assetData);
-            AssetRef assetRef(shader);
+            AssetLink assetLink(shader);
 
-            return assetRef;
+            return assetLink;
         }
 
         template<>
-        AssetRef<Texture2D> CreateAsset(const String& name, const String& path, const Id assetId)
+        AssetLink<Texture2D> CreateAsset(const String& name, const String& path, const Id assetId)
         {
             YCHECK(!name.empty(), "Asset must have a name!");
             YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
@@ -73,13 +73,13 @@ namespace Yumi
             assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
             assetData.AssetType = "Texture2D";
             texture->SetAssetData(assetData);
-            AssetRef<Texture2D> assetRef(texture);
+            AssetLink<Texture2D> assetLink(texture);
 
-            return assetRef;
+            return assetLink;
         }
 
         template<>
-        AssetRef<SubTexture2D> CreateAsset(const String& name, const String& path, const Id assetId)
+        AssetLink<SubTexture2D> CreateAsset(const String& name, const String& path, const Id assetId)
         {
             YCHECK(!name.empty(), "Asset must have a name!");
             YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
@@ -95,9 +95,9 @@ namespace Yumi
             assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
             assetData.AssetType = "SubTexture2D";
             subTexture->SetAssetData(assetData);
-            AssetRef<SubTexture2D> assetRef(subTexture);
+            AssetLink<SubTexture2D> assetLink(subTexture);
 
-            return assetRef;
+            return assetLink;
         }
 
     private:
@@ -108,13 +108,13 @@ namespace Yumi
         void UnloadAssets();
 
         template<typename T>
-        void TryLoadAsset(AssetRef<T> assetRef)
+        void TryLoadAsset(AssetLink<T> assetLink)
         {
-            const AssetData assetData = assetRef->GetAssetData();
+            const AssetData assetData = assetLink->GetAssetData();
             const char* fileName = assetData.Name.c_str();
             const char* assetType = assetData.AssetType.c_str();
 
-            if (assetRef->Load())
+            if (assetLink->Load())
             {
                 YLOG_TRACE("%s loaded: %s\n", assetType, fileName);
             }

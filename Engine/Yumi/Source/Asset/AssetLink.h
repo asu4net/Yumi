@@ -1,32 +1,48 @@
 #pragma once
+#include "Asset.h"
 
 namespace Yumi
 {
     template <typename T>
-    class AssetRef
+    class AssetLink
     {
     public:
-        AssetRef() = default;
+        AssetLink() = default;
         
-        AssetRef(const AssetRef<T>& other) = default;
+        AssetLink(const AssetLink<T>& other) = default;
         
-        AssetRef(const AssetRef<T>&& other)
+        AssetLink(const AssetLink<T>&& other)
             : m_Asset(std::move(other.m_Asset))
             , m_AssetData(other.m_AssetData)
         {}
 
-        AssetRef<T>& operator = (const AssetRef<T>& other) = default;
+        AssetLink<T>& operator = (const AssetLink<T>& other) = default;
 
-        AssetRef<T>& operator = (const AssetRef<T>&& other)
+        AssetLink<T>& operator = (const AssetLink<T>&& other)
         {
             m_Asset = std::move(other.m_Asset);
             m_AssetData = other.m_AssetData;
+            return *this;
+        }
+
+        bool operator == (const AssetLink<T>& other)
+        {
+            if (IsValid() && other.IsValid())
+                return m_AssetData.AssetId == m_AssetData.AssetId;
+            return false;
+        }
+
+        bool operator != (const AssetLink<T>& other)
+        {
+            return !(operator==(other));
         }
         
         SharedPtr<T> operator -> () { return Get(); }
-        SharedPtr<T> Get() { return m_Asset.expired() ? nullptr : m_Asset.lock(); }
+        const SharedPtr<T> operator -> () const { return Get(); }
+        
+        SharedPtr<T> Get() const { return m_Asset.expired() ? nullptr : m_Asset.lock(); }
 
-        ~AssetRef() { Clear(); }
+        ~AssetLink() { Clear(); }
 
         bool IsValid() const { return !m_Asset.expired(); }
 
@@ -39,7 +55,7 @@ namespace Yumi
         }
         
     private:
-        AssetRef(const SharedPtr<T>& asset)
+        AssetLink(const SharedPtr<T>& asset)
             : m_Asset(asset)
             , m_AssetData(asset ? asset->GetAssetData() : AssetData())
         {

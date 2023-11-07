@@ -1,4 +1,5 @@
 #pragma once
+#include "Asset\AssetLink.h"
 
 namespace Yumi
 {
@@ -15,19 +16,27 @@ namespace Yumi
             Vector2 Size = Vector2::One;
             Flip FlipMode = Flip::None;
             Vector2 UVScale = Vector2::One;
+            bool IsVisible = true;
+            int OrderInLayer = 0;
         };
 
         Sprite();
         Sprite(const Configuration& cfg);
-        Sprite(const SharedPtr<Texture2D> texture, const Configuration& cfg = {});
-        Sprite(const SharedPtr<SubTexture2D> subTexture, const Configuration& cfg = {});
+        Sprite(const AssetLink<Texture2D>& texture, const Configuration& cfg = {});
+        Sprite(const AssetLink<SubTexture2D>& subTexture, const Configuration& cfg = {});
         
-        void SetTexture(const SharedPtr<Texture2D> texture);
-        SharedPtr<Texture2D> GetTexture() const { return m_Texture; }
+        void SetVisible(bool visible) { m_IsVisible = visible; }
+        bool IsVisible() const { return m_IsVisible; }
 
-        void SetTexture(const SharedPtr<SubTexture2D> subTexture);
-        SharedPtr<SubTexture2D> GetSubTexture() const { return m_SubTexture; }
+        void SetTexture(const AssetLink<Texture2D>& texture);
+        AssetLink<Texture2D> GetTexture() const { return m_Texture; }
+
+        void SetTexture(const AssetLink<SubTexture2D>& subTexture);
+        AssetLink<SubTexture2D> GetSubTexture() const { return m_SubTexture; }
         
+        void SetOrderInLayer(int orderInLayer) { m_OrderInLayer = orderInLayer; }
+        int GetOrderInLayer() const { return m_OrderInLayer; }
+
         void SetConfiguration(const Configuration& cfg);
 
         void SetTransform(const Matrix4& transform);
@@ -55,8 +64,10 @@ namespace Yumi
         void UpdateVertexPositions(const Matrix4& transform);
         void FlipVertexUV(Flip flip);
 
-        SharedPtr<Texture2D> m_Texture;
-        SharedPtr<SubTexture2D> m_SubTexture;
+        bool m_IsVisible = true;
+        int m_OrderInLayer = 0;
+        AssetLink<Texture2D> m_Texture;
+        AssetLink<SubTexture2D> m_SubTexture;
         Matrix4 m_Transform;
         Color m_TintColor;
         Vector2 m_Size;

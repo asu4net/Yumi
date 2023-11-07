@@ -40,9 +40,12 @@ namespace Yumi
 
         m_SpriteRenderer->Begin(data);
 
-        for (const auto& [id, sprite] : m_IdSpriteMap)
+        for (const auto&[id, sprite] : m_IdSpriteMap)
         {
-            m_SpriteRenderer->SubmitSpriteData(sprite.GetVertexPositions(), sprite.GetVertexColors(), sprite.GetTexture(), sprite.GetVertexUVs());
+            if (!sprite.IsVisible())
+                continue;
+
+            m_SpriteRenderer->SubmitSpriteData(sprite.GetVertexPositions(), sprite.GetVertexColors(), sprite.GetTexture().Get(), sprite.GetVertexUVs());
         }
         
         m_SpriteRenderer->End();

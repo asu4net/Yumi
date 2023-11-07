@@ -59,6 +59,7 @@ namespace Yumi
         template<typename T>
         void Remove() const
         {
+            // Check with strings if type is transform o information component
             YCHECK(IsValid(), "Invalid Actor!");
             m_Registry.lock()->erase<T>(m_Entity);
         }
