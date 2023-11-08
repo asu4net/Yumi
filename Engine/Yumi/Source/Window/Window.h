@@ -1,5 +1,5 @@
 #pragma once
-#include "Rendering/GraphicsAPI.h"
+
 #include "WindowEvents.h"
 
 namespace Yumi

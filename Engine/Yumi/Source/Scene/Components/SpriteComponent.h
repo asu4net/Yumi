@@ -1,31 +1,28 @@
 #pragma once
 #include "Asset\AssetLink.h"
-#include "Rendering\Texture2D.h"
-#include "Rendering\SubTexture2D.h"
+#include "Rendering\Sprite.h"
 
 namespace Yumi
 {
     struct SpriteComponent
     {
+        Matrix4 TransformMatrix;
         bool IsVisible = true;
-        AssetLink<Texture2D> Texture;
-        AssetLink<SubTexture2D> SubTexture;
+        AssetLink<Sprite> SpriteSource;
         Color TintColor = Color::White;
         Vector2 Size = Vector2::One;
         Flip FlipMode = Flip::None;
         Vector2 UVScale = Vector2::One;
-        const Id SpriteId = 0;
+        int OrderInLayer = 0;
 
+        Array<Vector3, 4> VertexPositions;
+        Array<Vector2, 4> VertexUVs;
+        Array<Color, 4> VertexColors;
 
         SpriteComponent() = default;
 
-        SpriteComponent(const AssetLink<Texture2D>& texture)
-            : Texture(texture)
-        {
-        }
-
-        SpriteComponent(const AssetLink<SubTexture2D>& subTexture)
-            : SubTexture(subTexture)
+        SpriteComponent(const AssetLink<Sprite>& spriteSource)
+            : SpriteSource(spriteSource)
         {
         }
 
@@ -33,5 +30,19 @@ namespace Yumi
             : TintColor(tintColor)
         {
         }
+    };
+
+    class Actor;
+
+    struct SpriteStatics
+    {
+        static void UpdateTransformMatrix(Actor& actor);
+        static void UpdateVertexPositions(Actor& actor);
+        static void UpdateVertexUVs(Actor& actor);
+        static void SetTintColor(Actor& actor, const Color& color);
+        static void SetFlip(Actor& actor, Flip flip);
+        static void SetSize(Actor& actor, const Vector2& size);
+        static void SetUVScale(Actor& actor, const Vector2& uvScale);
+        static void SetSpriteSource(Actor& actor, const AssetLink<Sprite>& spriteSource);
     };
 }

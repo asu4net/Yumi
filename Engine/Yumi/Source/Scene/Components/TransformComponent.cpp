@@ -1,6 +1,5 @@
-#include "InformationComponent.h"
+#include "TransformComponent.h"
 
 namespace Yumi
 {
-
 }

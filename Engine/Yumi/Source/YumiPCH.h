@@ -125,12 +125,4 @@ namespace Yumi
 #include "Math/Color.h"
 #include "Core/Globals.h"
 
-// Enums
-#include "Rendering/GraphicsAPI.h"
-
-enum class Flip
-{
-    None, X, Y, Both
-};
-
 /// --------------------------

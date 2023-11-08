@@ -10,6 +10,9 @@
 #include "Rendering/RendererAPI.h"
 #include "Rendering/RenderCommandQueue.h"
 #include "Rendering/Renderer.h"
+#include "Scene/Actor.h"
+#include "Scene/Scene.h"
+#include "Scene/Components/SpriteComponent.h"
 
 namespace Yumi
 {
@@ -41,12 +44,13 @@ namespace Yumi
     void Engine::StartMainLoop()
     {
         //render test stuff
+        AssetLink<Texture2D> catTexture = AssetManager::GetInstance().GetAssetByName<Texture2D>("Bola.jpg");
+        AssetLink<Sprite> sprite = AssetManager::GetInstance().CreateAsset<Sprite>("Bola", "");
+        *(sprite.Get()) = Sprite(catTexture);
 
-        //Sprite
-        Id spriteId = m_Renderer.CreateSprite(m_AssetManager.GetAssetByName<Texture2D>("Bola.jpg"));
-        static Vector3 spritePosition;
-        static Vector3 spriteRotation;
-        static Vector3 spriteScale = Vector3::One;
+        Scene scene = Scene();
+        Actor actor = scene.CreateActor();
+        actor.Add<SpriteComponent>(sprite);
 
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP STARTED ******\n");
@@ -76,10 +80,11 @@ namespace Yumi
                 cameraPosition += Vector3::Right * 0.5f * m_Time.DeltaTime();
             if (Input::GetInstance().IsKeyPressed(KEY_A))
                 cameraPosition += Vector3::Left * 0.5f * m_Time.DeltaTime();
-            
-            m_Renderer.GetSprite(spriteId).SetTransform(Matrix4::CreateTransform(spritePosition, spriteRotation, spriteScale));
+
             m_Renderer.SetProjectionViewMatrix(Matrix4::OrthoProjection(left, right, -Size, Size,
                 NearPlane, FarPlane) * Matrix4::ViewProjection(cameraPosition, Vector3::Zero));
+           
+            scene.Update();
 
             String windowTitle = "Yumi Window";
             windowTitle.append(" | MousePos: " + m_Input.MousePosition().ToString());
@@ -90,7 +95,6 @@ namespace Yumi
             windowTitle.append(" | FixedUpdateCalls: " + std::to_string(m_Time.FixedUpdateCalls()));
             m_Window->SetTitle(windowTitle);
             
-            m_Renderer.Update();
             m_Window->Update();
         }
 

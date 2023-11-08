@@ -1,6 +1,6 @@
 #pragma once
 #include "Asset/Asset.h"
-#include "Rendering/Actor.h"
+#include "Actor.h"
 
 namespace Yumi
 {
@@ -26,7 +26,7 @@ namespace Yumi
         bool Load() override;
         void Unload() override;
 
-        const WeakPtr<entt::registry>& GetRegistry() const { return m_Registry; }
+        WeakPtr<entt::registry> GetRegistry() const { return m_Registry; }
 
         Actor CreateActor(const ActorCreationParams& params = {});
 

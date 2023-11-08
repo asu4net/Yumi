@@ -1,4 +1,5 @@
 #pragma once
+#include "Scene\Actor.h"
 
 namespace Yumi
 {
@@ -16,5 +17,7 @@ namespace Yumi
             , Scale(scale)
         {
         }
+
+        Matrix4 GetMatrix() { return Matrix4::CreateTransform(Position, Rotation, Scale); }
     };
 }

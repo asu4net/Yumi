@@ -1,5 +1,5 @@
 #pragma once
-#include "Rendering/Actor.h"
+#include "Scene\Actor.h"
 
 namespace Yumi
 {
@@ -8,7 +8,7 @@ namespace Yumi
     class System
     {
     public:
-        System(const SharedPtr<Scene>& scene);
+        System(Scene* scene);
 
         Scene& GetScene() const;
         entt::registry& GetRegistry() const;
@@ -25,6 +25,6 @@ namespace Yumi
         virtual void OnDestroy();
 
     private:
-        SharedPtr<Scene> m_Scene;
+        Scene* m_Scene = nullptr;
     };
 }

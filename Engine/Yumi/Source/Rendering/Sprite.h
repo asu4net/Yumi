@@ -1,82 +1,39 @@
 #pragma once
 #include "Asset\AssetLink.h"
+#include "Asset\Asset.h"
 
 namespace Yumi
 {
     class Texture2D;
     class SubTexture2D;
 
-    class Sprite
+    class Sprite : public Asset
     {
     public:
-        struct Configuration
-        {
-            Matrix4 Transform;
-            Color TintColor = Color::White;
-            Vector2 Size = Vector2::One;
-            Flip FlipMode = Flip::None;
-            Vector2 UVScale = Vector2::One;
-            bool IsVisible = true;
-            int OrderInLayer = 0;
-        };
-
-        Sprite();
-        Sprite(const Configuration& cfg);
-        Sprite(const AssetLink<Texture2D>& texture, const Configuration& cfg = {});
-        Sprite(const AssetLink<SubTexture2D>& subTexture, const Configuration& cfg = {});
+        Sprite() = default;
+        Sprite(const AssetLink<Texture2D>& texture);
+        Sprite(const AssetLink<SubTexture2D>& subTexture);
         
-        void SetVisible(bool visible) { m_IsVisible = visible; }
-        bool IsVisible() const { return m_IsVisible; }
+        bool Load() override;
+        void Unload() override;
 
-        void SetTexture(const AssetLink<Texture2D>& texture);
-        AssetLink<Texture2D> GetTexture() const { return m_Texture; }
-
-        void SetTexture(const AssetLink<SubTexture2D>& subTexture);
-        AssetLink<SubTexture2D> GetSubTexture() const { return m_SubTexture; }
+        AssetData GetAssetData() const override { return m_AssetData; };
         
-        void SetOrderInLayer(int orderInLayer) { m_OrderInLayer = orderInLayer; }
-        int GetOrderInLayer() const { return m_OrderInLayer; }
-
-        void SetConfiguration(const Configuration& cfg);
-
-        void SetTransform(const Matrix4& transform);
-        Matrix4 GetTransform() const { return m_Transform; }
-
-        void SetTintColor(const Color& color);
-        Color GetTintColor() const { return m_TintColor; }
-
-        void SetSize(const Vector2& size);
-        Vector2 GetSize() const { return m_Size; }
-
-        void SetFlip(Flip flip);
-        Flip GetFlip() const { return m_FlipMode; }
-
-        void SetUVScale(const Vector2& scale);
-        Vector2 GetUVScale() const { return m_UVScale; }
-
+        const AssetLink<Texture2D>& GetTexture() const { return m_Texture; }
+        const AssetLink<SubTexture2D>& GetSubTexture() const { return m_SubTexture; }
         const Array<Vector3, 4>& GetVertexPositions() const { return m_VertexPositions; }
         const Array<Vector2, 4>& GetVertexUVs() const { return m_VertexUVs; }
-        const Array<Color, 4>& GetVertexColors() const { return m_VertexColors; }
 
     private:
-        void UpdateVertexUV();
-        void UpdateLocalVertexPositions();
-        void UpdateVertexPositions(const Matrix4& transform);
-        void FlipVertexUV(Flip flip);
-
-        bool m_IsVisible = true;
-        int m_OrderInLayer = 0;
+        virtual void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; };
+        
+        AssetData m_AssetData;
         AssetLink<Texture2D> m_Texture;
         AssetLink<SubTexture2D> m_SubTexture;
-        Matrix4 m_Transform;
-        Color m_TintColor;
-        Vector2 m_Size;
-        Flip m_FlipMode = Flip::None;
-        Vector2 m_UVScale;
-        Array<Vector3, 4> m_LocalVertexPositions;
-        
+
         Array<Vector3, 4> m_VertexPositions;
         Array<Vector2, 4> m_VertexUVs;
-        Array<Color, 4> m_VertexColors;
+
+        friend class AssetManager;
     };
 }

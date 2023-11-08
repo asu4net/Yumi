@@ -2,13 +2,15 @@
 #include "Components\InformationComponent.h"
 #include "Components\TransformComponent.h"
 #include "Systems\System.h"
+#include "Systems\SpriteSystem.h"
 
 namespace Yumi
 {
     Scene::Scene()
         : m_Registry(CreateSharedPtr<entt::registry>())
     {
-        //m_Systems.push_back(CreateSharedPtr<SpriteS>())
+        m_Systems.push_back(CreateSharedPtr<SpriteSystem>(this));
+        m_Systems[0]->OnCreate();
     }
 
     bool Scene::Load()
@@ -32,10 +34,10 @@ namespace Yumi
     Actor Scene::CreateActor(const ActorCreationParams& params)
     {
         const auto& [id, entity] = CreateEntity(params.SpecificId);
-        const Actor actor(entity, m_Registry);
         const String Name = params.Name.empty() ? String().append("Actor [" + std::to_string(m_CreatedActorsCount) + "]") : params.Name;
-        actor.Add<InformationComponent>(params.Name, id, params.IsSerializable);
-        actor.Add<TransformComponent>(params.Position, params.Rotation, params.Scale);
+        m_Registry->emplace<InformationComponent>(entity, params.Name, id, params.IsSerializable);
+        m_Registry->emplace<TransformComponent>(entity, params.Position, params.Rotation, params.Scale);
+        const Actor actor(entity, m_Registry);
         m_CreatedActorsCount++;
         return actor;
     }

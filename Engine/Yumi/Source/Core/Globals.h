@@ -14,9 +14,19 @@ namespace Yumi
     String GetWorkingDirectory();
     String GetAssetsFolderName();
 
+    enum class GraphicsAPI
+    {
+        None, OpenGL
+    };
+
     enum class RenderTarget
     {
         Default, FrameBuffer
+    };
+
+    enum class Flip
+    {
+        None, X, Y, Both
     };
 
     namespace Graphics
@@ -24,6 +34,7 @@ namespace Yumi
         const String GetSpriteShaderName();
         const Array<Vector2, 4>& GetDefaultSpriteUVs();
         const Array<Vector3, 4>& GetDefaultSpriteVertexPositions();
-        void CalculateSpriteVertexPositions(const Vector2& textureSize, const Vector2& spriteSize, Array<Vector3, 4>& vertexPositions);
+        void CalculateSpriteVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions);
+        void FlipVertexUVs(Flip flip, Array<Vector2, 4>& vertexUVs);
     }
 }

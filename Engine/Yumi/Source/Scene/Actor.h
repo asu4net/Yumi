@@ -2,14 +2,21 @@
 
 namespace Yumi
 {
+    struct TransformComponent;
+    struct InformationComponent;
+
     class Actor
     {
+    private:
+        entt::entity m_Entity = entt::null;
+        WeakPtr<entt::registry> m_Registry;
+
     public:
-        Actor() = default;
-        Actor(const entt::entity entity, const WeakPtr<entt::registry>& registry)
-            : m_Entity(entity)
-            , m_Registry(registry)
-        {}
+        TransformComponent& Transform;
+        InformationComponent& Information;
+
+        Actor();
+        Actor(const entt::entity entity, const WeakPtr<entt::registry>& registry);
 
         Actor(const Actor& other) = default;
 
@@ -63,9 +70,5 @@ namespace Yumi
             YCHECK(IsValid(), "Invalid Actor!");
             m_Registry.lock()->erase<T>(m_Entity);
         }
-
-    private:
-        entt::entity m_Entity = entt::null;
-        WeakPtr<entt::registry> m_Registry;
     };
 }

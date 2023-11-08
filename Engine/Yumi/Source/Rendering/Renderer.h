@@ -10,33 +10,16 @@ namespace Yumi
     {
         YSINGLETON_FRIEND(Renderer)
     public:
-        void SetProjectionViewMatrix(const Matrix4& projectionViewMatrix) { m_ProjectionViewMatrix = projectionViewMatrix; }
+
+        void SetProjectionViewMatrix(const Matrix4& matrix) { m_ProjectionViewMatrix = matrix; }
         void SetRenderTarget(RenderTarget renderTarget) { m_CurrentRenderTarget = renderTarget; }
         void SetBlendingMode(BlendingMode blendingMode);
         void SetClearColor(const Color& clearColor);
+        void Clear();
         void SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height);
-
-        template<typename ...TArgs>
-        Id CreateSprite(TArgs&& ...args)
-        {
-            Id id;
-            m_IdSpriteMap[(uint64_t)id] = Sprite(std::forward<TArgs>(args)...);
-            return id;
-        }
-
-        Sprite& GetSprite(Id id)
-        {
-            YCHECK(m_IdSpriteMap.count((uint64_t)id), "Unregistered sprite id");
-            return m_IdSpriteMap[(uint64_t)id];
-        }
-
-        void DestroySprite(Id id)
-        {
-            YCHECK(m_IdSpriteMap.count((uint64_t)id), "Unregistered sprite id");
-            m_IdSpriteMap.erase((uint64_t)id);
-        }
-
-        void Update();
+        void Begin();
+        void SubmitSpriteData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, const SharedPtr<Texture2D>& texture, const Array<Vector2, 4>& vertexUV);
+        void End();
 
     private:
         Renderer(GraphicsAPI api);
@@ -51,6 +34,5 @@ namespace Yumi
         // Sprite Rendering
         SharedPtr<Shader> m_SpriteShader;
         UniquePtr<SpriteBatchRenderer> m_SpriteRenderer;
-        OrderedMap<uint64_t, Sprite> m_IdSpriteMap;
     };
 }

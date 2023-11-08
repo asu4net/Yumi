@@ -24,30 +24,35 @@ namespace Yumi
         m_CommandQueue->Submit<SetClearColorCommand>(m_RendererAPI, clearColor);
     }
 
+    void Renderer::Clear()
+    {
+        m_CommandQueue->Submit<ClearCommand>(m_RendererAPI);
+    }
+
     void Renderer::SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height)
     {
         m_CommandQueue->Submit<SetViewPortCommand>(m_RendererAPI, x, y, width, height);
     }
 
-    void Renderer::Update()
+    void Renderer::Begin()
     {
-        SpriteBatchRenderer::RenderData data;
-        data.CurrentRenderTarget = m_CurrentRenderTarget;
-        data.ProjectionViewMat4 = m_ProjectionViewMatrix;
-        data.SpriteShader = m_SpriteShader;
+        SpriteBatchRenderer::RenderData spriteRenderData{
+            m_CurrentRenderTarget,
+            m_ProjectionViewMatrix,
+            m_SpriteShader
+        };
 
-        m_CommandQueue->Submit<ClearCommand>(m_RendererAPI);
+        m_SpriteRenderer->Begin(spriteRenderData);
+    }
 
-        m_SpriteRenderer->Begin(data);
+    void Renderer::SubmitSpriteData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, const SharedPtr<Texture2D>& texture, const Array<Vector2, 4>& vertexUV)
+    {
+        m_SpriteRenderer->SubmitSpriteData(vertexPositions, vertexColors, texture, vertexUV);
+    }
 
-        for (const auto&[id, sprite] : m_IdSpriteMap)
-        {
-            if (!sprite.IsVisible())
-                continue;
-
-            m_SpriteRenderer->SubmitSpriteData(sprite.GetVertexPositions(), sprite.GetVertexColors(), sprite.GetTexture().Get(), sprite.GetVertexUVs());
-        }
-        
+    void Renderer::End()
+    {
         m_SpriteRenderer->End();
     }
+
 }
