@@ -29,6 +29,10 @@ namespace Yumi
         m_Window->Events().ResizeEvent.Add([&](int width, int height) { 
             m_Renderer.SetViewport(0, 0, width, height); 
         });
+
+        m_Renderer.SetBlendingModeEnabled(true);
+        m_Renderer.SetBlendingMode(BlendingMode::Alpha);
+        m_Renderer.SetClearColor(Color::DarkGrey);
     }
 
     Engine::~Engine()
@@ -46,8 +50,11 @@ namespace Yumi
         //render test stuff        
         Scene scene = Scene();
         
-        Actor catActor = scene.CreateActor();
+        Actor catActor = scene.CreateActor({"Cat"});
         catActor.Add<SpriteComponent>(AssetManager::GetInstance().CreateSpriteFromTexture("Bola.jpg"));
+
+        Actor secondActor = scene.CreateActor({"Cpp", Vector3(1, 0, 0)});
+        secondActor.Add<SpriteComponent>(AssetManager::GetInstance().CreateSpriteFromTexture("cpp.png"));
 
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP STARTED ******\n");

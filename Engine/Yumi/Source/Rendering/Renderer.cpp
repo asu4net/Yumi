@@ -10,13 +10,21 @@ namespace Yumi
         , m_SpriteShader(AssetManager::GetInstance().GetAssetByName<Shader>(Graphics::GetSpriteShaderName()).Get())
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
-        m_CommandQueue->Submit<SetBlendingEnabledCommand>(m_RendererAPI, true);
-        m_CommandQueue->Submit<SetClearColorCommand>(m_RendererAPI, Color::DarkGrey);
+    }
+
+    void Renderer::SetBlendingModeEnabled(bool enabled)
+    {
+        m_CommandQueue->Submit<SetBlendingEnabledCommand>(m_RendererAPI, enabled);
     }
 
     void Renderer::SetBlendingMode(BlendingMode blendingMode)
     {
         m_CommandQueue->Submit<SetBlendingModeCommand>(m_RendererAPI, blendingMode);
+    }
+
+    void Renderer::SetDepthTestEnabled(bool enabled)
+    {
+        m_CommandQueue->Submit<SetDepthTestEnabledCommand>(m_RendererAPI, enabled);
     }
 
     void Renderer::SetClearColor(const Color& clearColor)

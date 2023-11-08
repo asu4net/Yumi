@@ -13,7 +13,9 @@ namespace Yumi
 
         void SetProjectionViewMatrix(const Matrix4& matrix) { m_ProjectionViewMatrix = matrix; }
         void SetRenderTarget(RenderTarget renderTarget) { m_CurrentRenderTarget = renderTarget; }
+        void SetBlendingModeEnabled(bool enabled);
         void SetBlendingMode(BlendingMode blendingMode);
+        void SetDepthTestEnabled(bool enabled);
         void SetClearColor(const Color& clearColor);
         void Clear();
         void SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height);
