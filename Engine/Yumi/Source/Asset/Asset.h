@@ -4,11 +4,11 @@ namespace Yumi
 {
     struct AssetData
     {
-        Id AssetId = 0;
         String Name;
         String Path;
         String AbsolutePath;
         String AssetType;
+        Id AssetId;
     };
 
     class Asset

@@ -1,7 +1,10 @@
 #include "AssetManager.h"
+#include "AssetManager.h"
 
 namespace Yumi
 {
+    static constexpr char* s_EmptyPathString = "NO_PATH";
+
     AssetManager::AssetManager(const String& workingDirectory, GraphicsAPI api)
         : m_WorkingDirectory(workingDirectory)
         , m_AssetDirectory(m_WorkingDirectory + "\\" + GetAssetsFolderName())
@@ -16,6 +19,18 @@ namespace Yumi
     {
         UnloadAssets();
         YLOG_TRACE("AssetManager destroyed!\n");
+    }
+
+    AssetLink<Sprite> AssetManager::CreateSpriteFromTexture(const String& textureAssetName)
+    {
+        const String spriteName = textureAssetName + "[Sprite]";
+        return CreateSpriteAsset(AssetData{spriteName}, GetAssetByName<Texture2D>(textureAssetName));
+    }
+
+    AssetLink<Sprite> AssetManager::CreateSpriteFromSubTexture(const String& textureAssetName)
+    {
+        const String spriteName = textureAssetName + "[Sprite]";
+        return CreateSpriteAsset(AssetData{spriteName}, GetAssetByName<SubTexture2D>(textureAssetName));
     }
 
     void AssetManager::ImportAndLoadAssets()
@@ -35,11 +50,11 @@ namespace Yumi
 
             if (dirPath.extension() == ".png" || dirPath.extension() == ".jpg")
             {
-                TryLoadAsset(CreateAsset<Texture2D>(fileName, localPath));
+                TryLoadAsset(CreateTextureAsset(AssetData{ fileName, localPath }));
             }
             else if (dirPath.extension() == ".glsl")
             {
-                TryLoadAsset(CreateAsset<Shader>(fileName, localPath));
+                TryLoadAsset(CreateShaderAsset(AssetData{ fileName, localPath }));
             }
         }
     }
@@ -55,6 +70,23 @@ namespace Yumi
         m_IdAssetMap.clear();
         m_AssetNameIdMap.clear();
         YLOG_TRACE("Assets unloaded!\n");
+    }
+
+    void AssetManager::EnsureAssetDataConsistency(AssetData& assetData)
+    {
+        YCHECK(!assetData.Name.empty(), "Asset must have a name!");
+        YCHECK(!m_AssetNameIdMap.count(assetData.Name), "An asset with the same Name already exists!");
+        YCHECK(!m_IdAssetMap.count(assetData.AssetId), "An asset with the same AssetId already exists!");
+
+        if (assetData.Path.empty())
+        {
+            assetData.Path = s_EmptyPathString;
+            assetData.AbsolutePath = s_EmptyPathString;
+        }
+        else
+        {
+            assetData.AbsolutePath = m_WorkingDirectory + "\\" + assetData.Path;
+        }
     }
 
     void AssetManager::GetAssetDirectoryLocalPath(const String& path, String& localPath)

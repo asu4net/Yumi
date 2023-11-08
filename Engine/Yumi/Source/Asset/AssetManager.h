@@ -2,7 +2,6 @@
 
 #include "Asset.h"
 #include "AssetLink.h"
-
 #include "Rendering/Texture2D.h"
 #include "Rendering/SubTexture2D.h"
 #include "Rendering/Shader.h"
@@ -14,7 +13,6 @@ namespace Yumi
     {
         YSINGLETON_FRIEND(AssetManager)
     public:
-        inline static constexpr char* emptyPathString = "Pathless";
 
         template<typename T>
         AssetLink<T> GetAssetByName(const String& name)
@@ -28,100 +26,64 @@ namespace Yumi
             return assetLink;
         }
 
-        template<typename T>
-        AssetLink<T> CreateAsset(const String& name, const String& path, const Id assetId = Id())
+        template<typename... Args>
+        AssetLink<Shader> CreateShaderAsset(AssetData& assetData, Args&&... args)
         {
-            YCHECK(false, "Invalid asset type");
-            return AssetLink<T>();
-        }
+            EnsureAssetDataConsistency(assetData);
 
-        template<>
-        AssetLink<Shader> CreateAsset(const String& name, const String& path, const Id assetId)
-        {
-            YCHECK(!name.empty(), "Asset must have a name!");
-            YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
-
-            SharedPtr<Shader> shader = Shader::Create(m_GraphicsApi);
-            m_IdAssetMap[assetId] = shader;
-            m_AssetNameIdMap[name] = assetId;
-
-            AssetData assetData;
-            assetData.AssetId = assetId;
-            assetData.Name = name;
-            assetData.Path = path.empty() ? emptyPathString : path;
-            assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
-            assetData.AssetType = "Shader";
+            SharedPtr<Shader> shader = Shader::Create(m_GraphicsApi, std::forward<Args>(args)...);
             shader->SetAssetData(assetData);
-            AssetLink assetLink(shader);
-
-            return assetLink;
+            
+            m_IdAssetMap[assetData.AssetId] = shader;
+            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
+ 
+            return AssetLink(shader);
         }
 
-        template<>
-        AssetLink<Texture2D> CreateAsset(const String& name, const String& path, const Id assetId)
+        template<typename... Args>
+        AssetLink<Texture2D> CreateTextureAsset(AssetData& assetData, Args&&... args)
         {
-            YCHECK(!name.empty(), "Asset must have a name!");
-            YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
+            EnsureAssetDataConsistency(assetData);
 
-            SharedPtr<Texture2D> texture = Texture2D::Create(m_GraphicsApi);
-            m_IdAssetMap[assetId] = texture;
-            m_AssetNameIdMap[name] = assetId;
-
-            AssetData assetData;
-            assetData.AssetId = assetId;
-            assetData.Name = name;
-            assetData.Path = path.empty() ? emptyPathString : path;
-            assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
-            assetData.AssetType = "Texture2D";
+            SharedPtr<Texture2D> texture = Texture2D::Create(m_GraphicsApi, std::forward<Args>(args)...);
             texture->SetAssetData(assetData);
-            AssetLink<Texture2D> assetLink(texture);
 
-            return assetLink;
+            m_IdAssetMap[assetData.AssetId] = texture;
+            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
+
+            return AssetLink(texture);
         }
 
-        template<>
-        AssetLink<SubTexture2D> CreateAsset(const String& name, const String& path, const Id assetId)
+        template<typename... Args>
+        AssetLink<SubTexture2D> CreateSubTextureAsset(AssetData& assetData, Args&&... args)
         {
-            YCHECK(!name.empty(), "Asset must have a name!");
-            YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
+            EnsureAssetDataConsistency(assetData);
 
-            SharedPtr<SubTexture2D> subTexture = CreateSharedPtr<SubTexture2D>();
-            m_IdAssetMap[assetId] = subTexture;
-            m_AssetNameIdMap[name] = assetId;
-
-            AssetData assetData;
-            assetData.AssetId = assetId;
-            assetData.Name = name;
-            assetData.Path = path.empty() ? emptyPathString : path;
-            assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
-            assetData.AssetType = "SubTexture2D";
+            SharedPtr<SubTexture2D> subTexture = SubTexture2D::Create(std::forward<Args>(args)...);
             subTexture->SetAssetData(assetData);
-            AssetLink<SubTexture2D> assetLink(subTexture);
 
-            return assetLink;
+            m_IdAssetMap[assetData.AssetId] = subTexture;
+            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
+
+            return AssetLink(subTexture);
         }
 
-        template<>
-        AssetLink<Sprite> CreateAsset(const String& name, const String& path, const Id assetId)
+        template<typename... Args>
+        AssetLink<Sprite> CreateSpriteAsset(AssetData& assetData, Args&&... args)
         {
-            YCHECK(!name.empty(), "Asset must have a name!");
-            YCHECK(!m_IdAssetMap.count(assetId), "An asset with the same id already exists!");
+            EnsureAssetDataConsistency(assetData);
 
-            SharedPtr<Sprite> subTexture = CreateSharedPtr<Sprite>();
-            m_IdAssetMap[assetId] = subTexture;
-            m_AssetNameIdMap[name] = assetId;
+            SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>(std::forward<Args>(args)...);
+            sprite->SetAssetData(assetData);
 
-            AssetData assetData;
-            assetData.AssetId = assetId;
-            assetData.Name = name;
-            assetData.Path = path.empty() ? emptyPathString : path;
-            assetData.AbsolutePath = path.empty() ? emptyPathString : m_WorkingDirectory + "\\" + path;
-            assetData.AssetType = "SubTexture2D";
-            subTexture->SetAssetData(assetData);
-            AssetLink<Sprite> assetLink(subTexture);
+            m_IdAssetMap[assetData.AssetId] = sprite;
+            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
 
-            return assetLink;
+            return AssetLink(sprite);
         }
+
+        AssetLink<Sprite> CreateSpriteFromTexture(const String& textureAssetName);
+        AssetLink<Sprite> CreateSpriteFromSubTexture(const String& textureAssetName);
 
     private:
         AssetManager(const String& workingDirectory, GraphicsAPI api);
@@ -129,6 +91,7 @@ namespace Yumi
 
         void ImportAndLoadAssets();
         void UnloadAssets();
+        void EnsureAssetDataConsistency(AssetData& assetData);
 
         template<typename T>
         void TryLoadAsset(AssetLink<T> assetLink)

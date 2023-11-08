@@ -41,7 +41,13 @@ namespace Yumi
 
         view.each([&](entt::entity entity, const TransformComponent&, const SpriteComponent& sprite) {
             
-            SpriteStatics::UpdateTransformMatrix(GetActorFromEntity(entity));
+            Actor spriteActor = GetActorFromEntity(entity);
+            SpriteComponent& spriteComponent = spriteActor.Get<SpriteComponent>();
+            
+            if (!spriteComponent.IsVisible)
+                return;
+
+            SpriteStatics::UpdateTransformMatrix(spriteActor);
 
             // Draw
             renderer.Begin();

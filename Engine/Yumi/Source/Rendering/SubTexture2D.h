@@ -10,10 +10,11 @@ namespace Yumi
     {
     public:
         static SharedPtr<SubTexture2D> Create(const AssetLink<Texture2D>& parentTexture, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
-        static SharedPtr<SubTexture2D> CreateFromAtlasLocation(const AssetLink<Texture2D>& parentTexture, const Vector2& locationInAtlas, const Vector2& size);
+        static SharedPtr<SubTexture2D> Create(const AssetLink<Texture2D>& parentTexture, const Vector2& locationInAtlas, const Vector2& size);
 
         SubTexture2D() = default;
         SubTexture2D(const AssetLink<Texture2D>& parentTexture, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
+        SubTexture2D(const AssetLink<Texture2D>& parentTexture, const Vector2& locationInAtlas, const Vector2& size);
 
         AssetLink<Texture2D> GetParent() const { return m_ParentTexture; }
         const Array<Vector2, 4>& GetVertexUV() const { return m_VertexUV; }
@@ -30,6 +31,7 @@ namespace Yumi
         Vector2 m_Size;
         AssetData m_AssetData;
 
+        void SetUVCoords(const Vector2& uvMin, const Vector2& uvMax);
         void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
 
         friend class AssetManager;

@@ -43,14 +43,11 @@ namespace Yumi
 
     void Engine::StartMainLoop()
     {
-        //render test stuff
-        AssetLink<Texture2D> catTexture = AssetManager::GetInstance().GetAssetByName<Texture2D>("Bola.jpg");
-        AssetLink<Sprite> sprite = AssetManager::GetInstance().CreateAsset<Sprite>("Bola", "");
-        *(sprite.Get()) = Sprite(catTexture);
-
+        //render test stuff        
         Scene scene = Scene();
-        Actor actor = scene.CreateActor();
-        actor.Add<SpriteComponent>(sprite);
+        
+        Actor catActor = scene.CreateActor();
+        catActor.Add<SpriteComponent>(AssetManager::GetInstance().CreateSpriteFromTexture("Bola.jpg"));
 
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP STARTED ******\n");
