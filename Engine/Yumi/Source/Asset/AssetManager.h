@@ -6,6 +6,7 @@
 #include "Rendering/SubTexture2D.h"
 #include "Rendering/Shader.h"
 #include "Rendering/Sprite.h"
+#include "Scene/Scene.h"
 
 namespace Yumi
 {
@@ -13,6 +14,19 @@ namespace Yumi
     {
         YSINGLETON_FRIEND(AssetManager)
     public:
+
+        // Temporal
+        template<typename T>
+        void GetAssetsOfType(DynamicArray<AssetLink<T>>& assets)
+        {
+            for (auto& [id, asset] : m_IdAssetMap)
+            {
+                SharedPtr<T> desiredAsset = std::dynamic_pointer_cast<T>(asset);
+                if (!desiredAsset)
+                    continue;
+                assets.emplace_back(AssetLink(desiredAsset));
+            }
+        }
 
         template<typename T>
         AssetLink<T> GetAssetByName(const String& name)
@@ -80,6 +94,21 @@ namespace Yumi
             m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
 
             return AssetLink(sprite);
+        }
+
+        template<typename... Args>
+        AssetLink<Scene> CreateSceneAsset(AssetData& assetData, Args&&... args)
+        {
+            EnsureAssetDataConsistency(assetData);
+
+            SharedPtr<Scene> scene = CreateSharedPtr<Scene>(std::forward<Args>(args)...);
+            scene->SetAssetData(assetData);
+            scene->SetScenePtr(scene);
+
+            m_IdAssetMap[assetData.AssetId] = scene;
+            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
+
+            return AssetLink(scene);
         }
 
         AssetLink<Sprite> CreateSpriteFromTexture(const String& textureAssetName);

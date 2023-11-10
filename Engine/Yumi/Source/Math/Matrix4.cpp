@@ -171,9 +171,13 @@ namespace Yumi
 
     Vector4 Matrix4::operator*(const Vector4& other) const
     {
-        Matrix4 otherMat = Matrix4::Translate(Matrix4(), other);
-        Matrix4 resultMat = otherMat * (*this);
-        return resultMat.GetTranslation();
+        float x(other.x), y(other.y), z(other.z), w(other.w);
+        Vector4 v;
+        v.x = x * m[0][0] + y * m[0][1] + z * m[0][2] + w * m[0][3];
+        v.y = x * m[1][0] + y * m[1][1] + z * m[1][2] + w * m[1][3];
+        v.z = x * m[2][0] + y * m[2][1] + z * m[2][2] + w * m[2][3];
+        v.w = x * m[3][0] + y * m[3][1] + z * m[3][2] + w * m[3][3];
+        return v;
     }
 
     bool Matrix4::operator==(const Matrix4& other) const
@@ -250,7 +254,7 @@ namespace Yumi
         return matrix * scaleMatrix;
     }
 
-    Matrix4 Matrix4::OrthoProjection(float left, float right, float bottom, float top, float near, float far)
+    Matrix4 Matrix4::OrthoProjection(float left, float right, float bottom, float top, float near, float farPlane)
     {
         Matrix4 mat;
         mat.m[0][0] = 2 / (right - left);
@@ -259,6 +263,13 @@ namespace Yumi
         mat.m[3][0] = -(right + left) / (right - left);
         mat.m[3][1] = -(top + bottom) / (top - bottom);
         return mat;
+    }
+
+    Matrix4 Matrix4::OrthoProjection(const float aspectRatio, const float size, float nearPlane, float farPlane)
+    {
+        const float right = aspectRatio * size;
+        const float left = -right;
+        return Matrix4::OrthoProjection(left, right, -size, size, nearPlane, farPlane);
     }
 
     Matrix4 Matrix4::ViewProjection(const Vector3& position, const Vector3& rotation)

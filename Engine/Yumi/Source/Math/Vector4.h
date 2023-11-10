@@ -2,6 +2,8 @@
 
 namespace Yumi
 {
+    class Matrix4;
+
     struct Vector4
     {
         float x, y, z, w;
@@ -15,6 +17,7 @@ namespace Yumi
         Vector4 operator-(const Vector4& other) const;
         void operator-=(const Vector4& other);
         Vector4 operator*(float num) const;
+        Vector4 operator*(const Matrix4& other) const;
         void operator*=(float num);
         Vector4 operator/(float num) const;
         void operator/=(float num);

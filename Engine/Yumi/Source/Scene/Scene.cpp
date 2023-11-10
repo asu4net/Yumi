@@ -3,19 +3,18 @@
 #include "Components\TransformComponent.h"
 #include "Systems\System.h"
 #include "Systems\SpriteSystem.h"
+#include "Systems\CameraSystem.h"
+#include "Systems\ScriptSystem.h"
 
 namespace Yumi
 {
     Scene::Scene()
         : m_Registry(CreateSharedPtr<entt::registry>())
     {
-        m_Systems.push_back(CreateSharedPtr<SpriteSystem>(this));
-        m_Systems[0]->OnCreate();
     }
 
     bool Scene::Load()
     {
-        // TODO: Implement scene serialization
         return true;
     }
 
@@ -44,6 +43,10 @@ namespace Yumi
 
     void Scene::Start()
     {
+        m_Systems.push_back(CreateSharedPtr<ScriptSystem>(m_This));
+        m_Systems.push_back(CreateSharedPtr<CameraSystem>(m_This));
+        m_Systems.push_back(CreateSharedPtr<SpriteSystem>(m_This));
+
         for (SharedPtr<System> system : m_Systems)
             system->OnStart();
     }

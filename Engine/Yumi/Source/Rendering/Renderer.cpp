@@ -10,6 +10,12 @@ namespace Yumi
         , m_SpriteShader(AssetManager::GetInstance().GetAssetByName<Shader>(Graphics::GetSpriteShaderName()).Get())
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
+        YLOG_TRACE("Renderer created!\n");
+    }
+
+    Renderer::~Renderer()
+    {
+        YLOG_TRACE("Renderer destroyed!\n");
     }
 
     void Renderer::SetBlendingModeEnabled(bool enabled)
@@ -42,7 +48,12 @@ namespace Yumi
         m_CommandQueue->Submit<SetViewPortCommand>(m_RendererAPI, x, y, width, height);
     }
 
-    void Renderer::Begin()
+    void Renderer::SubmitSpritePrimitive(const SpritePrimitive& sprite)
+    {
+        m_SpritePrimitivesDrawList.emplace_back(sprite);
+    }
+
+    void Renderer::DrawPrimitives()
     {
         SpriteBatchRenderer::RenderData spriteRenderData{
             m_CurrentRenderTarget,
@@ -51,16 +62,13 @@ namespace Yumi
         };
 
         m_SpriteRenderer->Begin(spriteRenderData);
-    }
 
-    void Renderer::SubmitSpriteData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, const SharedPtr<Texture2D>& texture, const Array<Vector2, 4>& vertexUV)
-    {
-        m_SpriteRenderer->SubmitSpriteData(vertexPositions, vertexColors, texture, vertexUV);
-    }
+        for (const SpritePrimitive& sprite : m_SpritePrimitivesDrawList)
+        {
+            m_SpriteRenderer->SubmitSpritePrimitive(sprite);
+        }
 
-    void Renderer::End()
-    {
+        m_SpritePrimitivesDrawList.clear();
         m_SpriteRenderer->End();
     }
-
 }

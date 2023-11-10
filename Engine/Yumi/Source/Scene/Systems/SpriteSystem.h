@@ -9,10 +9,9 @@ namespace Yumi
     class SpriteSystem : public System
     {
     public:
-        SpriteSystem(Scene* scene);
+        SpriteSystem(const SharedPtr<Scene>& scene);
 
         int GetExecutionOrder() const { return SystemExecutionOrder::SpriteSystemIndex; };
-        void OnCreate() override;
         void OnUpdate() override;
         void OnFinish() override;
 

@@ -3,16 +3,21 @@
 
 namespace Yumi
 {
-    System::System(Scene* scene)
+    System::System(const SharedPtr<Scene>& scene)
         : m_Scene(scene)
     {
         YCHECK(m_Scene, "A valid scene is required");
     }
     
-    Scene& System::GetScene() const
+    const SharedPtr<Yumi::Scene>& System::GetScenePtr() const
     {
         YCHECK(m_Scene, "Scene is not valid");
-        return *m_Scene;
+        return m_Scene;
+    }
+
+    Scene& System::GetScene() const
+    {
+        return *GetScenePtr().get();
     }
 
     entt::registry& System::GetRegistry() const
@@ -25,10 +30,6 @@ namespace Yumi
     Actor System::GetActorFromEntity(entt::entity entity)
     {
         return Actor(entity, m_Scene->GetRegistry());
-    }
-
-    void System::OnCreate()
-    {
     }
 
     void System::OnStart()
@@ -44,10 +45,6 @@ namespace Yumi
     }
 
     void System::OnFinish()
-    {
-    }
-
-    void System::OnDestroy()
     {
     }
 }

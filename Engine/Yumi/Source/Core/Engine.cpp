@@ -10,9 +10,15 @@
 #include "Rendering/RendererAPI.h"
 #include "Rendering/RenderCommandQueue.h"
 #include "Rendering/Renderer.h"
-#include "Scene/Actor.h"
+#include "Scene/World.h"
 #include "Scene/Scene.h"
+#include "Scene/Actor.h"
 #include "Scene/Components/SpriteComponent.h"
+#include "Scene/Components/CameraComponent.h"
+#include "Scene/Components/TransformComponent.h"
+#include "Scripting/Script.h"
+#include "Scene/Components/ScriptComponent.h"
+#include "Scripting/Scripts/EditorCameraController.h"
 
 namespace Yumi
 {
@@ -22,6 +28,7 @@ namespace Yumi
         , m_Input(Input::CreateInstance(m_Window))
         , m_AssetManager(AssetManager::CreateInstance(GetWorkingDirectory(), GraphicsAPI::OpenGL))
         , m_Renderer(Renderer::CreateInstance(GraphicsAPI::OpenGL))
+        , m_World(World::CreateInstance())
     {
         YLOG_TRACE("Yumi Engine created!\n");
         
@@ -38,6 +45,7 @@ namespace Yumi
     Engine::~Engine()
     {
         YLOG_TRACE("Yumi Engine begin destroy...\n");
+        World::DestroyInstance();
         AssetManager::DestroyInstance();
         Input::DestroyInstance();
         Time::DestroyInstance();
@@ -45,16 +53,32 @@ namespace Yumi
         YLOG_TRACE("Yumi Engine destroyed!\n");
     }
 
-    void Engine::StartMainLoop()
+    class TestScript : public Script
     {
-        //render test stuff        
-        Scene scene = Scene();
-        
-        Actor catActor = scene.CreateActor({"Cat"});
-        catActor.Add<SpriteComponent>(AssetManager::GetInstance().CreateSpriteFromTexture("Bola.jpg"));
+        void OnUpdate() override
+        {
+            GetActor().GetTransform().Position += Vector3::Right * 0.3f * GetDeltaTime();
+        }
+    };
 
-        Actor secondActor = scene.CreateActor({"Cpp", Vector3(1, 0, 0)});
-        secondActor.Add<SpriteComponent>(AssetManager::GetInstance().CreateSpriteFromTexture("cpp.png"));
+    void Engine::StartMainLoop()
+    {  
+        AssetManager& assetManager = AssetManager::GetInstance();
+        AssetLink<Scene> testScene = assetManager.CreateSceneAsset(AssetData{ "Test Scene" });
+        testScene->SetStartScene(true);
+        testScene->SetRuntimeEnabled(false);
+        m_World.Start();
+
+        Actor sceneCamera = testScene->CreateActor({ "Scene Camera" });
+        CameraComponent& camera = sceneCamera.Add<CameraComponent>();
+        ScriptStatics::Attach<EditorCameraController>(sceneCamera);
+
+        Actor catActor = testScene->CreateActor({"Cat"});
+        catActor.Add<SpriteComponent>(assetManager.CreateSpriteFromTexture("Bola.jpg"));
+        ScriptStatics::Attach<TestScript>(catActor);
+
+        Actor secondActor = testScene->CreateActor({"Cpp", Vector3(1, 0, 0)});
+        secondActor.Add<SpriteComponent>(assetManager.CreateSpriteFromTexture("cpp.png"));
 
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP STARTED ******\n");
@@ -65,17 +89,8 @@ namespace Yumi
         while (m_Window->IsOpened())
         {
             m_Time.CalculateTimeStep();
+            Vector3& cameraPosition = sceneCamera.GetTransform().Position;
 
-            // Camera
-            static Vector3 cameraPosition;
-            float Size = 1.f;
-            float NearPlane = 0.1f;
-            float FarPlane = 1000.f;
-            const float aspect = static_cast<float>(m_Window->GetWidth()) / static_cast<float>(m_Window->GetHeight());
-            const float right = aspect * Size; //update aspect ratio
-            const float left = -right;
-
-            //render test stuff
             if (Input::GetInstance().IsKeyPressed(KEY_W))
                 cameraPosition += Vector3::Up * 0.5f * m_Time.DeltaTime();
             if (Input::GetInstance().IsKeyPressed(KEY_S))
@@ -84,11 +99,20 @@ namespace Yumi
                 cameraPosition += Vector3::Right * 0.5f * m_Time.DeltaTime();
             if (Input::GetInstance().IsKeyPressed(KEY_A))
                 cameraPosition += Vector3::Left * 0.5f * m_Time.DeltaTime();
+            
+            static bool runtimeEnabled = false;
+            if (Input::GetInstance().IsKeyPressed(KEY_LEFT_CONTROL) && Input::GetInstance().IsKeyPressed(KEY_P))
+            {
+                World::GetInstance().GetActiveScene()->SetRuntimeEnabled(runtimeEnabled);
+                runtimeEnabled = !runtimeEnabled;
+            }
 
-            m_Renderer.SetProjectionViewMatrix(Matrix4::OrthoProjection(left, right, -Size, Size,
-                NearPlane, FarPlane) * Matrix4::ViewProjection(cameraPosition, Vector3::Zero));
-           
-            scene.Update();
+            Input& input = Input::GetInstance();
+            const UniquePtr<Window>& window = GetEngine().GetWindow();
+            catActor.GetTransform().Position = Math::ScreenToWorldPoint(camera.ProjectionMatrix * camera.ViewMatrix, input.MousePosition(), window->GetSize());
+
+            m_World.Update();
+            m_Renderer.DrawPrimitives();
 
             String windowTitle = "Yumi Window";
             windowTitle.append(" | MousePos: " + m_Input.MousePosition().ToString());

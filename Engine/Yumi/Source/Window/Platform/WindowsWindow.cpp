@@ -35,6 +35,7 @@ namespace Yumi
         Events().ResizeEvent.Add([&](int width, int height) {
             m_Config.Width = width;
             m_Config.Height = height;
+            m_Config.Aspect = (float) width / (float) height;
         });
     }
 

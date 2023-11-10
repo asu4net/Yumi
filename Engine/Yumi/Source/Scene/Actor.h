@@ -12,15 +12,13 @@ namespace Yumi
         WeakPtr<entt::registry> m_Registry;
 
     public:
-        TransformComponent& Transform;
-        InformationComponent& Information;
-
-        Actor();
+        Actor() = default;
         Actor(const entt::entity entity, const WeakPtr<entt::registry>& registry);
-
         Actor(const Actor& other) = default;
 
         entt::entity GetEntity() const { return m_Entity; }
+        TransformComponent& GetTransform() const;
+        InformationComponent& GetInformation() const;
 
         bool operator==(const Actor& other)
         {

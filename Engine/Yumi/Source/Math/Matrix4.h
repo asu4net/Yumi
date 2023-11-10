@@ -34,7 +34,8 @@ namespace Yumi
         static Matrix4 Rotate(const Matrix4& matrix, const Vector3& rotation);
         static Matrix4 Scale(const Matrix4& matrix, const Vector3& scale);
 
-        static Matrix4 OrthoProjection(float left, float right, float bottom, float top, float near, float far);
+        static Matrix4 OrthoProjection(const float aspectRatio, const float size, float nearPlane, float farPlane);
+        static Matrix4 OrthoProjection(float left, float right, float bottom, float top, float nearPlane, float farPlane);
         static Matrix4 ViewProjection(const Vector3& position, const Vector3& rotation);
     };
 }

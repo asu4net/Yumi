@@ -26,6 +26,17 @@ namespace Yumi
         uint32_t GetWidth() const override { return m_Config.Width; };
         uint32_t GetHeight() const override { return m_Config.Height; };
         
+        float GetAspect() const override { return m_Config.Aspect; }
+        
+        Vector2 GetSize() const override
+        {
+            const Vector2 windowSize = {
+               static_cast<float>(GetWidth()),
+               static_cast<float>(GetHeight())
+            };
+            return windowSize;
+        }
+
         void SetVSync(bool enabled) override;
         bool IsVSync() const override { return m_Config.VSync; };
         

@@ -13,6 +13,7 @@ namespace Yumi
         {
             String Title{"Yumi Window"};
             int Width{ 1280 }, Height{ 720 };
+            float Aspect = (float) Width / (float) Height;
             GraphicsAPI API = GraphicsAPI::OpenGL;
             bool VSync{ true };
             CursorMode CursorMode{ CursorMode::Normal };
@@ -30,6 +31,10 @@ namespace Yumi
         virtual uint32_t GetWidth() const = 0;
         
         virtual uint32_t GetHeight() const = 0;
+
+        virtual float GetAspect() const = 0;
+
+        virtual Vector2 GetSize() const = 0;
 
         virtual void SetVSync(bool enabled) = 0;
         virtual bool IsVSync() const = 0;

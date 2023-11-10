@@ -5,22 +5,17 @@
 
 namespace Yumi
 {
-
-    SpriteSystem::SpriteSystem(Scene* scene)
+    SpriteSystem::SpriteSystem(const SharedPtr<Scene>& scene)
         : System(scene)
-    {
-    }
-
-    void SpriteSystem::OnCreate()
     {
         GetRegistry().on_construct<SpriteComponent>().connect<&SpriteSystem::OnSpriteComponentAdded>(this);
     }
-
+    
     void SpriteSystem::OnSpriteComponentAdded(entt::registry&, const entt::entity entity)
     {
         Actor actor = GetActorFromEntity(entity);
         SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        sprite.TransformMatrix = actor.Transform.GetMatrix();
+        sprite.TransformMatrix = actor.GetTransform().GetMatrix();
         SpriteStatics::UpdateVertexPositions(actor);
         SpriteStatics::UpdateVertexUVs(actor);
         SpriteStatics::SetTintColor(actor, sprite.TintColor);
@@ -48,17 +43,15 @@ namespace Yumi
                 return;
 
             SpriteStatics::UpdateTransformMatrix(spriteActor);
+            
+            SpritePrimitive spritePrimitive{
+                sprite.VertexPositions,
+                sprite.VertexColors,
+                sprite.VertexUVs,
+                sprite.SpriteSource->GetTexture().Get()
+            };
 
-            // Draw
-            renderer.Begin();
-
-            renderer.SubmitSpriteData(
-                sprite.VertexPositions, 
-                sprite.VertexColors, 
-                sprite.SpriteSource->GetTexture().Get(), 
-                sprite.VertexUVs
-            );
-            renderer.End();
+            renderer.SubmitSpritePrimitive(spritePrimitive);
         });
     }
 

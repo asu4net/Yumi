@@ -10,6 +10,14 @@ namespace Yumi
     class IndexBuffer;
     class Texture2D;
 
+    struct SpritePrimitive
+    {
+        Array<Vector3, 4> VertexPositions;
+        Array<Color, 4> VertexColors;
+        Array<Vector2, 4> VertexUV = Graphics::GetDefaultSpriteUVs();
+        SharedPtr<Texture2D> Texture = nullptr;
+    };
+
     class SpriteBatchRenderer
     {
     public:
@@ -38,10 +46,7 @@ namespace Yumi
 
         void Begin(RenderData& renderData);
         
-        void SubmitSpriteData(const Array<Vector3, 4>& vertexPositions, 
-            const Array<Color, 4>& vertexColors,
-            const SharedPtr<Texture2D>& texture = nullptr,
-            const Array<Vector2, 4>& vertexUV = Graphics::GetDefaultSpriteUVs());
+        void SubmitSpritePrimitive(const SpritePrimitive& sprite);
         
         void End();
 

@@ -41,14 +41,14 @@ namespace Yumi
         StartBatch();
     }
 
-    void SpriteBatchRenderer::SubmitSpriteData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, const SharedPtr<Texture2D>& texture, const Array<Vector2, 4>& vertexUV)
+    void SpriteBatchRenderer::SubmitSpritePrimitive(const SpritePrimitive& sprite)
     {
         for (int i = 0; i < 4; i++)
         {
-            m_LastVertex->Position = vertexPositions[i];
-            m_LastVertex->TintColor = vertexColors[i];
-            m_LastVertex->UV = vertexUV[i];
-            m_LastVertex->TextureSlot = CalculateTextureSlot(texture);
+            m_LastVertex->Position = sprite.VertexPositions[i];
+            m_LastVertex->TintColor = sprite.VertexColors[i];
+            m_LastVertex->UV = sprite.VertexUV[i];
+            m_LastVertex->TextureSlot = CalculateTextureSlot(sprite.Texture);
 
             m_LastVertex++;
         }

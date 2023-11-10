@@ -4,6 +4,8 @@ namespace Yumi
 {
     namespace SystemExecutionOrder
     {
-        int SpriteSystemIndex = 0;
+        int ScriptSystemIndex = 1000;
+        int CameraSystemIndex = 2000;
+        int SpriteSystemIndex = 3000;
     }
 }

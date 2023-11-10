@@ -60,6 +60,21 @@ namespace Yumi
         return s_AssetFolderName;
     }
 
+    namespace Math
+    {
+        Vector3 ScreenToWorldPoint(const Matrix4& ProjectionViewMatrix, const Vector2& screenPoint, const Vector2& windowSize)
+        {
+            const float halfScreenWidth = windowSize.x / 2.f;
+            const float halfScreenHeight = windowSize.y / 2.f;
+            const Matrix4 inverseMv = ProjectionViewMatrix.GetInverse();
+            const Vector4 nearPlane = Vector4(((screenPoint.x - halfScreenWidth) / halfScreenWidth),
+                (-1 * (screenPoint.y - halfScreenHeight) / halfScreenHeight), -1, 1.0);
+            Vector4 nearResult = inverseMv * nearPlane;
+            nearResult /= nearResult.w;
+            return { nearResult.x, nearResult.y, 0 };
+        }
+    }
+
     namespace Graphics
     {
 

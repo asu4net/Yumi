@@ -14,6 +14,11 @@ namespace Yumi
     String GetWorkingDirectory();
     String GetAssetsFolderName();
 
+    namespace Math
+    {
+        Vector3 ScreenToWorldPoint(const Matrix4& ProjectionViewMatrix, const Vector2& screenPoint, const Vector2& windowSize);
+    }
+
     enum class GraphicsAPI
     {
         None, OpenGL

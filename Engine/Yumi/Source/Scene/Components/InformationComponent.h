@@ -5,8 +5,8 @@ namespace Yumi
     struct InformationComponent
     {
         String Name;
-        const Id ID;
-        const bool IsSerializable;
+        Id ID;
+        bool IsSerializable;
 
         InformationComponent()
             : Name("Uninitialized")

@@ -48,6 +48,16 @@ namespace Yumi
         return { x * num, y * num, z * num, w * num };
     }
 
+    Vector4 Vector4::operator*(const Matrix4& other) const
+    {
+        Vector4 v;
+        v.x = x * other.m[0][0] + y * other.m[1][0] + z * other.m[2][0] + w * other.m[3][0];
+        v.y = x * other.m[0][1] + y * other.m[1][1] + z * other.m[2][1] + w * other.m[3][1];
+        v.z = x * other.m[0][2] + y * other.m[1][2] + z * other.m[2][2] + w * other.m[3][2];
+        v.w = x * other.m[0][3] + y * other.m[1][3] + z * other.m[2][3] + w * other.m[3][3];
+        return v;
+    }
+
     void Vector4::operator*=(float num)
     {
         *this = *this * num;

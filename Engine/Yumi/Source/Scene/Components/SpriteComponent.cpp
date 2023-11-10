@@ -8,7 +8,7 @@ namespace Yumi
     void SpriteStatics::UpdateTransformMatrix(Actor& actor)
     {
         SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        const Matrix4 actorTransformMatrix = actor.Transform.GetMatrix();
+        const Matrix4 actorTransformMatrix = actor.GetTransform().GetMatrix();
         if (sprite.TransformMatrix == actorTransformMatrix)
             return;
 
@@ -25,7 +25,7 @@ namespace Yumi
 
         for (uint32_t i = 0; i < 4; i++)
         {
-            sprite.VertexPositions[i] = sprite.TransformMatrix * Vector4(localVertexPositions[i], 1.);
+            sprite.VertexPositions[i] = Vector4(localVertexPositions[i], 1.f) * sprite.TransformMatrix;
             sprite.VertexPositions[i].x *= sprite.Size.x;
             sprite.VertexPositions[i].y *= sprite.Size.y;
         }

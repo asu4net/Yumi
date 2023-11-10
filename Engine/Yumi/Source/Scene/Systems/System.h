@@ -8,8 +8,9 @@ namespace Yumi
     class System
     {
     public:
-        System(Scene* scene);
-
+        System(const SharedPtr<Scene>& scene);
+        
+        const SharedPtr<Scene>& GetScenePtr() const;
         Scene& GetScene() const;
         entt::registry& GetRegistry() const;
 
@@ -17,14 +18,12 @@ namespace Yumi
         
         virtual int GetExecutionOrder() const { return INT_MAX; }
 
-        virtual void OnCreate();
         virtual void OnStart();
         virtual void OnUpdate();
         virtual void OnFixedUpdate();
         virtual void OnFinish();
-        virtual void OnDestroy();
 
     private:
-        Scene* m_Scene = nullptr;
+         SharedPtr<Scene> m_Scene;
     };
 }
