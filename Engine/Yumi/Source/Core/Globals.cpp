@@ -67,8 +67,9 @@ namespace Yumi
             const float halfScreenWidth = windowSize.x / 2.f;
             const float halfScreenHeight = windowSize.y / 2.f;
             const Matrix4 inverseMv = ProjectionViewMatrix.GetInverse();
-            const Vector4 nearPlane = Vector4(((screenPoint.x - halfScreenWidth) / halfScreenWidth),
-                (-1 * (screenPoint.y - halfScreenHeight) / halfScreenHeight), -1, 1.0);
+            const float nearPlaneX = (screenPoint.x - halfScreenWidth) / halfScreenWidth;
+            const float nearPlaneY = -((screenPoint.y - halfScreenHeight) / halfScreenHeight);
+            const Vector4 nearPlane = { nearPlaneX, nearPlaneY, -1, 1};
             Vector4 nearResult = inverseMv * nearPlane;
             nearResult /= nearResult.w;
             return { nearResult.x, nearResult.y, 0 };

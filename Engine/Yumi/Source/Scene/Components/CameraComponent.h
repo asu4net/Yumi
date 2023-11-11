@@ -5,7 +5,7 @@ namespace Yumi
     struct CameraComponent
     {
         float Size = 1.f;
-        float NearPlane = 0.1f;
+        float NearPlane = 0.f;
         float FarPlane = 1000.f;
         int Priority = 0;
         Matrix4 ProjectionMatrix;

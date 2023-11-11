@@ -15,31 +15,27 @@ namespace Yumi
         m[2][2] = 1;
         m[3][3] = 1;
     }
-
-    Yumi::Vector3 Matrix4::GetTranslation() const
-    {
-        return { m[3][0], m[3][1], m[3][2] };
-    }
     
+    void Matrix4::SetZero()
+    {
+        memset(m, 0, sizeof(float) * 16);
+    }
+
     Matrix4 Matrix4::GetTransposed() const
     {
         Matrix4 transposed;
-        transposed.m[0][0] = m[0][0];
         transposed.m[0][1] = m[1][0];
         transposed.m[0][2] = m[2][0];
         transposed.m[0][3] = m[3][0];
         transposed.m[1][0] = m[0][1];
-        transposed.m[1][1] = m[1][1];
         transposed.m[1][2] = m[2][1];
         transposed.m[1][3] = m[3][1];
         transposed.m[2][0] = m[0][2];
         transposed.m[2][1] = m[1][2];
-        transposed.m[2][2] = m[2][2];
         transposed.m[2][3] = m[3][2];
         transposed.m[3][0] = m[0][3];
         transposed.m[3][1] = m[1][3];
         transposed.m[3][2] = m[2][3];
-        transposed.m[3][3] = m[3][3];
         return transposed;
     }
 
@@ -149,16 +145,15 @@ namespace Yumi
     Matrix4 Matrix4::operator*(const Matrix4& other) const
     {
         Matrix4 result;
-
         for (uint32_t i = 0; i < 4; i++)
         {
             for (uint32_t j = 0; j < 4; j++)
             {
                 result.m[i][j] =
-                    m[i][0] * other.m[0][j] +
-                    m[i][1] * other.m[1][j] +
-                    m[i][2] * other.m[2][j] +
-                    m[i][3] * other.m[3][j];
+                    m[0][j] * other.m[i][0] +
+                    m[1][j] * other.m[i][1] +
+                    m[2][j] * other.m[i][2] +
+                    m[3][j] * other.m[i][3];
             }
         }
         return result;
@@ -171,12 +166,11 @@ namespace Yumi
 
     Vector4 Matrix4::operator*(const Vector4& other) const
     {
-        float x(other.x), y(other.y), z(other.z), w(other.w);
         Vector4 v;
-        v.x = x * m[0][0] + y * m[0][1] + z * m[0][2] + w * m[0][3];
-        v.y = x * m[1][0] + y * m[1][1] + z * m[1][2] + w * m[1][3];
-        v.z = x * m[2][0] + y * m[2][1] + z * m[2][2] + w * m[2][3];
-        v.w = x * m[3][0] + y * m[3][1] + z * m[3][2] + w * m[3][3];
+        v.x = other.x * m[0][0] + other.y * m[1][0] + other.z * m[2][0] + other.w * m[3][0];
+        v.y = other.x * m[0][1] + other.y * m[1][1] + other.z * m[2][1] + other.w * m[3][1];
+        v.z = other.x * m[0][2] + other.y * m[1][2] + other.z * m[2][2] + other.w * m[3][2];
+        v.w = other.x * m[0][3] + other.y * m[1][3] + other.z * m[2][3] + other.w * m[3][3];
         return v;
     }
 
@@ -222,25 +216,39 @@ namespace Yumi
         return matrix * translateMatrix;
     }
 
-    Matrix4 Matrix4::Rotate(const Matrix4& matrix, const Vector3& rotation)
+    Matrix4 Matrix4::RotateX(const Matrix4& matrix, float x)
     {
         Matrix4 rotateMatrix;
-
-        const float x = rotation.x;
-        const float y = rotation.y;
-        const float z = rotation.z;
-
-        rotateMatrix.m[1][1] = cos(x) + cos(z);
-        rotateMatrix.m[1][2] = sin(x);
-        rotateMatrix.m[2][1] = -sin(x);
-        rotateMatrix.m[2][2] = cos(x) + cos(y);
-        rotateMatrix.m[0][0] = cos(y) + cos(z);
-        rotateMatrix.m[0][2] = sin(y);
-        rotateMatrix.m[2][0] = -sin(y);
-        rotateMatrix.m[0][1] = sin(z);
-        rotateMatrix.m[1][0] = -sin(z);
-
+        rotateMatrix.n[5] =  cosf(x);
+        rotateMatrix.n[9] = -sinf(x);
+        rotateMatrix.n[6] =  sinf(x);
+        rotateMatrix.n[10] = cosf(x);
         return matrix * rotateMatrix;
+    }
+
+    Matrix4 Matrix4::RotateY(const Matrix4& matrix, float y)
+    {
+        Matrix4 rotateMatrix;
+        rotateMatrix.n[0] =  cosf(y);
+        rotateMatrix.n[8] =  sinf(y);
+        rotateMatrix.n[2] = -sinf(y);
+        rotateMatrix.n[10] = cosf(y);
+        return matrix * rotateMatrix;
+    }
+
+    Matrix4 Matrix4::RotateZ(const Matrix4& matrix, float z)
+    {
+        Matrix4 rotateMatrix;
+        rotateMatrix.n[0] =  cosf(z);
+        rotateMatrix.n[4] = -sinf(z);
+        rotateMatrix.n[1] =  sinf(z);
+        rotateMatrix.n[5] =  cosf(z);
+        return matrix * rotateMatrix;
+    }
+
+    Matrix4 Matrix4::Rotate(const Matrix4& matrix, const Vector3& rotation)
+    {
+        return RotateZ(RotateY(RotateX(matrix, rotation.x), rotation.y), rotation.x);
     }
 
     Matrix4 Matrix4::Scale(const Matrix4& matrix, const Vector3& scale)
@@ -254,14 +262,15 @@ namespace Yumi
         return matrix * scaleMatrix;
     }
 
-    Matrix4 Matrix4::OrthoProjection(float left, float right, float bottom, float top, float near, float farPlane)
+    Matrix4 Matrix4::OrthoProjection(float left, float right, float bottom, float top, float nearPlane, float farPlane)
     {
         Matrix4 mat;
         mat.m[0][0] = 2 / (right - left);
         mat.m[1][1] = 2 / (top - bottom);
-        mat.m[2][2] = -1;
+        mat.m[2][2] = -2 / (farPlane - nearPlane);
         mat.m[3][0] = -(right + left) / (right - left);
         mat.m[3][1] = -(top + bottom) / (top - bottom);
+        mat.m[3][2] = -(farPlane + nearPlane) / (farPlane - nearPlane);
         return mat;
     }
 

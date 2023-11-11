@@ -107,11 +107,11 @@ namespace Yumi
                 runtimeEnabled = !runtimeEnabled;
             }
 
+            m_World.Update();
+
             Input& input = Input::GetInstance();
             const UniquePtr<Window>& window = GetEngine().GetWindow();
-            catActor.GetTransform().Position = Math::ScreenToWorldPoint(camera.ProjectionMatrix * camera.ViewMatrix, input.MousePosition(), window->GetSize());
-
-            m_World.Update();
+            
             m_Renderer.DrawPrimitives();
 
             String windowTitle = "Yumi Window";

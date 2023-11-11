@@ -9,14 +9,14 @@ namespace Yumi
     public:
         union
         {
-            float m[4][4]; //i = row, j = column
+            float m[4][4]; //i = column, j = row
             float n[16];
         };
         
         Matrix4();
 
         void SetIdentity();
-        Vector3 GetTranslation() const;
+        void SetZero();
         Matrix4 GetTransposed() const;
         void SetTransposed();
         Matrix4 GetInverse() const;
@@ -31,6 +31,9 @@ namespace Yumi
 
         static Matrix4 CreateTransform(const Vector3& position, const Vector3& rotation = Vector3::Zero, const Vector3& scale = Vector3::One);
         static Matrix4 Translate(const Matrix4& matrix, const Vector3& translation);
+        static Matrix4 RotateX(const Matrix4& matrix, float x);
+        static Matrix4 RotateY(const Matrix4& matrix, float y);
+        static Matrix4 RotateZ(const Matrix4& matrix, float z);
         static Matrix4 Rotate(const Matrix4& matrix, const Vector3& rotation);
         static Matrix4 Scale(const Matrix4& matrix, const Vector3& scale);
 
