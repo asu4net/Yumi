@@ -8,9 +8,39 @@
 
 namespace Yumi
 {
+    void FreeLookCameraScript::OnStart()
+    {
+        auto& camera = Get<CameraComponent>();
+        m_DesiredZoom = camera.Size;
+        
+        GetWindow().Events().ScrollEvent.Add([&](const Vector2& offset) {
+
+            if (GetInput().IsConsumed()) return;
+            
+            m_DesiredZoom -= offset.y * ZoomStep;
+            m_DesiredZoom = std::clamp(m_DesiredZoom, camera.NearPlane, Math::FloatMax());
+        });
+    }
+
     void FreeLookCameraScript::OnUpdate()
     {
+        UpdateCameraZoom();
         UpdateCameraPosition();
+    }
+
+    void FreeLookCameraScript::UpdateCameraZoom()
+    {
+        auto& camera = Get<CameraComponent>();
+
+        if (std::abs(m_DesiredZoom - camera.Size) > .01f)
+        {
+            const float dir = camera.Size < m_DesiredZoom ? 1.f : -1.f;
+            camera.Size += ZoomSpeed * dir * GetDeltaTime();
+        }
+        else
+        {
+            camera.Size = m_DesiredZoom;
+        }
     }
 
     void FreeLookCameraScript::UpdateCameraPosition()
@@ -19,16 +49,14 @@ namespace Yumi
             return;
 
         CameraComponent& camera = Get<CameraComponent>();
-        Input& input = Input::GetInstance();
-        const UniquePtr<Window>& window = GetEngine().GetWindow();
 
-        const bool IsRightMousePressed = input.IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
+        const bool IsRightMousePressed = GetInput().IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
         
         // Mouse pressed
         if (!m_bMouseDown && IsRightMousePressed)
         {
             m_bMouseDown = true;
-            m_Offset = Math::ScreenToWorldPoint(camera.ProjectionMatrix * camera.ViewMatrix, input.MousePosition(), window->GetSize()) + m_AuxPosition;
+            m_Offset = Math::ScreenToWorldPoint(camera.ProjectionMatrix * camera.ViewMatrix, GetInput().MousePosition(), GetWindow().GetSize()) + m_AuxPosition;
         }
         
         // Mouse released
@@ -41,10 +69,10 @@ namespace Yumi
         // Mouse hold
         if (IsRightMousePressed)
         {
-            m_AuxCameraMatrix = Matrix4::OrthoProjection(window->GetAspect(), camera.Size, camera.NearPlane, camera.FarPlane)
+            m_AuxCameraMatrix = Matrix4::OrthoProjection(GetWindow().GetAspect(), camera.Size, camera.NearPlane, camera.FarPlane)
                 * Matrix4::ViewProjection(m_AuxPosition, Vector3::Zero);
 
-            const Vector2 mouseWorld = Math::ScreenToWorldPoint(m_AuxCameraMatrix, input.MousePosition(), window->GetSize());
+            const Vector2 mouseWorld = Math::ScreenToWorldPoint(m_AuxCameraMatrix, GetInput().MousePosition(), GetWindow().GetSize());
 
             GetTransform().Position = Vector3(mouseWorld * -1, GetTransform().Position.z) + Vector3(m_Offset.x, m_Offset.y, 0);
         }

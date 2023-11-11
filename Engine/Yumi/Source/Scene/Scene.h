@@ -54,6 +54,7 @@ namespace Yumi
         void SetRuntimeEnabled(const bool bRuntimeEnabled) { m_IsRuntimeEnabled = bRuntimeEnabled; }
         bool IsRuntimeEnabled() const { return m_IsRuntimeEnabled; }
 
+        void Prepare();
         void Start();
         void Update();
         void FixedUpdate();

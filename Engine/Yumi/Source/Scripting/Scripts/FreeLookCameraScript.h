@@ -7,16 +7,19 @@ namespace Yumi
     {
         YSCRIPT_EXECUTION_CONTEXT(Always)
     public:
+        float ZoomStep = 0.15f;
+        float ZoomSpeed = 1.5f;
         float MoveSpeed = 2.f;
-        float RotationSpeed = 15.f;
-        float ZoomStep = 0.25f;
         bool CanMove = true;
-
-        void OnUpdate();
+        
+        void OnStart() override;
+        void OnUpdate() override;
 
     private:
+        void UpdateCameraZoom();
         void UpdateCameraPosition();
         
+        float m_DesiredZoom;
         Vector3 m_AuxPosition;
         Matrix4 m_AuxCameraMatrix;
         bool m_bMouseDown = false;

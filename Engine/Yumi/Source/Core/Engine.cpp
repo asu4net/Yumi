@@ -41,8 +41,9 @@ namespace Yumi
 
     void Engine::Run()
     {  
-        World::GetInstance().Start();
+        GetWorld().Prepare();
         m_EngineRunEvent.Broadcast();
+        GetWorld().Start();
 
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP STARTED ******\n");
@@ -54,6 +55,14 @@ namespace Yumi
         {
             GetTime().CalculateTimeStep();
             GetWorld().Update();
+
+            uint32_t fixedUpdateCalls = GetTime().FixedUpdateCalls();
+            while (fixedUpdateCalls)
+            {
+                GetWorld().FixedUpdate();
+                fixedUpdateCalls--;
+            }
+            
             GetRenderer().DrawPrimitives();
             
             //TODO: Move this to ImGui

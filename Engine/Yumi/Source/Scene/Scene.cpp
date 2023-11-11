@@ -67,7 +67,7 @@ namespace Yumi
         return m_CameraSystem.lock()->GetMainCameraActor();
     }
 
-    void Scene::Start()
+    void Scene::Prepare()
     {
         m_Systems.push_back(CreateSharedPtr<ScriptSystem>(m_This));
         m_Systems.push_back(CreateSharedPtr<CameraSystem>(m_This));
@@ -75,7 +75,10 @@ namespace Yumi
 
         m_CameraSystem = GetSystemOfType<CameraSystem>();
         CreateFreeLookCamera();
-
+    }
+    
+    void Scene::Start()
+    {
         for (SharedPtr<System> system : m_Systems)
             system->OnStart();
     }

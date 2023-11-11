@@ -13,10 +13,9 @@ class MoveScript : public Script
 void OnRun()
 {
     AssetLink<Scene> currentScene = GetWorld().GetActiveScene();
-    currentScene->SetRuntimeEnabled(false);
+    currentScene->SetRuntimeEnabled(true);
 
     Actor catActor = currentScene->CreateActor();
-
     catActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("Bola.jpg"));
     ScriptStatics::Attach<MoveScript>(catActor);
     

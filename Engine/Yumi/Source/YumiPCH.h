@@ -4,6 +4,14 @@
 
 #include <entt/entt.hpp>
 
+namespace Yumi
+{
+    namespace Math
+    {
+        inline float FloatMax() { return std::numeric_limits<float>::max(); }
+    }
+}
+
 /// -------- STUFF ----------
 
 #include <Windows.h>

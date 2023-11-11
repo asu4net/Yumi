@@ -35,3 +35,4 @@
 #include "Scene/Components/TransformComponent.h"
 #include "Scene/Components/ScriptComponent.h"
 #include "Scene/Components/SpriteComponent.h"
+#include "Scripting/Scripts/FreeLookCameraScript.h"

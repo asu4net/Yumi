@@ -12,7 +12,8 @@ namespace Yumi
     public:
         void OpenScene(const String& sceneName);
         const AssetLink<Scene>& GetActiveScene() { return m_ActiveScene; }
-
+        
+        void Prepare();
         void Start();
         void Update();
         void FixedUpdate();

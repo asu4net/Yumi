@@ -26,11 +26,11 @@ namespace Yumi
         }
 
         m_ActiveScene = m_Scene;
-        m_ActiveScene->Start();
+        m_ActiveScene->Prepare();
         YLOG_TRACE("Scene opened! %s\n", m_ActiveScene->GetAssetData().Name.c_str());
     }
 
-    void World::Start()
+    void World::Prepare()
     {
         AssetManager& assetManager = AssetManager::GetInstance();
         DynamicArray<AssetLink<Scene>> allScenes;
@@ -54,6 +54,11 @@ namespace Yumi
         }
 
         YLOG_TRACE("Scene opened! %s\n", m_ActiveScene->GetAssetData().Name.c_str());
+        m_ActiveScene->Prepare();
+    }
+
+    void World::Start()
+    {
         m_ActiveScene->Start();
     }
 
