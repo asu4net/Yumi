@@ -4,14 +4,14 @@ struct GLFWwindow;
 
 namespace Yumi
 {
-    DECLARE_EVENT_TWO_PARAM(class WindowEvents, WindowResizeEvent, int, width, int, height)
-    DECLARE_EVENT(class WindowEvents, WindowCloseEvent);
-    DECLARE_EVENT_TWO_PARAM(class WindowEvents, WindowKeyPressedEvent, int, key, bool, repeat)
-    DECLARE_EVENT_ONE_PARAM(class WindowEvents, WindowKeyReleasedEvent, int, key)
-    DECLARE_EVENT_ONE_PARAM(class WindowEvents, WindowCursorPosEvent, const Vector2&, pos)
-    DECLARE_EVENT_TWO_PARAM(class WindowEvents, WindowMouseButtonPressedEvent, int, mouseButton, bool, repeat)
-    DECLARE_EVENT_ONE_PARAM(class WindowEvents, WindowMouseButtonReleasedEvent, int, mouseButton)
-    DECLARE_EVENT_ONE_PARAM(class WindowEvents, WindowScrollEvent, const Vector2&, offset)
+    YDECLARE_EVENT_TWO_PARAM(class WindowEvents, WindowResizeEvent, int, width, int, height)
+    YDECLARE_EVENT(class WindowEvents, WindowCloseEvent);
+    YDECLARE_EVENT_TWO_PARAM(class WindowEvents, WindowKeyPressedEvent, int, key, bool, repeat)
+    YDECLARE_EVENT_ONE_PARAM(class WindowEvents, WindowKeyReleasedEvent, int, key)
+    YDECLARE_EVENT_ONE_PARAM(class WindowEvents, WindowCursorPosEvent, const Vector2&, pos)
+    YDECLARE_EVENT_TWO_PARAM(class WindowEvents, WindowMouseButtonPressedEvent, int, mouseButton, bool, repeat)
+    YDECLARE_EVENT_ONE_PARAM(class WindowEvents, WindowMouseButtonReleasedEvent, int, mouseButton)
+    YDECLARE_EVENT_ONE_PARAM(class WindowEvents, WindowScrollEvent, const Vector2&, offset)
 
     class WindowEvents
     {

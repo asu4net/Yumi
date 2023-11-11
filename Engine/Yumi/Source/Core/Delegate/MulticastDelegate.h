@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Delegate.h"
 
-#define DECLARE_EVENT(OwningType, EventName) \
+#define YDECLARE_EVENT(OwningType, EventName) \
 class EventName : public Yumi::MulticastDelegate<void()> \
 { \
     void Broadcast() \
@@ -11,7 +11,7 @@ class EventName : public Yumi::MulticastDelegate<void()> \
     friend OwningType; \
 };
 
-#define DECLARE_EVENT_ONE_PARAM(OwningType, EventName, TypeOne, ParamOne) \
+#define YDECLARE_EVENT_ONE_PARAM(OwningType, EventName, TypeOne, ParamOne) \
 class EventName : public Yumi::MulticastDelegate<void(TypeOne)> \
 { \
     void Broadcast(TypeOne ParamOne) \
@@ -21,7 +21,7 @@ class EventName : public Yumi::MulticastDelegate<void(TypeOne)> \
     friend OwningType; \
 };
 
-#define DECLARE_EVENT_TWO_PARAM(OwningType, EventName, TypeOne, ParamOne, TypeTwo, ParamTwo) \
+#define YDECLARE_EVENT_TWO_PARAM(OwningType, EventName, TypeOne, ParamOne, TypeTwo, ParamTwo) \
 class EventName : public Yumi::MulticastDelegate<void(TypeOne, TypeTwo)> \
 { \
     void Broadcast(TypeOne ParamOne, TypeTwo ParamTwo) \

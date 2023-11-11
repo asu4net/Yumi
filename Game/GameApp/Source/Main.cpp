@@ -1,10 +1,33 @@
 #include "Yumi.h"
 
+using namespace Yumi;
+
+class MoveScript : public Script
+{
+    void OnUpdate() override
+    {
+        GetActor().GetTransform().Position += Vector3::Right * 0.3f * GetDeltaTime();
+    }
+};
+
+void OnRun()
+{
+    AssetLink<Scene> currentScene = GetWorld().GetActiveScene();
+    currentScene->SetRuntimeEnabled(false);
+
+    Actor catActor = currentScene->CreateActor();
+
+    catActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("Bola.jpg"));
+    ScriptStatics::Attach<MoveScript>(catActor);
+    
+    Actor secondActor = currentScene->CreateActor({ "Cpp", Vector3::Right });
+    secondActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("cpp.png"));
+}
+
 int main()
 {
-    YLOG_TRACE("Yumi Engine begin create...\n");
-
-    Yumi::CreateEngine();
-    Yumi::GetEngine().StartMainLoop();
-    Yumi::DestroyEngine();
+    CreateEngine();
+    GetEngine().OnRun().Add(OnRun);
+    GetEngine().Run();
+    DestroyEngine();
 }

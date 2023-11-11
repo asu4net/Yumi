@@ -11,6 +11,11 @@ namespace Yumi
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         YLOG_TRACE("Renderer created!\n");
+        
+        // Default settings
+        SetBlendingModeEnabled(true);
+        SetBlendingMode(BlendingMode::Alpha);
+        SetClearColor(Color::DarkGrey);
     }
 
     Renderer::~Renderer()

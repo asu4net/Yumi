@@ -3,6 +3,9 @@
 #include "Time.h"
 #include "Input/Input.h"
 #include "Asset/AssetManager.h"
+#include "Scene/World.h"
+#include "Rendering/Renderer.h"
+#include "Window/Window.h"
 
 namespace Yumi
 {
@@ -39,6 +42,21 @@ namespace Yumi
     AssetManager& GetAssetManager()
     {
         return AssetManager::GetInstance();
+    }
+
+    class World& GetWorld()
+    {
+        return World::GetInstance();
+    }
+
+    class Renderer& GetRenderer()
+    {
+        return Renderer::GetInstance();
+    }
+
+    class Window& GetWindow()
+    {
+        return *GetEngine().GetWindow().get();
     }
 
     String GetWorkingDirectory()

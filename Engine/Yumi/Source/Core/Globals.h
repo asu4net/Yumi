@@ -10,6 +10,9 @@ namespace Yumi
     float GetDeltaTime();
     class Input& GetInput();
     class AssetManager& GetAssetManager();
+    class World& GetWorld();
+    class Renderer& GetRenderer();
+    class Window& GetWindow();
 
     String GetWorkingDirectory();
     String GetAssetsFolderName();
