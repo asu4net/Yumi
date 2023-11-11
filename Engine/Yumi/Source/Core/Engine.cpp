@@ -57,10 +57,9 @@ namespace Yumi
             GetWorld().Update();
 
             uint32_t fixedUpdateCalls = GetTime().FixedUpdateCalls();
-            while (fixedUpdateCalls)
+            while (fixedUpdateCalls--)
             {
                 GetWorld().FixedUpdate();
-                fixedUpdateCalls--;
             }
             
             GetRenderer().DrawPrimitives();
