@@ -26,15 +26,15 @@ namespace Yumi
 
             switch (script->GetExecutionContext())
             {
-            case Script::ExecutionContext::Game:
+            case Script::ExecutionContext::Runtime:
                 if (isRuntimeEnabled)
                     return true;
                 return false;
-            case Script::ExecutionContext::Editor:
+            case Script::ExecutionContext::OutOfRuntime:
                 if (!isRuntimeEnabled)
                     return true;
                 return false;
-            case Script::ExecutionContext::Both:
+            case Script::ExecutionContext::Always:
                 return true;
             default:
                 YCHECK(false, "Unhandled case")

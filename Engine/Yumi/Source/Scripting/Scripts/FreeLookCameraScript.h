@@ -3,9 +3,9 @@
 
 namespace Yumi
 {
-    class EditorCameraController : public Script
+    class FreeLookCameraScript : public Script
     {
-        YSCRIPT_EXECUTION_CONTEXT(Editor)
+        YSCRIPT_EXECUTION_CONTEXT(Always)
     public:
         float MoveSpeed = 2.f;
         float RotationSpeed = 15.f;

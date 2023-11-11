@@ -18,15 +18,15 @@ namespace Yumi
     public:
         enum class ExecutionContext
         {
-            Game,
-            Editor,
-            Both
+            Runtime,
+            OutOfRuntime,
+            Always
         };
 
         Script();
         virtual ~Script();
 
-        virtual ExecutionContext GetExecutionContext() const { return ExecutionContext::Game; }
+        virtual ExecutionContext GetExecutionContext() const { return ExecutionContext::Runtime; }
         virtual int GetExecutionOrder() const { return 0; }
 
         Actor GetActor() const { return m_Actor; }

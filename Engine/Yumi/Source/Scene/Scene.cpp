@@ -5,6 +5,9 @@
 #include "Systems\SpriteSystem.h"
 #include "Systems\CameraSystem.h"
 #include "Systems\ScriptSystem.h"
+#include "Components\CameraComponent.h"
+#include "Components\ScriptComponent.h"
+#include "Scripting\Scripts\FreeLookCameraScript.h"
 
 namespace Yumi
 {
@@ -30,6 +33,17 @@ namespace Yumi
         return { entityId, entity };
     }
 
+    void Scene::CreateFreeLookCamera()
+    {
+        ActorCreationParams creationParams;
+        creationParams.Name = "Free Look Camera Actor";
+        creationParams.IsSerializable = false;
+        m_FreeLookCameraActor = CreateActor(creationParams);
+        m_FreeLookCameraActor.Add<CameraComponent>();
+        ScriptStatics::Attach<FreeLookCameraScript>(m_FreeLookCameraActor);
+        SetMainCameraActor(m_FreeLookCameraActor);
+    }
+
     Actor Scene::CreateActor(const ActorCreationParams& params)
     {
         const auto& [id, entity] = CreateEntity(params.SpecificId);
@@ -41,11 +55,26 @@ namespace Yumi
         return actor;
     }
 
+    void Scene::SetMainCameraActor(Actor actor)
+    {
+        YCHECK(!m_CameraSystem.expired(), "Not a valid camera system");
+        m_CameraSystem.lock()->SetMainCameraActor(actor);
+    }
+
+    Actor Scene::GetMainCameraActor() const
+    {
+        YCHECK(m_CameraSystem.expired(), "Not a valid camera system");
+        return m_CameraSystem.lock()->GetMainCameraActor();
+    }
+
     void Scene::Start()
     {
         m_Systems.push_back(CreateSharedPtr<ScriptSystem>(m_This));
         m_Systems.push_back(CreateSharedPtr<CameraSystem>(m_This));
         m_Systems.push_back(CreateSharedPtr<SpriteSystem>(m_This));
+
+        m_CameraSystem = GetSystemOfType<CameraSystem>();
+        CreateFreeLookCamera();
 
         for (SharedPtr<System> system : m_Systems)
             system->OnStart();

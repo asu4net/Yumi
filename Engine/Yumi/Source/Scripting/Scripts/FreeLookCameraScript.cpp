@@ -1,4 +1,4 @@
-#include "EditorCameraController.h"
+#include "FreeLookCameraScript.h"
 #include "Input\Input.h"
 #include "Input\KeyCodes.h"
 #include "Scene\Components\CameraComponent.h"
@@ -8,12 +8,12 @@
 
 namespace Yumi
 {
-    void EditorCameraController::OnUpdate()
+    void FreeLookCameraScript::OnUpdate()
     {
         UpdateCameraPosition();
     }
 
-    void EditorCameraController::UpdateCameraPosition()
+    void FreeLookCameraScript::UpdateCameraPosition()
     {
         if (!CanMove)
             return;
@@ -23,7 +23,7 @@ namespace Yumi
         const UniquePtr<Window>& window = GetEngine().GetWindow();
 
         const bool IsRightMousePressed = input.IsMouseButtonPressed(MOUSE_BUTTON_RIGHT);
-
+        
         // Mouse pressed
         if (!m_bMouseDown && IsRightMousePressed)
         {

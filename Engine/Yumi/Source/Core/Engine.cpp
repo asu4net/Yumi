@@ -18,7 +18,7 @@
 #include "Scene/Components/TransformComponent.h"
 #include "Scripting/Script.h"
 #include "Scene/Components/ScriptComponent.h"
-#include "Scripting/Scripts/EditorCameraController.h"
+#include "Scripting/Scripts/FreeLookCameraScript.h"
 
 namespace Yumi
 {
@@ -67,13 +67,11 @@ namespace Yumi
         AssetLink<Scene> testScene = assetManager.CreateSceneAsset(AssetData{ "Test Scene" });
         testScene->SetStartScene(true);
         testScene->SetRuntimeEnabled(false);
+        
         m_World.Start();
 
-        Actor sceneCamera = testScene->CreateActor({ "Scene Camera" });
-        CameraComponent& camera = sceneCamera.Add<CameraComponent>();
-        ScriptStatics::Attach<EditorCameraController>(sceneCamera);
-
         Actor catActor = testScene->CreateActor({"Cat"});
+
         catActor.Add<SpriteComponent>(assetManager.CreateSpriteFromTexture("Bola.jpg"));
         ScriptStatics::Attach<TestScript>(catActor);
 
@@ -89,16 +87,6 @@ namespace Yumi
         while (m_Window->IsOpened())
         {
             m_Time.CalculateTimeStep();
-            Vector3& cameraPosition = sceneCamera.GetTransform().Position;
-
-            if (Input::GetInstance().IsKeyPressed(KEY_W))
-                cameraPosition += Vector3::Up * 0.5f * m_Time.DeltaTime();
-            if (Input::GetInstance().IsKeyPressed(KEY_S))
-                cameraPosition += Vector3::Down * 0.5f * m_Time.DeltaTime();
-            if (Input::GetInstance().IsKeyPressed(KEY_D))
-                cameraPosition += Vector3::Right * 0.5f * m_Time.DeltaTime();
-            if (Input::GetInstance().IsKeyPressed(KEY_A))
-                cameraPosition += Vector3::Left * 0.5f * m_Time.DeltaTime();
             
             static bool runtimeEnabled = false;
             if (Input::GetInstance().IsKeyPressed(KEY_LEFT_CONTROL) && Input::GetInstance().IsKeyPressed(KEY_P))
@@ -108,10 +96,6 @@ namespace Yumi
             }
 
             m_World.Update();
-
-            Input& input = Input::GetInstance();
-            const UniquePtr<Window>& window = GetEngine().GetWindow();
-            
             m_Renderer.DrawPrimitives();
 
             String windowTitle = "Yumi Window";
