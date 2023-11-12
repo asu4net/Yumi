@@ -4,29 +4,33 @@ using namespace Yumi;
 
 class MoveScript : public Script
 {
-    void OnUpdate() override
+    float speed = 5.f;
+
+    void OnUpdate()
     {
-        GetActor().GetTransform().Position += Vector3::Right * 0.3f * GetDeltaTime();
+        if (GetInput().IsKeyPressed(KEY_D))
+            GetTransform().Position += Vector3::Right * speed * GetDeltaTime();
+        if (GetInput().IsKeyPressed(KEY_A))
+            GetTransform().Position += Vector3::Left * speed * GetDeltaTime();
     }
 };
 
-void OnRun()
+void OnRunCalled()
 {
-    AssetLink<Scene> currentScene = GetWorld().GetActiveScene();
-    currentScene->SetRuntimeEnabled(true);
+    AssetLink<Scene> scene = GetWorld().GetActiveScene();
 
-    Actor catActor = currentScene->CreateActor();
-    catActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("Bola.jpg"));
-    ScriptStatics::Attach<MoveScript>(catActor);
-    
-    Actor secondActor = currentScene->CreateActor({ "Cpp", Vector3::Right });
-    secondActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("cpp.png"));
+    Actor spriteActor = scene->CreateActor();
+    spriteActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("Bola.jpg"));
+
+    Actor cppActor = scene->CreateActor({"Cpp", Vector3::Right});
+    cppActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("cpp.png"));
+    ScriptStatics::Attach<MoveScript>(cppActor);
 }
 
 int main()
 {
     CreateEngine();
-    GetEngine().OnRun().Add(OnRun);
+    GetEngine().OnRun().Add(OnRunCalled);
     GetEngine().Run();
     DestroyEngine();
 }

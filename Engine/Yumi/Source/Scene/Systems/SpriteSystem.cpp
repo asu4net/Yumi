@@ -44,11 +44,13 @@ namespace Yumi
 
             SpriteStatics::UpdateTransformMatrix(spriteActor);
             
+            const SharedPtr<Texture2D> texture = sprite.SpriteSource.IsValid() ? sprite.SpriteSource->GetTexture().Get() : nullptr;
+
             SpritePrimitive spritePrimitive{
                 sprite.VertexPositions,
                 sprite.VertexColors,
                 sprite.VertexUVs,
-                sprite.SpriteSource->GetTexture().Get()
+                texture
             };
 
             renderer.SubmitSpritePrimitive(spritePrimitive);
