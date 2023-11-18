@@ -19,11 +19,17 @@ void OnRunCalled()
 {
     Scene& scene = GetWorld().GetActiveScene();
     
-    Actor spriteActor = scene.CreateActor();
-    spriteActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteAsset("Bola.jpg"));
+    Actor emptySpriteActor = scene.CreateActor({ "Empty", Vector3::Left });
+    emptySpriteActor.Add<SpriteComponent>(Color::LightRed);
+
+    Actor catActor = scene.CreateActor();
+    AssetRef catSprite = GetAssetManager().CreateSpriteAsset("Bola.jpg");
+    catActor.Add<SpriteComponent>(catSprite);
 
     Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
-    cppActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteAsset("cpp.png"));
+    AssetRef cppSprite = GetAssetManager().CreateSpriteAsset("cpp.png");
+    cppActor.Add<SpriteComponent>(cppSprite);
+
     ScriptStatics::Attach<MoveScript>(cppActor);
 }
 

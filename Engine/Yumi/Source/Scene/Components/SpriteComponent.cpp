@@ -19,10 +19,9 @@ namespace Yumi
     void SpriteStatics::UpdateVertexPositions(Actor& actor)
     {
         SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
-        Sprite& sprite = spriteComponent.SpriteAssetRef.GetAs<Sprite>();
 
         const Array<Vector3, 4>& localVertexPositions = spriteComponent.SpriteAssetRef.IsValid() ?
-            sprite.GetVertexPositions() : Graphics::GetDefaultSpriteVertexPositions();
+            spriteComponent.SpriteAssetRef.GetAs<Sprite>().GetVertexPositions() : Graphics::GetDefaultSpriteVertexPositions();
 
         for (uint32_t i = 0; i < 4; i++)
         {
@@ -35,9 +34,9 @@ namespace Yumi
     void SpriteStatics::UpdateVertexUVs(Actor& actor)
     {
         SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
-        Sprite& sprite = spriteComponent.SpriteAssetRef.GetAs<Sprite>();
+        
         spriteComponent.VertexUVs = spriteComponent.SpriteAssetRef.IsValid() ?
-            sprite.GetVertexUVs() : Graphics::GetDefaultSpriteUVs();
+            spriteComponent.SpriteAssetRef.GetAs<Sprite>().GetVertexUVs() : Graphics::GetDefaultSpriteUVs();
 
         for (Vector2& vertexUV : spriteComponent.VertexUVs)
         {
