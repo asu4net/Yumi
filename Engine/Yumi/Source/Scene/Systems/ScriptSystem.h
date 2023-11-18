@@ -18,7 +18,6 @@ namespace Yumi
         void OnFinish() override;
     
     private:
-        void SortScriptsByExecutionOrder();
         void OnScriptComponentAdded(entt::registry&, const entt::entity entity);
         void OnScriptComponentDestroyed(entt::registry&, const entt::entity entity);
     };

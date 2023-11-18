@@ -7,7 +7,7 @@ namespace Yumi
         ScriptComponent& scriptComponent = actor.Get<ScriptComponent>();
         YCHECK(scriptComponent.ScriptInstance, "There is no script attached!");
 
-        if (ShouldCallRuntimeMethods(scriptComponent.ScriptInstance))
+        if (ShouldCallRuntimeMethods(actor))
             scriptComponent.ScriptInstance->Finish();
 
         scriptComponent.ScriptInstance->Destroy();

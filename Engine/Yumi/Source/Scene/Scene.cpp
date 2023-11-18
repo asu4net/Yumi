@@ -40,6 +40,8 @@ namespace Yumi
         creationParams.IsSerializable = false;
         m_FreeLookCameraActor = CreateActor(creationParams);
         m_FreeLookCameraActor.Add<CameraComponent>();
+        ScriptComponent& scriptComponent = m_FreeLookCameraActor.Add<ScriptComponent>();
+        scriptComponent.ExecutionContext = ScriptExecutionContext::Always;
         ScriptStatics::Attach<FreeLookCameraScript>(m_FreeLookCameraActor);
         SetMainCameraActor(m_FreeLookCameraActor);
     }

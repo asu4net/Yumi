@@ -5,7 +5,6 @@ namespace Yumi
 {
     class FreeLookCameraScript : public Script
     {
-        YSCRIPT_EXECUTION_CONTEXT(Always)
     public:
         float ZoomStep = 0.15f;
         float ZoomSpeed = 1.5f;

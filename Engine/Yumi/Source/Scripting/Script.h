@@ -7,28 +7,12 @@ namespace Yumi
     struct TransformComponent;
     struct InformationComponent;
 
-#define YSCRIPT_EXECUTION_CONTEXT(_CONTEXT) \
-    ExecutionContext GetExecutionContext() const override { return ExecutionContext::_CONTEXT; }
-
-#define YSCRIPT_EXECUTION_ORDER(_ORDER) \
-    int GetExecutionOrder() const override { return _ORDER; }
-
     class Script
     {
     public:
-        enum class ExecutionContext
-        {
-            Runtime,
-            OutOfRuntime,
-            Always
-        };
-
         Script();
         virtual ~Script();
-
-        virtual ExecutionContext GetExecutionContext() const { return ExecutionContext::Runtime; }
-        virtual int GetExecutionOrder() const { return 0; }
-
+        
         Actor GetActor() const { return m_Actor; }
         TransformComponent& GetTransform() const;
         InformationComponent& GetInformation() const;
