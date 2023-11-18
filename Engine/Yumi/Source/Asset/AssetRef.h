@@ -1,0 +1,47 @@
+#pragma once
+#include "Asset.h"
+
+namespace Yumi
+{
+    class AssetRef
+    {
+    public:
+        AssetRef();
+        AssetRef(Id assetId);
+        AssetRef(const AssetRef& other);
+        AssetRef(AssetRef&& other) noexcept;
+        ~AssetRef();
+
+        AssetRef& operator = (const AssetRef& other);
+        AssetRef& operator = (AssetRef&& other) noexcept;
+        bool operator == (const AssetRef& other);
+        bool operator != (const AssetRef& other);
+        
+        Id GetAssetId() const { return m_AssetId; }
+        bool IsValid() const { return !m_Asset.expired(); }
+        WeakPtr<Asset> GetPtr() const { return m_Asset; }
+
+        template<typename T>
+        WeakPtr<T> GetPtrAs() const
+        { 
+            WeakPtr<Asset> asset = GetPtr();
+            return IsValid() ? std::static_pointer_cast<T>(asset.lock()) : nullptr;
+        }
+
+        template<typename T>
+        T& GetAs() const
+        {
+            WeakPtr<T> asset = GetPtrAs<T>();
+            YCHECK(IsValid(), "AssetRef needs to point to a valid target!");
+            return *asset.lock().get();
+        }
+                
+        void Retarget();
+        void Retarget(Id id);
+        void Clear();
+        
+    private:
+        Id m_AssetId;
+        WeakPtr<Asset> m_Asset;
+    };
+}

@@ -16,64 +16,65 @@ namespace Yumi
     void World::OpenScene(const String& sceneName)
     {
         AssetManager& assetManager = AssetManager::GetInstance();
-        AssetLink<Scene> m_Scene = assetManager.GetAssetByName<Scene>(sceneName);
-        YCHECK(m_Scene.IsValid(), "The scene should exist");
+        AssetRef sceneRef = assetManager.GetAssetByName(sceneName);
+        YCHECK(sceneRef.IsValid(), "The scene should exist");
         
-        if (m_ActiveScene.IsValid())
+        if (!m_ActiveScene.expired())
         {
-            YLOG_TRACE("Scene closed! %s\n", m_ActiveScene->GetAssetData().Name.c_str());
-            m_ActiveScene->Finish();
+            YLOG_TRACE("Scene closed! %s\n", m_ActiveScene.lock()->GetAssetData().Name.c_str());
+            m_ActiveScene.lock()->Finish();
         }
 
-        m_ActiveScene = m_Scene;
-        m_ActiveScene->Prepare();
-        YLOG_TRACE("Scene opened! %s\n", m_ActiveScene->GetAssetData().Name.c_str());
+        m_ActiveScene = sceneRef.GetPtrAs<Scene>();
+        m_ActiveScene.lock()->Prepare();
+        YLOG_TRACE("Scene opened! %s\n", m_ActiveScene.lock()->GetAssetData().Name.c_str());
     }
 
     void World::Prepare()
     {
         AssetManager& assetManager = AssetManager::GetInstance();
-        DynamicArray<AssetLink<Scene>> allScenes;
+        DynamicArray<AssetRef> allScenes;
         assetManager.GetAssetsOfType<Scene>(allScenes);
         
         if (!allScenes.empty())
         {
-            for (AssetLink<Scene>& scene : allScenes)
+            for (AssetRef& sceneRef : allScenes)
             {
+                SharedPtr<Scene> scene = sceneRef.GetPtrAs<Scene>().lock();
                 if (!scene->IsStartScene())
                     continue;
                 m_ActiveScene = scene;
             }
-            if (!m_ActiveScene.IsValid())
-                m_ActiveScene = allScenes[0];
+            if (m_ActiveScene.expired())
+                m_ActiveScene = allScenes[0].GetPtrAs<Scene>();
         }
         else
         {
-            AssetLink<Scene> emptyScene = assetManager.CreateSceneAsset(AssetData{ "EmptyScene" });
-            m_ActiveScene = emptyScene;
+            AssetRef emptySceneRef = assetManager.CreateSceneAsset(AssetData{ "EmptyScene" });
+            m_ActiveScene = emptySceneRef.GetPtrAs<Scene>();
         }
 
-        YLOG_TRACE("Scene opened! %s\n", m_ActiveScene->GetAssetData().Name.c_str());
-        m_ActiveScene->Prepare();
+        YLOG_TRACE("Scene opened! %s\n", m_ActiveScene.lock()->GetAssetData().Name.c_str());
+        m_ActiveScene.lock()->Prepare();
     }
 
     void World::Start()
     {
-        m_ActiveScene->Start();
+        m_ActiveScene.lock()->Start();
     }
 
     void World::Update()
     {
-        m_ActiveScene->Update();
+        m_ActiveScene.lock()->Update();
     }
 
     void World::FixedUpdate()
     {
-        m_ActiveScene->FixedUpdate();
+        m_ActiveScene.lock()->FixedUpdate();
     }
 
     void World::Finish()
     {
-        m_ActiveScene->Finish();
+        m_ActiveScene.lock()->Finish();
     }
 }

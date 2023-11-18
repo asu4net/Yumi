@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Asset.h"
-#include "AssetLink.h"
+#include "AssetRef.h"
 #include "Rendering/Texture2D.h"
 #include "Rendering/SubTexture2D.h"
 #include "Rendering/Shader.h"
@@ -14,36 +14,28 @@ namespace Yumi
     {
         YSINGLETON_FRIEND(AssetManager)
     public:
+        void ImportAndLoadAssets();
 
         // Temporal
         template<typename T>
-        void GetAssetsOfType(DynamicArray<AssetLink<T>>& assets)
+        void GetAssetsOfType(DynamicArray<AssetRef>& assets)
         {
             for (auto& [id, asset] : m_IdAssetMap)
             {
                 SharedPtr<T> desiredAsset = std::dynamic_pointer_cast<T>(asset);
                 if (!desiredAsset)
                     continue;
-                assets.emplace_back(AssetLink(desiredAsset));
+                assets.emplace_back(AssetRef(desiredAsset->GetAssetData().AssetId));
             }
         }
 
-        template<typename T>
-        AssetLink<T> GetAssetByName(const String& name)
-        {
-            if (!m_AssetNameIdMap.count(name))
-                return AssetLink<T>();
-            const Id assetId = m_AssetNameIdMap[name];
-            YCHECK(m_IdAssetMap.count(assetId), "Turbo bug");
-            AssetLink<T> assetLink = AssetLink<T>(std::dynamic_pointer_cast<T>(m_IdAssetMap[assetId]));
-            YCHECK(assetLink.IsValid(), "Turbo bug");
-            return assetLink;
-        }
-
+        WeakPtr<Asset> GetAssetById(Id id);
+        AssetRef GetAssetByName(const String& name);
+        
         template<typename... Args>
-        AssetLink<Shader> CreateShaderAsset(AssetData& assetData, Args&&... args)
+        AssetRef CreateShaderAsset(AssetData& assetData, Args&&... args)
         {
-            EnsureAssetDataConsistency(assetData);
+            EnsureAssetDataConsistency(assetData, "Shader");
 
             SharedPtr<Shader> shader = Shader::Create(m_GraphicsApi, std::forward<Args>(args)...);
             shader->SetAssetData(assetData);
@@ -51,13 +43,13 @@ namespace Yumi
             m_IdAssetMap[assetData.AssetId] = shader;
             m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
  
-            return AssetLink(shader);
+            return AssetRef(assetData.AssetId);
         }
 
         template<typename... Args>
-        AssetLink<Texture2D> CreateTextureAsset(AssetData& assetData, Args&&... args)
+        AssetRef CreateTextureAsset(AssetData& assetData, Args&&... args)
         {
-            EnsureAssetDataConsistency(assetData);
+            EnsureAssetDataConsistency(assetData, "Texture2D");
 
             SharedPtr<Texture2D> texture = Texture2D::Create(m_GraphicsApi, std::forward<Args>(args)...);
             texture->SetAssetData(assetData);
@@ -65,13 +57,13 @@ namespace Yumi
             m_IdAssetMap[assetData.AssetId] = texture;
             m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
 
-            return AssetLink(texture);
+            return AssetRef(assetData.AssetId);
         }
 
         template<typename... Args>
-        AssetLink<SubTexture2D> CreateSubTextureAsset(AssetData& assetData, Args&&... args)
+        AssetRef CreateSubTextureAsset(AssetData& assetData, Args&&... args)
         {
-            EnsureAssetDataConsistency(assetData);
+            EnsureAssetDataConsistency(assetData, "SubTexture2D");
 
             SharedPtr<SubTexture2D> subTexture = SubTexture2D::Create(std::forward<Args>(args)...);
             subTexture->SetAssetData(assetData);
@@ -79,27 +71,29 @@ namespace Yumi
             m_IdAssetMap[assetData.AssetId] = subTexture;
             m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
 
-            return AssetLink(subTexture);
+            return AssetRef(assetData.AssetId);
         }
 
         template<typename... Args>
-        AssetLink<Sprite> CreateSpriteAsset(AssetData& assetData, Args&&... args)
+        AssetRef CreateSpriteAsset(AssetData& assetData, Args&&... args)
         {
-            EnsureAssetDataConsistency(assetData);
+            EnsureAssetDataConsistency(assetData, "Sprite");
 
-            SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>(std::forward<Args>(args)...);
+            SharedPtr<Sprite> sprite = Sprite::Create(std::forward<Args>(args)...);
             sprite->SetAssetData(assetData);
 
             m_IdAssetMap[assetData.AssetId] = sprite;
             m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
 
-            return AssetLink(sprite);
+            return AssetRef(assetData.AssetId);
         }
 
+        AssetRef CreateSpriteAsset(const String& textureAssetName);
+
         template<typename... Args>
-        AssetLink<Scene> CreateSceneAsset(AssetData& assetData, Args&&... args)
+        AssetRef CreateSceneAsset(AssetData& assetData, Args&&... args)
         {
-            EnsureAssetDataConsistency(assetData);
+            EnsureAssetDataConsistency(assetData, "Scene");
 
             SharedPtr<Scene> scene = CreateSharedPtr<Scene>(std::forward<Args>(args)...);
             scene->SetAssetData(assetData);
@@ -108,37 +102,17 @@ namespace Yumi
             m_IdAssetMap[assetData.AssetId] = scene;
             m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
 
-            return AssetLink(scene);
+            return AssetRef(assetData.AssetId);
         }
-
-        AssetLink<Sprite> CreateSpriteFromTexture(const String& textureAssetName);
-        AssetLink<Sprite> CreateSpriteFromSubTexture(const String& textureAssetName);
 
     private:
         AssetManager(const String& workingDirectory, GraphicsAPI api);
         ~AssetManager();
 
-        void ImportAndLoadAssets();
         void UnloadAssets();
-        void EnsureAssetDataConsistency(AssetData& assetData);
+        void EnsureAssetDataConsistency(AssetData& assetData, const String& assetType);
 
-        template<typename T>
-        void TryLoadAsset(AssetLink<T> assetLink)
-        {
-            const AssetData assetData = assetLink->GetAssetData();
-            const char* fileName = assetData.Name.c_str();
-            const char* assetType = assetData.AssetType.c_str();
-
-            if (assetLink->Load())
-            {
-                YLOG_TRACE("%s loaded: %s\n", assetType, fileName);
-            }
-            else
-            {
-                YLOG_WARN("Failed to load %s: %s", assetType, fileName);
-                m_IdAssetMap.erase(assetData.AssetId);
-            }
-        }
+        void TryLoadAsset(AssetRef assetLink);
 
         static void GetAssetDirectoryLocalPath(const String& filePath, String& localPath);
 

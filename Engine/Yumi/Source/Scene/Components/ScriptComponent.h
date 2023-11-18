@@ -22,7 +22,7 @@ namespace Yumi
         {
             World& world = World::GetInstance();
 
-            const bool isRuntimeEnabled = world.GetActiveScene()->IsRuntimeEnabled();
+            const bool isRuntimeEnabled = world.GetActiveScene().IsRuntimeEnabled();
 
             switch (script->GetExecutionContext())
             {

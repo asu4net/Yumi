@@ -2,6 +2,7 @@
 #include "Rendering\Renderer.h"
 #include "..\Components\SpriteComponent.h"
 #include "..\Components\TransformComponent.h"
+#include "Rendering\Texture2D.h"
 
 namespace Yumi
 {
@@ -44,7 +45,8 @@ namespace Yumi
 
             SpriteStatics::UpdateTransformMatrix(spriteActor);
             
-            const SharedPtr<Texture2D> texture = sprite.SpriteSource.IsValid() ? sprite.SpriteSource->GetTexture().Get() : nullptr;
+            const SharedPtr<Texture2D> texture = sprite.SpriteAssetRef.IsValid() ? 
+                sprite.SpriteAssetRef.GetAs<Sprite>().GetTextureRef().GetPtrAs<Texture2D>().lock() : nullptr;
 
             SpritePrimitive spritePrimitive{
                 sprite.VertexPositions,

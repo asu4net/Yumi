@@ -17,13 +17,13 @@ class MoveScript : public Script
 
 void OnRunCalled()
 {
-    AssetLink<Scene> scene = GetWorld().GetActiveScene();
+    Scene& scene = GetWorld().GetActiveScene();
+    
+    Actor spriteActor = scene.CreateActor();
+    spriteActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteAsset("Bola.jpg"));
 
-    Actor spriteActor = scene->CreateActor();
-    spriteActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("Bola.jpg"));
-
-    Actor cppActor = scene->CreateActor({"Cpp", Vector3::Right});
-    cppActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteFromTexture("cpp.png"));
+    Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
+    cppActor.Add<SpriteComponent>(GetAssetManager().CreateSpriteAsset("cpp.png"));
     ScriptStatics::Attach<MoveScript>(cppActor);
 }
 

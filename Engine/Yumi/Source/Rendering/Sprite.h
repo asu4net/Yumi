@@ -1,5 +1,5 @@
 #pragma once
-#include "Asset\AssetLink.h"
+#include "Asset\AssetRef.h"
 #include "Asset\Asset.h"
 
 namespace Yumi
@@ -10,17 +10,19 @@ namespace Yumi
     class Sprite : public Asset
     {
     public:
+        static SharedPtr<Sprite> Create(const AssetRef& textureRef);
+        static SharedPtr<Sprite> CreateFromTexture(const AssetRef& textureRef);
+        static SharedPtr<Sprite> CreateFromSubTexture(const AssetRef& subTextureRef);
+
         Sprite() = default;
-        Sprite(const AssetLink<Texture2D>& texture);
-        Sprite(const AssetLink<SubTexture2D>& subTexture);
-        
+                
         bool Load() override;
         void Unload() override;
 
         AssetData GetAssetData() const override { return m_AssetData; };
         
-        const AssetLink<Texture2D>& GetTexture() const { return m_Texture; }
-        const AssetLink<SubTexture2D>& GetSubTexture() const { return m_SubTexture; }
+        const AssetRef& GetTextureRef() const { return m_TextureRef; }
+        const AssetRef& GetSubTextureRef() const { return m_SubTextureRef; }
         const Array<Vector3, 4>& GetVertexPositions() const { return m_VertexPositions; }
         const Array<Vector2, 4>& GetVertexUVs() const { return m_VertexUVs; }
 
@@ -28,8 +30,8 @@ namespace Yumi
         virtual void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; };
         
         AssetData m_AssetData;
-        AssetLink<Texture2D> m_Texture;
-        AssetLink<SubTexture2D> m_SubTexture;
+        AssetRef m_TextureRef;
+        AssetRef m_SubTextureRef;
 
         Array<Vector3, 4> m_VertexPositions;
         Array<Vector2, 4> m_VertexUVs;

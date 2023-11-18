@@ -7,79 +7,81 @@ namespace Yumi
 
     void SpriteStatics::UpdateTransformMatrix(Actor& actor)
     {
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
+        SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
         const Matrix4 actorTransformMatrix = actor.GetTransform().GetMatrix();
-        if (sprite.TransformMatrix == actorTransformMatrix)
+        if (spriteComponent.TransformMatrix == actorTransformMatrix)
             return;
 
-        sprite.TransformMatrix = actorTransformMatrix;
+        spriteComponent.TransformMatrix = actorTransformMatrix;
         UpdateVertexPositions(actor);
     }
 
     void SpriteStatics::UpdateVertexPositions(Actor& actor)
     {
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        
-        const Array<Vector3, 4>& localVertexPositions = sprite.SpriteSource.IsValid() ?
-            sprite.SpriteSource->GetVertexPositions() : Graphics::GetDefaultSpriteVertexPositions();
+        SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
+        Sprite& sprite = spriteComponent.SpriteAssetRef.GetAs<Sprite>();
+
+        const Array<Vector3, 4>& localVertexPositions = spriteComponent.SpriteAssetRef.IsValid() ?
+            sprite.GetVertexPositions() : Graphics::GetDefaultSpriteVertexPositions();
 
         for (uint32_t i = 0; i < 4; i++)
         {
-            sprite.VertexPositions[i] = Vector4(localVertexPositions[i], 1.f) * sprite.TransformMatrix;
-            sprite.VertexPositions[i].x *= sprite.Size.x;
-            sprite.VertexPositions[i].y *= sprite.Size.y;
+            spriteComponent.VertexPositions[i] = Vector4(localVertexPositions[i], 1.f) * spriteComponent.TransformMatrix;
+            spriteComponent.VertexPositions[i].x *= spriteComponent.Size.x;
+            spriteComponent.VertexPositions[i].y *= spriteComponent.Size.y;
         }
     }
 
     void SpriteStatics::UpdateVertexUVs(Actor& actor)
     {
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        sprite.VertexUVs = sprite.SpriteSource.IsValid() ? 
-            sprite.SpriteSource->GetVertexUVs() : Graphics::GetDefaultSpriteUVs();
+        SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
+        Sprite& sprite = spriteComponent.SpriteAssetRef.GetAs<Sprite>();
+        spriteComponent.VertexUVs = spriteComponent.SpriteAssetRef.IsValid() ?
+            sprite.GetVertexUVs() : Graphics::GetDefaultSpriteUVs();
 
-        for (Vector2& vertexUV : sprite.VertexUVs)
+        for (Vector2& vertexUV : spriteComponent.VertexUVs)
         {
-            vertexUV.x *= sprite.UVScale.x;
-            vertexUV.y *= sprite.UVScale.y;
+            vertexUV.x *= spriteComponent.UVScale.x;
+            vertexUV.y *= spriteComponent.UVScale.y;
         }
 
-        Graphics::FlipVertexUVs(sprite.FlipMode, sprite.VertexUVs);
+        Graphics::FlipVertexUVs(spriteComponent.FlipMode, spriteComponent.VertexUVs);
     }
 
     void SpriteStatics::SetTintColor(Actor& actor, const Color& color)
     {
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
+        SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
         
-        sprite.TintColor = color;
-        for (Color& vertexColor : sprite.VertexColors)
+        spriteComponent.TintColor = color;
+        for (Color& vertexColor : spriteComponent.VertexColors)
             vertexColor = color;
     }
 
     void SpriteStatics::SetFlip(Actor& actor, Flip flip)
     {
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        sprite.FlipMode = flip;
-        Graphics::FlipVertexUVs(flip, sprite.VertexUVs);
+        SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
+        spriteComponent.FlipMode = flip;
+        Graphics::FlipVertexUVs(flip, spriteComponent.VertexUVs);
     }
 
     void SpriteStatics::SetSize(Actor& actor, const Vector2& size)
     {
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        sprite.Size = size;
+        SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
+        spriteComponent.Size = size;
         UpdateVertexPositions(actor);
     }
 
     void SpriteStatics::SetUVScale(Actor& actor, const Vector2& uvScale)
     {
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        sprite.UVScale = uvScale;
+        SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
+        spriteComponent.UVScale = uvScale;
         UpdateVertexUVs(actor);
     }
 
-    void SpriteStatics::SetSpriteSource(Actor& actor, const AssetLink<Sprite>& spriteSource)
+    void SpriteStatics::SetSpriteAssetRef(Actor& actor, const AssetRef& spriteAssetRef)
     {
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        sprite.SpriteSource = spriteSource;
+        SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
+        spriteComponent.SpriteAssetRef = spriteAssetRef;
 
         UpdateVertexPositions(actor);
         UpdateVertexUVs(actor);

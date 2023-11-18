@@ -7,7 +7,7 @@ namespace Yumi
     Renderer::Renderer(GraphicsAPI api)
         : m_RendererAPI(RendererAPI::Create(api))
         , m_CommandQueue(CreateSharedPtr<RenderCommandQueue>())
-        , m_SpriteShader(AssetManager::GetInstance().GetAssetByName<Shader>(Graphics::GetSpriteShaderName()).Get())
+        , m_SpriteShader(GetAssetManager().GetAssetByName(Graphics::GetSpriteShaderName()).GetPtrAs<Shader>().lock())
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         YLOG_TRACE("Renderer created!\n");

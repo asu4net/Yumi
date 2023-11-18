@@ -1,5 +1,5 @@
 #pragma once
-#include "Asset\AssetLink.h"
+#include "Asset\AssetRef.h"
 #include "Rendering\Sprite.h"
 
 namespace Yumi
@@ -8,7 +8,7 @@ namespace Yumi
     {
         Matrix4 TransformMatrix;
         bool IsVisible = true;
-        AssetLink<Sprite> SpriteSource;
+        AssetRef SpriteAssetRef;
         Color TintColor = Color::White;
         Vector2 Size = Vector2::One;
         Flip FlipMode = Flip::None;
@@ -21,8 +21,8 @@ namespace Yumi
 
         SpriteComponent() = default;
 
-        SpriteComponent(const AssetLink<Sprite>& spriteSource)
-            : SpriteSource(spriteSource)
+        SpriteComponent(const AssetRef& spriteAssetRef)
+            : SpriteAssetRef(spriteAssetRef)
         {
         }
 
@@ -43,6 +43,6 @@ namespace Yumi
         static void SetFlip(Actor& actor, Flip flip);
         static void SetSize(Actor& actor, const Vector2& size);
         static void SetUVScale(Actor& actor, const Vector2& uvScale);
-        static void SetSpriteSource(Actor& actor, const AssetLink<Sprite>& spriteSource);
+        static void SetSpriteAssetRef(Actor& actor, const AssetRef& spriteSourceRef);
     };
 }

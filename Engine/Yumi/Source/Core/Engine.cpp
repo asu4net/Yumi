@@ -14,9 +14,13 @@ namespace Yumi
         YLOG_TRACE("Yumi Engine begin create...\n");
         
         m_Window = Window::Create();
+        
         Time::CreateInstance();
         Input::CreateInstance(m_Window);
-        AssetManager::CreateInstance(GetWorkingDirectory(), GraphicsAPI::OpenGL);
+        
+        AssetManager& assetManager = AssetManager::CreateInstance(GetWorkingDirectory(), GraphicsAPI::OpenGL);
+        assetManager.ImportAndLoadAssets();
+
         Renderer::CreateInstance(GraphicsAPI::OpenGL);
         World::CreateInstance();
 
