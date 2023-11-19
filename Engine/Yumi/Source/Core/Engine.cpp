@@ -1,50 +1,50 @@
-#include "Engine.h"
-#include "Time.h"
+#include "Core/Engine.h"
 #include "Window/Window.h"
-#include "Input/KeyCodes.h"
-#include "Input/Input.h"
 #include "Asset/AssetManager.h"
-#include "Rendering/Renderer.h"
 #include "Scene/World.h"
+#include "Rendering/Renderer.h"
+#include "Rendering/Shader.h"
 
 namespace Yumi
 {
-    Engine::Engine()
-    {
-        YLOG_TRACE("Yumi Engine begin create...\n");
-        
-        m_Window = Window::Create();
-        Time::CreateInstance();
-        Input::CreateInstance(m_Window);
-        AssetManager::CreateInstance(GetWorkingDirectory(), GraphicsAPI::OpenGL);
-        GetAssetManager().ImportAndLoadAssets();
-        Renderer::CreateInstance(GraphicsAPI::OpenGL);
-        World::CreateInstance();
+    Engine::Engine()  { YLOG_TRACE("Engine created!");   };
+    Engine::~Engine() { YLOG_TRACE("Engine destroyed!"); };
 
-        YLOG_TRACE("Yumi Engine created!\n");
+    void Engine::Init()
+    {
+        YLOG_TRACE("Initializing Engine...\n");
+        YCHECK(!m_IsInitialized, "Engine already initialized!");
+
+        m_Window       = Window::Create();
+        m_Time         = CreateUniquePtr<Time>();
+        m_Input        = CreateUniquePtr<Input>(m_Window);
+        m_AssetManager = CreateUniquePtr<AssetManager>(GetWorkingDirectory(), m_GraphicsApi);
         
+        m_AssetManager->ImportAndLoadAssets();
+        
+        // TODO: Move this to engine modules
+        static constexpr char* s_SpriteShaderName = "Sprite.glsl";
+        SharedPtr<Shader> spriteShader = m_AssetManager->GetAssetByName(s_SpriteShaderName).GetPtrAs<Shader>().lock();
+        m_Renderer     = CreateUniquePtr<Renderer>(m_GraphicsApi, spriteShader);
+        m_World        = CreateUniquePtr<World>();
+        
+        m_World->Prepare();
+
         // Viewport resizing for renderer
-        m_Window->Events().ResizeEvent.Add([](int width, int height) { 
-            GetRenderer().SetViewport(0, 0, width, height);
+        m_Window->Events().ResizeEvent.Add([&](int width, int height) { 
+            m_Renderer->SetViewport(0, 0, width, height);
         });
-    }
 
-    Engine::~Engine()
-    {
-        YLOG_TRACE("Yumi Engine begin destroy...\n");
-        World::DestroyInstance();
-        AssetManager::DestroyInstance();
-        Input::DestroyInstance();
-        Time::DestroyInstance();
-        m_Window.reset();
-        YLOG_TRACE("Yumi Engine destroyed!\n");
+        m_IsInitialized = true;
+        YLOG_TRACE("Engine initialized!\n");
     }
 
     void Engine::Run()
     {  
-        GetWorld().Prepare();
-        m_EngineRunEvent.Broadcast();
-        GetWorld().Start();
+        YCHECK(m_IsInitialized, "Engine needs to be initialized, call InitEngine() before RunEngine()!");
+        YCHECK(!m_IsRunning, "Engine already running!");
+
+        m_World->Start();
 
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP STARTED ******\n");
@@ -54,53 +54,53 @@ namespace Yumi
         // MAIN LOOP
         while (m_Window->IsOpened())
         {
-            GetTime().CalculateTimeStep();
-            GetWorld().Update();
+            m_Time->CalculateTimeStep();
+            m_World->Update();
 
-            uint32_t fixedUpdateCalls = GetTime().FixedUpdateCalls();
+            uint32_t fixedUpdateCalls = m_Time->FixedUpdateCalls();
+
             while (fixedUpdateCalls--)
             {
-                GetWorld().FixedUpdate();
+                m_World->FixedUpdate();
             }
             
-            GetRenderer().DrawPrimitives();
+            m_Renderer->DrawPrimitives();
             
             //TODO: Move this to ImGui
             String windowTitle = "Yumi Window";
-            windowTitle.append(" | MousePos: " + GetInput().MousePosition().ToString());
-            windowTitle.append(" | FPS: " + std::to_string(GetTime().FrameRate()));
-            windowTitle.append(" | AppTime: " + std::to_string(GetTime().ApplicationTime()));
-            windowTitle.append(" | AppFrames: " + std::to_string(GetTime().ApplicationFrames()));
-            windowTitle.append(" | DeltaTime: " + std::to_string(GetTime().DeltaTime()));
-            windowTitle.append(" | FixedUpdateCalls: " + std::to_string(GetTime().FixedUpdateCalls()));
-            m_Window->SetTitle(windowTitle);
+
+            windowTitle.append(" | MousePos: "         + m_Input->MousePosition().ToString());
+            windowTitle.append(" | FPS: "              + std::to_string(m_Time->FrameRate()));
+            windowTitle.append(" | AppTime: "          + std::to_string(m_Time->ApplicationTime()));
+            windowTitle.append(" | AppFrames: "        + std::to_string(m_Time->ApplicationFrames()));
+            windowTitle.append(" | DeltaTime: "        + std::to_string(m_Time->DeltaTime()));
+            windowTitle.append(" | FixedUpdateCalls: " + std::to_string(m_Time->FixedUpdateCalls()));
             
+            m_Window->SetTitle(windowTitle);
             m_Window->Update();
         }
 
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP FINISHED *****\n");
         YLOG_TRACE("******************************\n");
+
+        Finish();
+    }
+    
+    void Engine::Finish()
+    {
+        YLOG_TRACE("Finishing engine...\n");
+        
+        m_World        .reset();
+        m_AssetManager .reset();
+        m_Input        .reset();
+        m_Time         .reset();
+        m_Window       .reset();
+
+        m_IsRunning     = false;
+        m_IsInitialized = false;
+
+        YLOG_TRACE("Engine finished!\n");
     }
 
-    // Shortcuts
-    Engine& CreateEngine()
-    {
-        return Engine::CreateInstance();
-    }
-
-    void DestroyEngine()
-    {
-        Engine::DestroyInstance();
-    }
-
-    Engine& GetEngine()
-    {
-        return Engine::GetInstance();
-    }
-
-    Window& GetWindow()
-    {
-        return *GetEngine().GetWindow().get();
-    }
 }

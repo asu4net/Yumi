@@ -3,6 +3,7 @@
 #include "Scene\Actor.h"
 #include "Scene\Scene.h"
 #include "Scene\World.h"
+#include "Core\Engine.h"
 
 namespace Yumi
 {

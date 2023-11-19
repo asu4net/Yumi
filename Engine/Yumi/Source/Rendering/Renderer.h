@@ -5,10 +5,12 @@ namespace Yumi
 {
     class Shader;
     
-    class Renderer : public Singleton<Renderer>
+    class Renderer
     {
-        YSINGLETON_FRIEND(Renderer)
     public:
+        Renderer(GraphicsAPI api, const SharedPtr<Shader> spriteShader);
+        ~Renderer();
+
         void SetProjectionViewMatrix(const Matrix4& matrix) { m_ProjectionViewMatrix = matrix; }
         void SetRenderTarget(RenderTarget renderTarget) { m_CurrentRenderTarget = renderTarget; }
         void SetBlendingModeEnabled(bool enabled);
@@ -21,9 +23,6 @@ namespace Yumi
         void DrawPrimitives();
 
     private:
-        Renderer(GraphicsAPI api);
-        ~Renderer();
-        
         Matrix4 m_ProjectionViewMatrix;
         RenderTarget m_CurrentRenderTarget = RenderTarget::Default;
 
@@ -35,6 +34,4 @@ namespace Yumi
         UniquePtr<SpriteBatchRenderer> m_SpriteRenderer;
         DynamicArray<SpritePrimitive> m_SpritePrimitivesDrawList;
     };
-
-    Renderer& GetRenderer();
 }

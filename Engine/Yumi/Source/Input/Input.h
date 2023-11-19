@@ -2,10 +2,12 @@
 
 namespace Yumi
 {
-    class Input : public Singleton<Input>
+    class Input
     {
-        YSINGLETON_FRIEND(Input)
     public:
+        Input(const UniquePtr<class Window>& window);
+        ~Input();
+
         bool IsKeyPressed(int key);
 
         void SetConsumed(bool bConsumedByEditor);
@@ -15,11 +17,7 @@ namespace Yumi
         Vector2 MousePosition();
 
     private:
-        Input(const UniquePtr<class Window>& window);
-        ~Input();
 
         bool m_bConsumedByEditor = false;
     };
-
-    Input& GetInput();
 }

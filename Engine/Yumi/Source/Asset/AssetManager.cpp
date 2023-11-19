@@ -1,5 +1,4 @@
 #include "AssetManager.h"
-#include "AssetManager.h"
 
 namespace Yumi
 {
@@ -7,7 +6,7 @@ namespace Yumi
 
     AssetRef AssetManager::CreateSpriteAsset(const String& textureAssetName)
     {
-        return CreateSpriteAsset(AssetData{ textureAssetName + " [Sprite]" }, GetAssetManager().GetAssetByName(textureAssetName));
+        return CreateSpriteAsset(AssetData{ textureAssetName + " [Sprite]" }, GetAssetByName(textureAssetName));
     }
 
     AssetManager::AssetManager(const String& workingDirectory, GraphicsAPI api)
@@ -131,10 +130,5 @@ namespace Yumi
         }
         for (int i = 0; i < splitPath.size(); i++)
             localPath += splitPath[i];
-    }
-
-    AssetManager& GetAssetManager()
-    {
-        return AssetManager::GetInstance();
     }
 }

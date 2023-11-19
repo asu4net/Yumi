@@ -45,14 +45,4 @@ namespace Yumi
         QueryPerformanceCounter(&ticks);
         return ticks;
     }*/
-
-    Time& GetTime()
-    {
-        return Time::GetInstance();
-    }
-
-    float GetDeltaTime()
-    {
-        return GetTime().DeltaTime();
-    }
 }

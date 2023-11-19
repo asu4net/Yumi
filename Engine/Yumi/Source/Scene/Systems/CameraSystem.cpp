@@ -1,7 +1,8 @@
 #include "CameraSystem.h"
-#include "..\Components\CameraComponent.h"
+#include "Scene\Components\CameraComponent.h"
+#include "Scene\Components\TransformComponent.h"
 #include "Rendering\Renderer.h"
-#include "..\Components\TransformComponent.h"
+#include "Core\Engine.h"
 
 namespace Yumi
 {
@@ -30,6 +31,6 @@ namespace Yumi
         YCHECK(m_MainCameraActor.IsValid(), "MainCameraActor actor not assigned!");
         m_MainCameraActor = GetActorFromEntity(view.front());
         const CameraComponent& mainCamera = m_MainCameraActor.Get<CameraComponent>();
-        Renderer::GetInstance().SetProjectionViewMatrix(mainCamera.ProjectionMatrix * mainCamera.ViewMatrix);
+        GetRenderer().SetProjectionViewMatrix(mainCamera.ProjectionMatrix * mainCamera.ViewMatrix);
     }
 }

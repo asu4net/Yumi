@@ -6,10 +6,12 @@ namespace Yumi
 {
     class Scene;
 
-    class World : public Singleton<World>
+    class World
     {
-        YSINGLETON_FRIEND(World)
     public:
+        World();
+        ~World();
+
         void OpenScene(const String& sceneName);
         Scene& GetActiveScene() { return *m_ActiveScene.lock().get(); }
         
@@ -21,10 +23,5 @@ namespace Yumi
 
     private:
         WeakPtr<Scene> m_ActiveScene;
-        
-        World();
-        ~World();
     };
-
-    World& GetWorld();
 }

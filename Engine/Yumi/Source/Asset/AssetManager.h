@@ -10,10 +10,12 @@
 
 namespace Yumi
 {
-    class AssetManager : public Singleton<AssetManager>
+    class AssetManager
     {
-        YSINGLETON_FRIEND(AssetManager)
     public:
+        AssetManager(const String& workingDirectory, GraphicsAPI api);
+        ~AssetManager();
+
         void ImportAndLoadAssets();
 
         // Temporal
@@ -106,9 +108,6 @@ namespace Yumi
         }
 
     private:
-        AssetManager(const String& workingDirectory, GraphicsAPI api);
-        ~AssetManager();
-
         void UnloadAssets();
         void EnsureAssetDataConsistency(AssetData& assetData, const String& assetType);
 
@@ -123,6 +122,4 @@ namespace Yumi
         Map<Id, SharedPtr<Asset>> m_IdAssetMap;
         Map<String, Id> m_AssetNameIdMap;
     };
-
-    AssetManager& GetAssetManager();
 }

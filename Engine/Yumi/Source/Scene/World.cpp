@@ -1,5 +1,6 @@
 #include "World.h"
 #include "Asset\AssetManager.h"
+#include "Core\Engine.h"
 
 namespace Yumi
 {
@@ -15,7 +16,7 @@ namespace Yumi
 
     void World::OpenScene(const String& sceneName)
     {
-        AssetManager& assetManager = AssetManager::GetInstance();
+        AssetManager& assetManager = GetAssetManager();
         AssetRef sceneRef = assetManager.GetAssetByName(sceneName);
         YCHECK(sceneRef.IsValid(), "The scene should exist");
         
@@ -32,7 +33,7 @@ namespace Yumi
 
     void World::Prepare()
     {
-        AssetManager& assetManager = AssetManager::GetInstance();
+        AssetManager& assetManager = GetAssetManager();
         DynamicArray<AssetRef> allScenes;
         assetManager.GetAssetsOfType<Scene>(allScenes);
         
@@ -76,10 +77,5 @@ namespace Yumi
     void World::Finish()
     {
         m_ActiveScene.lock()->Finish();
-    }
-
-    World& GetWorld()
-    {
-        return World::GetInstance();
     }
 }

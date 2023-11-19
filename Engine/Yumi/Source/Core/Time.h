@@ -2,10 +2,12 @@
 
 namespace Yumi
 {
-    class Time : public Singleton<Time>
+    class Time
     {
-        YSINGLETON_FRIEND(Time)
     public:
+        Time();
+        ~Time();
+
         void CalculateTimeStep();
 
         float MaxDeltaTime = 1.f / 15.f;
@@ -18,9 +20,6 @@ namespace Yumi
         uint32_t FixedUpdateCalls() { return s_FixedUpdateCalls; }
 
     private:
-        Time();
-        ~Time();
-
         double s_DeltaTime = 0;
         double s_ApplicationTime = 0;
         uint32_t s_ApplicationFrames = 0;
@@ -28,7 +27,4 @@ namespace Yumi
         double s_FixedUpdateTimer = 0;
         double s_LastTime = 0;
     };
-
-    Time& GetTime();
-    float GetDeltaTime();
 }

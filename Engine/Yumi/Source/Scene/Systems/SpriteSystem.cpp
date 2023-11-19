@@ -3,6 +3,7 @@
 #include "..\Components\SpriteComponent.h"
 #include "..\Components\TransformComponent.h"
 #include "Rendering\Texture2D.h"
+#include "Core\Engine.h"
 
 namespace Yumi
 {
@@ -31,7 +32,7 @@ namespace Yumi
             return a.OrderInLayer < b.OrderInLayer;
         });
 
-        Renderer& renderer = Renderer::GetInstance();
+        Renderer& renderer = GetRenderer();
         
         renderer.Clear();
 

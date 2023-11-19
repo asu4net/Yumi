@@ -1,6 +1,5 @@
 #include "Renderer.h"
 #include "Shader.h"
-#include "Asset\AssetManager.h"
 
 namespace Yumi
 {
@@ -10,10 +9,10 @@ namespace Yumi
         return spriteShaderName;
     }
 
-    Renderer::Renderer(GraphicsAPI api)
+    Renderer::Renderer(GraphicsAPI api, const SharedPtr<Shader> spriteShader)
         : m_RendererAPI(RendererAPI::Create(api))
         , m_CommandQueue(CreateSharedPtr<RenderCommandQueue>())
-        , m_SpriteShader(GetAssetManager().GetAssetByName(GetSpriteShaderName()).GetPtrAs<Shader>().lock())
+        , m_SpriteShader(spriteShader)
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         YLOG_TRACE("Renderer created!\n");
@@ -81,9 +80,5 @@ namespace Yumi
 
         m_SpritePrimitivesDrawList.clear();
         m_SpriteRenderer->End();
-    }
-    Renderer& GetRenderer()
-    {
-        return Renderer::GetInstance();
     }
 }

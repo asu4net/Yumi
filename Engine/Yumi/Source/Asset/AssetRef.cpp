@@ -1,5 +1,6 @@
-#include "AssetRef.h"
-#include "AssetManager.h"
+#include "Asset/AssetRef.h"
+#include "Asset/AssetManager.h"
+#include "Core/Engine.h"
 
 namespace Yumi
 {

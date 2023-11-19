@@ -2,6 +2,17 @@
 
 using namespace Yumi;
 
+void CreateActors();
+
+int main()
+{
+    CreateEngine();
+    InitEngine();
+    CreateActors();
+    RunEngine();
+    DestroyEngine();
+}
+
 class MoveScript : public Script
 {
     float speed = 5.f;
@@ -15,7 +26,7 @@ class MoveScript : public Script
     }
 };
 
-void OnRunCalled()
+void CreateActors()
 {
     Scene& scene = GetWorld().GetActiveScene();
     
@@ -31,12 +42,4 @@ void OnRunCalled()
     cppActor.Add<SpriteComponent>(cppSprite);
 
     ScriptStatics::Attach<MoveScript>(cppActor);
-}
-
-int main()
-{
-    CreateEngine();
-    GetEngine().OnRun().Add(OnRunCalled);
-    GetEngine().Run();
-    DestroyEngine();
 }
