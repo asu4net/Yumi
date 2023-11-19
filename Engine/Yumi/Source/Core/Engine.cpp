@@ -46,6 +46,8 @@ namespace Yumi
 
         m_World->Start();
 
+        m_IsRunning = true;
+
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP STARTED ******\n");
         YLOG_TRACE("******************************\n");
