@@ -16,17 +16,17 @@ namespace Yumi
         YCHECK(!m_IsInitialized, "Engine already initialized!");
 
         m_Window       = Window::Create();
-        m_Time         = CreateUniquePtr<Time>();
-        m_Input        = CreateUniquePtr<Input>(m_Window);
-        m_AssetManager = CreateUniquePtr<AssetManager>(GetWorkingDirectory(), m_GraphicsApi);
+        m_Time         = new Time();
+        m_Input        = new Input(m_Window);
+        m_AssetManager = new AssetManager(GetWorkingDirectory(), m_GraphicsApi);
         
         m_AssetManager->ImportAndLoadAssets();
         
         // TODO: Move this to engine modules
         static constexpr char* s_SpriteShaderName = "Sprite.glsl";
         SharedPtr<Shader> spriteShader = m_AssetManager->GetAssetByName(s_SpriteShaderName).GetPtrAs<Shader>().lock();
-        m_Renderer     = CreateUniquePtr<Renderer>(m_GraphicsApi, spriteShader);
-        m_World        = CreateUniquePtr<World>();
+        m_Renderer     = new Renderer(m_GraphicsApi, spriteShader);
+        m_World        = new World();
         
         m_World->Prepare();
 
@@ -87,20 +87,26 @@ namespace Yumi
         Finish();
     }
     
+    void Engine::Shutdown()
+    {
+        m_Window->Close();
+        Finish();
+    }
+
     void Engine::Finish()
     {
         YLOG_TRACE("Finishing engine...\n");
         
-        m_World        .reset();
-        m_AssetManager .reset();
-        m_Input        .reset();
-        m_Time         .reset();
-        m_Window       .reset();
+        delete m_World;
+        delete m_AssetManager;
+        delete m_Input;
+        delete m_Time;
+        
+        m_Window.reset();
 
         m_IsRunning     = false;
         m_IsInitialized = false;
 
         YLOG_TRACE("Engine finished!\n");
     }
-
 }

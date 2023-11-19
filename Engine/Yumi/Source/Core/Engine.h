@@ -7,6 +7,8 @@ namespace Yumi
         YSINGLETON_FRIEND(Engine)
     
     public:
+        bool                IsInitialized()   const { return m_IsInitialized; }
+        bool                IsRunning()       const { return m_IsRunning;     }
         class Window&       GetWindow()       const { return *m_Window;       }
         class Time&         GetTime()         const { return *m_Time;         }
         class Input&        GetInput()        const { return *m_Input;        }
@@ -16,22 +18,23 @@ namespace Yumi
 
         void Init();
         void Run();
+        void Shutdown();
 
     private:
+        Engine();
+        ~Engine();
+
         void Finish();
 
         bool                    m_IsInitialized = false;
         bool                    m_IsRunning     = false;
         GraphicsAPI             m_GraphicsApi   = GraphicsAPI::OpenGL;
-        UniquePtr<Window>       m_Window;
-        UniquePtr<Time>         m_Time;
-        UniquePtr<Input>        m_Input;
-        UniquePtr<AssetManager> m_AssetManager;
-        UniquePtr<Renderer>     m_Renderer;
-        UniquePtr<World>        m_World;
-
-        Engine();
-        ~Engine();
+        UniquePtr<Window>       m_Window        = nullptr;
+        Time*                   m_Time          = nullptr;
+        Input*                  m_Input         = nullptr;
+        AssetManager*           m_AssetManager  = nullptr;
+        Renderer*               m_Renderer      = nullptr;
+        World*                  m_World         = nullptr;
     };
 
     // Shortcuts
@@ -41,7 +44,7 @@ namespace Yumi
     inline void           DestroyEngine()   {        Engine::DestroyInstance();     }
 
     inline void           InitEngine()      {        Engine::GetInstance().Init();  }
-    inline void           RunEngine()       {        Engine::GetInstance().Run();  }
+    inline void           RunEngine()       {        Engine::GetInstance().Run();   }
 
     inline Window&        GetWindow()       { return GetEngine().GetWindow();       }
     inline Time&          GetTime()         { return GetEngine().GetTime();         }
