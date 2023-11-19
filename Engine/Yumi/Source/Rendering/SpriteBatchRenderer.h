@@ -1,6 +1,7 @@
 #pragma once
 #include "RenderCommandQueue.h"
 #include "RendererAPI.h"
+#include "Sprite.h"
 
 namespace Yumi
 {
@@ -14,7 +15,7 @@ namespace Yumi
     {
         Array<Vector3, 4> VertexPositions;
         Array<Color, 4> VertexColors;
-        Array<Vector2, 4> VertexUV = Graphics::GetDefaultSpriteUVs();
+        Array<Vector2, 4> VertexUV = Sprite::GetDefaultSpriteUVs();
         SharedPtr<Texture2D> Texture = nullptr;
     };
 

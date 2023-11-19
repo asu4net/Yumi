@@ -123,4 +123,6 @@ namespace Yumi
         Map<Id, SharedPtr<Asset>> m_IdAssetMap;
         Map<String, Id> m_AssetNameIdMap;
     };
+
+    AssetManager& GetAssetManager();
 }

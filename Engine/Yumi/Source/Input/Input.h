@@ -20,4 +20,6 @@ namespace Yumi
 
         bool m_bConsumedByEditor = false;
     };
+
+    Input& GetInput();
 }

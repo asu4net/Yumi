@@ -25,4 +25,6 @@ namespace Yumi
         World();
         ~World();
     };
+
+    World& GetWorld();
 }

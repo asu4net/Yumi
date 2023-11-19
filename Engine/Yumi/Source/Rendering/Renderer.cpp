@@ -4,10 +4,16 @@
 
 namespace Yumi
 {
+    const String GetSpriteShaderName()
+    {
+        static const String spriteShaderName = "Sprite.glsl";
+        return spriteShaderName;
+    }
+
     Renderer::Renderer(GraphicsAPI api)
         : m_RendererAPI(RendererAPI::Create(api))
         , m_CommandQueue(CreateSharedPtr<RenderCommandQueue>())
-        , m_SpriteShader(GetAssetManager().GetAssetByName(Graphics::GetSpriteShaderName()).GetPtrAs<Shader>().lock())
+        , m_SpriteShader(GetAssetManager().GetAssetByName(GetSpriteShaderName()).GetPtrAs<Shader>().lock())
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         YLOG_TRACE("Renderer created!\n");
@@ -75,5 +81,9 @@ namespace Yumi
 
         m_SpritePrimitivesDrawList.clear();
         m_SpriteRenderer->End();
+    }
+    Renderer& GetRenderer()
+    {
+        return Renderer::GetInstance();
     }
 }

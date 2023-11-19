@@ -14,13 +14,10 @@ namespace Yumi
         YLOG_TRACE("Yumi Engine begin create...\n");
         
         m_Window = Window::Create();
-        
         Time::CreateInstance();
         Input::CreateInstance(m_Window);
-        
-        AssetManager& assetManager = AssetManager::CreateInstance(GetWorkingDirectory(), GraphicsAPI::OpenGL);
-        assetManager.ImportAndLoadAssets();
-
+        AssetManager::CreateInstance(GetWorkingDirectory(), GraphicsAPI::OpenGL);
+        GetAssetManager().ImportAndLoadAssets();
         Renderer::CreateInstance(GraphicsAPI::OpenGL);
         World::CreateInstance();
 
@@ -84,5 +81,26 @@ namespace Yumi
         YLOG_TRACE("******************************\n");
         YLOG_TRACE("***** MAIN LOOP FINISHED *****\n");
         YLOG_TRACE("******************************\n");
+    }
+
+    // Shortcuts
+    Engine& CreateEngine()
+    {
+        return Engine::CreateInstance();
+    }
+
+    void DestroyEngine()
+    {
+        Engine::DestroyInstance();
+    }
+
+    Engine& GetEngine()
+    {
+        return Engine::GetInstance();
+    }
+
+    Window& GetWindow()
+    {
+        return *GetEngine().GetWindow().get();
     }
 }

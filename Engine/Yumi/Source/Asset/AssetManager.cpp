@@ -132,4 +132,9 @@ namespace Yumi
         for (int i = 0; i < splitPath.size(); i++)
             localPath += splitPath[i];
     }
+
+    AssetManager& GetAssetManager()
+    {
+        return AssetManager::GetInstance();
+    }
 }

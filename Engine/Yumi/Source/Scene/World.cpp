@@ -77,4 +77,9 @@ namespace Yumi
     {
         m_ActiveScene.lock()->Finish();
     }
+
+    World& GetWorld()
+    {
+        return World::GetInstance();
+    }
 }

@@ -2,7 +2,6 @@
 
 // Core
 #include "Core/Engine.h"
-#include "Core/Time.h"
 
 // Asset
 #include "Asset/Asset.h"
@@ -12,19 +11,13 @@
 // Window
 #include "Window/Window.h"
 
-// File
-#include "File/File.h"
-
-// Input
-#include "Input/Input.h"
-#include "Input/KeyCodes.h"
-
 // Rendering
 #include "Rendering/VertexBuffer.h"
 #include "Rendering/IndexBuffer.h"
 #include "Rendering/VertexArray.h"
 #include "Rendering/Shader.h"
 #include "Rendering/Renderer.h"
+#include "Rendering/Sprite.h"
 
 // Scene
 #include "Scene/World.h"

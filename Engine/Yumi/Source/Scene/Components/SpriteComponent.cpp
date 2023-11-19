@@ -21,7 +21,7 @@ namespace Yumi
         SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
 
         const Array<Vector3, 4>& localVertexPositions = spriteComponent.SpriteAssetRef.IsValid() ?
-            spriteComponent.SpriteAssetRef.GetAs<Sprite>().GetVertexPositions() : Graphics::GetDefaultSpriteVertexPositions();
+            spriteComponent.SpriteAssetRef.GetAs<Sprite>().GetVertexPositions() : Sprite::GetDefaultSpriteVertexPositions();
 
         for (uint32_t i = 0; i < 4; i++)
         {
@@ -36,7 +36,7 @@ namespace Yumi
         SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
         
         spriteComponent.VertexUVs = spriteComponent.SpriteAssetRef.IsValid() ?
-            spriteComponent.SpriteAssetRef.GetAs<Sprite>().GetVertexUVs() : Graphics::GetDefaultSpriteUVs();
+            spriteComponent.SpriteAssetRef.GetAs<Sprite>().GetVertexUVs() : Sprite::GetDefaultSpriteUVs();
 
         for (Vector2& vertexUV : spriteComponent.VertexUVs)
         {
@@ -44,7 +44,7 @@ namespace Yumi
             vertexUV.y *= spriteComponent.UVScale.y;
         }
 
-        Graphics::FlipVertexUVs(spriteComponent.FlipMode, spriteComponent.VertexUVs);
+        Sprite::FlipVertexUVs(spriteComponent.FlipMode, spriteComponent.VertexUVs);
     }
 
     void SpriteStatics::SetTintColor(Actor& actor, const Color& color)
@@ -60,7 +60,7 @@ namespace Yumi
     {
         SpriteComponent& spriteComponent = actor.Get<SpriteComponent>();
         spriteComponent.FlipMode = flip;
-        Graphics::FlipVertexUVs(flip, spriteComponent.VertexUVs);
+        Sprite::FlipVertexUVs(flip, spriteComponent.VertexUVs);
     }
 
     void SpriteStatics::SetSize(Actor& actor, const Vector2& size)

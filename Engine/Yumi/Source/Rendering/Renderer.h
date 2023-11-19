@@ -35,4 +35,6 @@ namespace Yumi
         UniquePtr<SpriteBatchRenderer> m_SpriteRenderer;
         DynamicArray<SpritePrimitive> m_SpritePrimitivesDrawList;
     };
+
+    Renderer& GetRenderer();
 }

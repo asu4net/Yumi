@@ -47,4 +47,9 @@ namespace Yumi
         glfwGetCursorPos(g_WindowHandler, &xPos, &yPos);
         return { static_cast<float>(xPos), static_cast<float>(yPos) };
     }
+
+    Input& GetInput()
+    {
+        return Input::GetInstance();
+    }
 }

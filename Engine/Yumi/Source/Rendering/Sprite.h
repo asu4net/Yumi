@@ -13,6 +13,10 @@ namespace Yumi
         static SharedPtr<Sprite> Create(const AssetRef& textureRef);
         static SharedPtr<Sprite> CreateFromTexture(const AssetRef& textureRef);
         static SharedPtr<Sprite> CreateFromSubTexture(const AssetRef& subTextureRef);
+        static const Array<Vector2, 4>& GetDefaultSpriteUVs();
+        static const Array<Vector3, 4>& GetDefaultSpriteVertexPositions();
+        static void CalculateSpriteVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions);
+        static void FlipVertexUVs(Flip flip, Array<Vector2, 4>& vertexUVs);
 
         Sprite() = default;
                 

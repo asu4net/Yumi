@@ -28,4 +28,7 @@ namespace Yumi
         double s_FixedUpdateTimer = 0;
         double s_LastTime = 0;
     };
+
+    Time& GetTime();
+    float GetDeltaTime();
 }

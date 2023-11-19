@@ -2,6 +2,7 @@
 
 namespace Yumi
 {
+    class Window;
     YDECLARE_EVENT(class Engine, EngineRunEvent);
 
     class Engine : public Singleton<Engine>
@@ -9,7 +10,7 @@ namespace Yumi
         YSINGLETON_FRIEND(Engine)
     
     public:
-        const UniquePtr<class Window>& GetWindow() const { return m_Window; }
+        const UniquePtr<Window>& GetWindow() const { return m_Window; }
         EngineRunEvent& OnRun() { return m_EngineRunEvent; }
         void Run();
         
@@ -20,4 +21,10 @@ namespace Yumi
         Engine();
         ~Engine();
     };
+
+    // Shortcuts
+    Engine& CreateEngine();
+    void DestroyEngine();
+    Engine& GetEngine();
+    Window& GetWindow();
 }

@@ -20,8 +20,8 @@ namespace Yumi
         YCHECK(textureRef.IsValid(), "A valid Texture2D is required!");
         SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>();
         sprite->m_TextureRef = textureRef;
-        Graphics::CalculateSpriteVertexPositions(sprite->m_TextureRef.GetAs<Texture2D>().GetSize(), sprite->m_VertexPositions);
-        sprite->m_VertexUVs = Graphics::GetDefaultSpriteUVs();
+        CalculateSpriteVertexPositions(sprite->m_TextureRef.GetAs<Texture2D>().GetSize(), sprite->m_VertexPositions);
+        sprite->m_VertexUVs = GetDefaultSpriteUVs();
         return sprite;
     }
 
@@ -33,9 +33,76 @@ namespace Yumi
         SubTexture2D& subTexture = sprite->m_SubTextureRef.GetAs<SubTexture2D>();
         sprite->m_TextureRef = subTexture.GetParentRef();
         YCHECK(sprite->m_TextureRef.IsValid(), "Missing parent in subtexture!");
-        Graphics::CalculateSpriteVertexPositions(subTexture.GetSize(), sprite->m_VertexPositions);
+        CalculateSpriteVertexPositions(subTexture.GetSize(), sprite->m_VertexPositions);
         sprite->m_VertexUVs = subTexture.GetVertexUV();
         return sprite;
+    }
+
+    const Array<Vector2, 4>& Sprite::GetDefaultSpriteUVs()
+    {
+        static Array<Vector2, 4> uv =
+        {
+            Vector2(0, 0), // bottom-left
+            Vector2(1, 0), // bottom-right
+            Vector2(1, 1), // top-right
+            Vector2(0, 1), // top-left
+        };
+        return uv;
+    }
+
+    const Array<Vector3, 4>& Sprite::GetDefaultSpriteVertexPositions()
+    {
+        static Array<Vector3, 4> vertexPositions =
+        {
+            Vector3(-.5f, -.5f, 0),
+            Vector3(.5f, -.5f, 0),
+            Vector3(.5f,  .5f, 0),
+            Vector3(-.5f,  .5f, 0)
+        };
+        return vertexPositions;
+    }
+
+    void Sprite::CalculateSpriteVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions)
+    {
+        static Vector2 s_VertexMag = Vector2::One / 2;
+        Vector2 pos = s_VertexMag;
+
+        if (std::abs(textureSize.x - textureSize.y) > 0.0001f)
+            pos = textureSize.Normalized() / 2;
+
+        vertexPositions[0] = { -pos.x, -pos.y, 0 };
+        vertexPositions[1] = { pos.x, -pos.y, 0 };
+        vertexPositions[2] = { pos.x,  pos.y, 0 };
+        vertexPositions[3] = { -pos.x,  pos.y, 0 };
+    }
+
+    void Sprite::FlipVertexUVs(Flip flip, Array<Vector2, 4>& vertexUVs)
+    {
+        if (flip == Flip::None)
+            return;
+
+        Array<Vector2, 4> uv = vertexUVs;
+
+        switch (flip)
+        {
+        case Flip::X:
+            vertexUVs[0] = uv[1];
+            vertexUVs[1] = uv[0];
+            vertexUVs[2] = uv[3];
+            vertexUVs[3] = uv[2];
+            return;
+        case Flip::Y:
+            vertexUVs[0] = uv[2];
+            vertexUVs[1] = uv[3];
+            vertexUVs[2] = uv[0];
+            vertexUVs[3] = uv[1];
+            return;
+        case Flip::Both:
+            vertexUVs[0] = uv[3];
+            vertexUVs[1] = uv[2];
+            vertexUVs[2] = uv[1];
+            vertexUVs[3] = uv[0];
+        }
     }
 
     bool Sprite::Load()
