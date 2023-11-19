@@ -33,7 +33,9 @@ namespace Yumi
 
     AssetRef AssetManager::GetAssetByName(const String& name)
     {
-        YCHECK(m_AssetNameIdMap.count(name), "Wrong asset name!");
+        if (!m_AssetNameIdMap.count(name))
+            return {};
+
         const Id assetId = m_AssetNameIdMap[name];
         YCHECK(m_IdAssetMap.count(assetId), "Internal error");
         return AssetRef(assetId);

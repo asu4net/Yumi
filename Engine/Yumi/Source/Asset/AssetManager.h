@@ -33,7 +33,7 @@ namespace Yumi
 
         WeakPtr<Asset> GetAssetById(Id id);
         AssetRef GetAssetByName(const String& name);
-        
+
         template<typename... Args>
         AssetRef CreateShaderAsset(AssetData& assetData, Args&&... args)
         {
