@@ -48,6 +48,6 @@ void CreateActors()
 
     auto& flyAnimation = SpriteSheetAnimationStatics::PushAnimation(aspidActor, "AspidFly");
     DynamicArray<Vector2> atlasLocations = { {0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0} };
-    SpriteSheetAnimationStatics::PushSpriteSheet(flyAnimation, "aspid.png", { 143, 123 }, atlasLocations);
+    SpriteSheetAnimationStatics::PushSpritesheet(flyAnimation, "aspid.png", { 143, 123 }, atlasLocations);
     aspidActor.Add<SpriteComponent>(flyAnimation.Sprites[1]);
 }

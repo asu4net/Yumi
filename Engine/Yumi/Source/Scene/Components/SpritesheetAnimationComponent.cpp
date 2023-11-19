@@ -38,7 +38,7 @@ namespace Yumi
         animationComponent.CurrentAnimation = name;
     }
 
-    void SpriteSheetAnimationStatics::PushSpriteSheet(SpritesheetAnimation& animation, const String& textureAtlasName, 
+    void SpriteSheetAnimationStatics::PushSpritesheet(SpritesheetAnimation& animation, const String& textureAtlasName, 
         const Vector2& tileSize, DynamicArray<Vector2>& atlasLocations)
     {
         AssetRef atlasTextureRef = GetAssetManager().GetAssetByName(textureAtlasName);

@@ -34,7 +34,7 @@ namespace Yumi
         static void PopAnimation(Actor& actor, const String& name);
         static void SetCurrentAnimation(Actor& actor, const String& name);
         
-        static void PushSpriteSheet(SpritesheetAnimation& animation, const String& textureAtlasName, 
+        static void PushSpritesheet(SpritesheetAnimation& animation, const String& textureAtlasName, 
             const Vector2& tileSize, DynamicArray<Vector2>& atlasLocations);
     };
 }
