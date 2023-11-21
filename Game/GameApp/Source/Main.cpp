@@ -26,12 +26,35 @@ class MoveScript : public Script
     }
 };
 
+class ColorScript : public Script
+{
+    bool SpacePressed = false;
+
+    void OnUpdate()
+    {
+        SpriteComponent& spriteComponent = Get<SpriteComponent>();
+
+        if (!SpacePressed && GetInput().IsKeyPressed(KEY_SPACE))
+        {
+            static bool bSwitch = false;
+            spriteComponent.TintColor = bSwitch ? Color::Blue : Color::Yellow;
+            bSwitch = !bSwitch;
+            SpacePressed = true;
+        }
+        else if (!GetInput().IsKeyPressed(KEY_SPACE))
+        {
+            SpacePressed = false;
+        }
+    }
+};
+
 void CreateActors()
 {
     Scene& scene = GetWorld().GetActiveScene();
     
     Actor emptySpriteActor = scene.CreateActor({ "Empty", Vector3::Left });
     emptySpriteActor.Add<SpriteComponent>(Color::LightRed);
+    ScriptStatics::Attach<ColorScript>(emptySpriteActor);
 
     Actor catActor = scene.CreateActor();
     AssetRef catSprite = GetAssetManager().CreateSpriteAsset("Bola.jpg");

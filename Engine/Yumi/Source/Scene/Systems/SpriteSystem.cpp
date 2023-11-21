@@ -1,12 +1,53 @@
 #include "SpriteSystem.h"
 #include "Rendering\Renderer.h"
-#include "..\Components\SpriteComponent.h"
-#include "..\Components\TransformComponent.h"
+#include "Scene\Components\SpriteComponent.h"
+#include "Scene\Components\TransformComponent.h"
 #include "Rendering\Texture2D.h"
 #include "Core\Engine.h"
 
 namespace Yumi
 {
+    static void UpdateVertexPositions(SpriteComponent& spriteComponent)
+    {
+        const Array<Vector3, 4>& localVertexPositions = spriteComponent.SpriteAssetRef.IsValid() ?
+            spriteComponent.SpriteAssetRef.GetAs<Sprite>().GetVertexPositions() : Sprite::GetDefaultSpriteVertexPositions();
+
+        for (uint32_t i = 0; i < 4; i++)
+        {
+            spriteComponent.VertexPositions[i] = Vector4(localVertexPositions[i], 1.f) * spriteComponent.TransformMatrix;
+            spriteComponent.VertexPositions[i].x *= spriteComponent.Size.x;
+            spriteComponent.VertexPositions[i].y *= spriteComponent.Size.y;
+        }
+    }
+
+    static void UpdateVertexUVs(SpriteComponent& spriteComponent)
+    {
+        spriteComponent.VertexUVs = spriteComponent.SpriteAssetRef.IsValid() ?
+            spriteComponent.SpriteAssetRef.GetAs<Sprite>().GetVertexUVs() : Sprite::GetDefaultSpriteUVs();
+
+        for (Vector2& vertexUV : spriteComponent.VertexUVs)
+        {
+            vertexUV.x *= spriteComponent.UVScale.x;
+            vertexUV.y *= spriteComponent.UVScale.y;
+        }
+
+        Sprite::FlipVertexUVs(spriteComponent.FlipMode, spriteComponent.VertexUVs);
+    }
+    
+    static void UpdateVertexColors(SpriteComponent& spriteComponent)
+    {
+        for (Color& vertexColor : spriteComponent.VertexColors)
+            vertexColor = spriteComponent.TintColor;
+    }
+
+    static void UpdateSpriteVertexData(const Matrix4& transformMatrix, SpriteComponent& spriteComponent)
+    {
+        spriteComponent.TransformMatrix = transformMatrix;
+        UpdateVertexPositions(spriteComponent);
+        UpdateVertexUVs(spriteComponent);
+        UpdateVertexColors(spriteComponent);
+    }
+
     SpriteSystem::SpriteSystem(const SharedPtr<Scene>& scene)
         : System(scene)
     {
@@ -16,11 +57,7 @@ namespace Yumi
     void SpriteSystem::OnSpriteComponentAdded(entt::registry&, const entt::entity entity)
     {
         Actor actor = GetActorFromEntity(entity);
-        SpriteComponent& sprite = actor.Get<SpriteComponent>();
-        sprite.TransformMatrix = actor.GetTransform().GetMatrix();
-        SpriteStatics::UpdateVertexPositions(actor);
-        SpriteStatics::UpdateVertexUVs(actor);
-        SpriteStatics::SetTintColor(actor, sprite.TintColor);
+        UpdateSpriteVertexData(actor.GetTransform().GetMatrix(), actor.Get<SpriteComponent>());
     }
 
     void SpriteSystem::OnUpdate()
@@ -44,7 +81,8 @@ namespace Yumi
             if (!spriteComponent.IsVisible)
                 return;
 
-            SpriteStatics::UpdateTransformMatrix(spriteActor);
+            Actor actor = GetActorFromEntity(entity);
+            UpdateSpriteVertexData(actor.GetTransform().GetMatrix(), actor.Get<SpriteComponent>());
             
             const SharedPtr<Texture2D> texture = sprite.SpriteAssetRef.IsValid() ? 
                 sprite.SpriteAssetRef.GetAs<Sprite>().GetTextureRef().GetPtrAs<Texture2D>().lock() : nullptr;

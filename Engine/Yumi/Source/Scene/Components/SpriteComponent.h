@@ -31,18 +31,4 @@ namespace Yumi
         {
         }
     };
-
-    class Actor;
-
-    struct SpriteStatics
-    {
-        static void UpdateTransformMatrix(Actor& actor);
-        static void UpdateVertexPositions(Actor& actor);
-        static void UpdateVertexUVs(Actor& actor);
-        static void SetTintColor(Actor& actor, const Color& color);
-        static void SetFlip(Actor& actor, Flip flip);
-        static void SetSize(Actor& actor, const Vector2& size);
-        static void SetUVScale(Actor& actor, const Vector2& uvScale);
-        static void SetSpriteAssetRef(Actor& actor, const AssetRef& spriteSourceRef);
-    };
 }
