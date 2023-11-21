@@ -73,7 +73,7 @@ namespace Yumi
         
         renderer.Clear();
 
-        view.each([&](entt::entity entity, const TransformComponent&, const SpriteComponent& sprite) {
+        view.each([&](entt::entity entity, const TransformComponent& transformComponent, const SpriteComponent& sprite) {
             
             Actor spriteActor = GetActorFromEntity(entity);
             SpriteComponent& spriteComponent = spriteActor.Get<SpriteComponent>();
@@ -82,7 +82,7 @@ namespace Yumi
                 return;
 
             Actor actor = GetActorFromEntity(entity);
-            UpdateSpriteVertexData(actor.GetTransform().GetMatrix(), actor.Get<SpriteComponent>());
+            UpdateSpriteVertexData(transformComponent.GetMatrix(), spriteComponent);
             
             const SharedPtr<Texture2D> texture = sprite.SpriteAssetRef.IsValid() ? 
                 sprite.SpriteAssetRef.GetAs<Sprite>().GetTextureRef().GetPtrAs<Texture2D>().lock() : nullptr;

@@ -18,6 +18,6 @@ namespace Yumi
         {
         }
 
-        Matrix4 GetMatrix() { return Matrix4::CreateTransform(Position, Rotation, Scale); }
+        Matrix4 GetMatrix() const { return Matrix4::CreateTransform(Position, Rotation, Scale); }
     };
 }
