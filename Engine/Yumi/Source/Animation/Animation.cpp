@@ -27,6 +27,7 @@ namespace Yumi
 
     void Animation::PushKey(const Key& key)
     {
+        YCHECK((key.KeyTime <= m_Time), "The KeyTime should be minor than the animation time");
         m_Keys.emplace_back(key);
         SortKeys();
     }
@@ -44,9 +45,14 @@ namespace Yumi
 
     void Animation::Update()
     {
-        if (m_Keys.empty() || m_Target.expired() || !m_IsPlaying)
-            return;
+        YCHECK(!m_Keys.empty(), "There are no keys!");
+        YCHECK(!m_Target.expired(), "There is no target!")
         
+        if (!m_IsPlaying)
+        {
+            return;
+        }
+
         m_CurrentTime += GetDeltaTime();
 
         if (m_CurrentTime >= m_Keys[m_CurrentIndex].KeyTime)
