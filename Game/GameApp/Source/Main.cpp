@@ -48,25 +48,6 @@ class ColorScript : public Script
     }
 };
 
-class AnimationScript : public Script
-{
-    AssetRef AspidAnimationRef;
-
-    void OnStart()
-    {
-        auto& spriteComponent = Get<SpriteComponent>();
-        AspidAnimationRef = GetAssetManager().CreateAnimationAsset(AssetData{ "AspidFly" }, &spriteComponent.SpriteAssetRef);
-        Animation::PushKeysFromAtlas("AspidFly", "aspid.png", { 143, 123 }, 6);
-        AspidAnimationRef.GetAs<Animation>().Play();
-    }
-
-    void OnUpdate()
-    {
-        auto& aspidAnimation = AspidAnimationRef.GetAs<Animation>();
-        aspidAnimation.Update();
-    }
-};
-
 void CreateActors()
 {
     Scene& scene = GetWorld().GetActiveScene();
@@ -86,5 +67,7 @@ void CreateActors()
 
     Actor aspidActor = scene.CreateActor({ "Aspid", Vector3::Down});
     aspidActor.Add<SpriteComponent>();
-    ScriptStatics::Attach<AnimationScript>(aspidActor);
+    AssetRef aspidAnimationRef = GetAssetManager().CreateAnimationAsset(AssetData{ "AspidFly" });
+    Animation::PushKeysFromAtlas("AspidFly", "aspid.png", { 143, 123 }, 6);
+    aspidActor.Add<AnimationComponent>(aspidAnimationRef);
 }

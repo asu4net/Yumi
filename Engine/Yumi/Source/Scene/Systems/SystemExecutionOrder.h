@@ -4,7 +4,9 @@ namespace Yumi
 {
     namespace SystemExecutionOrder
     {
-        extern int SpriteSystemIndex;
+        extern int ScriptSystemIndex;
+        extern int AnimationSystemIndex;
         extern int CameraSystemIndex;
+        extern int SpriteSystemIndex;
     }
 }

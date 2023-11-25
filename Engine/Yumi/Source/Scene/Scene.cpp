@@ -8,6 +8,7 @@
 #include "Components\CameraComponent.h"
 #include "Components\ScriptComponent.h"
 #include "Scripting\Scripts\FreeLookCameraScript.h"
+#include "Systems\AnimationSystem.h"
 
 namespace Yumi
 {
@@ -72,6 +73,7 @@ namespace Yumi
     void Scene::Prepare()
     {
         m_Systems.push_back(CreateSharedPtr<ScriptSystem>(m_This));
+        m_Systems.push_back(CreateSharedPtr<AnimationSystem>(m_This));
         m_Systems.push_back(CreateSharedPtr<CameraSystem>(m_This));
         m_Systems.push_back(CreateSharedPtr<SpriteSystem>(m_This));
 

@@ -22,6 +22,7 @@ namespace Yumi
         static void PushKeysFromAtlas(const String& animationName, const String& atlasName,
             const Vector2& atlasTileSize, uint32_t numOfTiles, float keyTime = .1f, bool atlasIsHorizontal = true);
 
+        Animation() = default;
         Animation(AssetRef* target);
 
         void SetTarget(AssetRef* target);

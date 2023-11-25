@@ -84,7 +84,6 @@ namespace Yumi
     void Animation::SetTarget(AssetRef* target)
     {
         m_Target = target;
-        Stop();
     }
 
     void Animation::Play()
@@ -139,11 +138,14 @@ namespace Yumi
             Stop();
         }
 
-        std::sort(m_Keys.begin(), m_Keys.end(), [](const Key& a, const Key& b) {
-            return a.KeyTime < b.KeyTime;
+        DynamicArray<Key> keys(m_Keys.size());
+        keys = m_Keys;
+        
+        std::sort(keys.begin(), keys.end(), [](const Key& a, const Key& b) {
+            return a.KeyTime > b.KeyTime;
         });
 
-        m_Time = m_Keys[0].KeyTime;
+        m_Time = keys[0].KeyTime;
     }
 
     void Animation::Clear()
@@ -184,7 +186,7 @@ namespace Yumi
     void Animation::SortKeys()
     {
         std::sort(m_Keys.begin(), m_Keys.end(), [](const Key& a, const Key& b) {
-            return a.KeyTime > b.KeyTime;
+            return a.KeyTime < b.KeyTime;
         });
     }
 }
