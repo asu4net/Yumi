@@ -76,38 +76,6 @@ namespace Yumi
         PushKeysFromAtlas(animationRef, atlasRef, atlasTileSize, numOfTiles, keyTime, atlasIsHorizontal);
     }
 
-    Animation::Animation(AssetRef* target)
-        : m_Target(target)
-    {
-    }
-
-    void Animation::SetTarget(AssetRef* target)
-    {
-        m_Target = target;
-    }
-
-    void Animation::Play()
-    {
-        m_IsPlaying = true;
-    }
-
-    void Animation::Pause()
-    {
-        m_IsPlaying = false;
-    }
-
-    void Animation::Stop()
-    {
-        Reset();
-        m_IsPlaying = false;
-    }
-
-    void Animation::Reset()
-    {
-        m_CurrentTime = 0;
-        m_CurrentIndex = 0;
-    }
-
     void Animation::PushKey(const Key& key)
     {
         //YCHECK((key.KeyTime <= m_Time), "The KeyTime should be minor than the animation time");
@@ -121,9 +89,14 @@ namespace Yumi
         SortKeys();
     }
 
-    Animation::Key& Animation::GetKey(uint32_t index)
+    const Animation::Key& Animation::GetKey(uint32_t index) const
     {
         return m_Keys[index];
+    }
+
+    size_t Animation::GetSize() const
+    {
+        return m_Keys.size();
     }
 
     void Animation::AdjustTime()
@@ -131,11 +104,6 @@ namespace Yumi
         if (m_Keys.empty())
         {
             return;
-        }
-
-        if (m_IsPlaying)
-        {
-            Stop();
         }
 
         DynamicArray<Key> keys(m_Keys.size());
@@ -151,36 +119,6 @@ namespace Yumi
     void Animation::Clear()
     {
         m_Keys.clear();
-    }
-
-    void Animation::Update()
-    {
-        YCHECK(!m_Keys.empty(), "There are no keys!");
-        
-        if (!m_IsPlaying)
-        {
-            return;
-        }
-
-        m_CurrentTime += GetDeltaTime();
-
-        if (m_CurrentTime >= m_Keys[m_CurrentIndex].KeyTime)
-        {
-            *m_Target = m_Keys[m_CurrentIndex].KeyAssetRef;
-            m_CurrentIndex++;
-        }
-
-        if (m_CurrentIndex == m_Keys.size())
-        {
-            if (m_LoopEnabled)
-            {
-                Reset();
-            }
-            else
-            {
-                Stop();
-            }
-        }
     }
 
     void Animation::SortKeys()

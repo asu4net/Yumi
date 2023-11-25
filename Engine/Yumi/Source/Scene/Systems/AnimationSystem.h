@@ -15,6 +15,7 @@ namespace Yumi
         void OnFinish() override;
 
     private:
+        void UpdateAnimation(struct AnimationComponent& animationComponent);
         void OnAnimationComponentAdded(entt::registry&, const entt::entity entity);
     };
 }

@@ -66,8 +66,8 @@ void CreateActors()
     ScriptStatics::Attach<MoveScript>(cppActor);
 
     Actor aspidActor = scene.CreateActor({ "Aspid", Vector3::Down});
-    aspidActor.Add<SpriteComponent>();
+    auto& spriteComponent = aspidActor.Add<SpriteComponent>();
     AssetRef aspidAnimationRef = GetAssetManager().CreateAnimationAsset(AssetData{ "AspidFly" });
     Animation::PushKeysFromAtlas("AspidFly", "aspid.png", { 143, 123 }, 6);
-    aspidActor.Add<AnimationComponent>(aspidAnimationRef);
+    aspidActor.Add<AnimationComponent>(aspidAnimationRef, &spriteComponent.SpriteAssetRef);
 }

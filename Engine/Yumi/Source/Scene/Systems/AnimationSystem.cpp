@@ -2,6 +2,7 @@
 #include "Scene\Components\AnimationComponent.h"
 #include "Scene\Components\SpriteComponent.h"
 #include "Animation\Animation.h"
+#include "Core\Engine.h"
 
 namespace Yumi
 {
@@ -26,26 +27,50 @@ namespace Yumi
                 return;
             }
 
-            Animation& animation = animationComponent.CurrentAnimation.GetAs<Animation>();
-            animation.Play();
+            animationComponent.IsPlaying = true;
         });
     }
 
     void AnimationSystem::OnUpdate()
     {
-        const auto view = GetRegistry().view<SpriteComponent, AnimationComponent>();
+        const auto view = GetRegistry().view<AnimationComponent>();
+        view.each([&](entt::entity entity, AnimationComponent& animationComponent) { UpdateAnimation(animationComponent); });
+    }
 
-        view.each([&](entt::entity entity, SpriteComponent& spriteComponent, AnimationComponent& animationComponent) {
-            
-            if (!animationComponent.CurrentAnimation.IsValid())
+    void AnimationSystem::UpdateAnimation(AnimationComponent& animationComponent)
+    {
+        if (!animationComponent.IsPlaying || !animationComponent.CurrentAnimation.IsValid() || !animationComponent.Target)
+        {
+            return;
+        }
+
+        Animation& animation = animationComponent.CurrentAnimation.GetAs<Animation>();
+
+        if (!animation.GetSize())
+        {
+            return;
+        }
+
+        animationComponent.CurrentTime += GetDeltaTime();
+
+        const Animation::Key& currentKey = animation.GetKey(animationComponent.CurrentIndex);
+
+        if (animationComponent.CurrentTime >= currentKey.KeyTime)
+        {
+            *animationComponent.Target = currentKey.KeyAssetRef;
+            animationComponent.CurrentIndex++;
+        }
+
+        if (animationComponent.CurrentIndex == animation.GetSize())
+        {
+            animationComponent.CurrentTime = 0;
+            animationComponent.CurrentIndex = 0;
+
+            if (!animationComponent.LoopEnabled)
             {
-                return;
+                animationComponent.IsPlaying = false;
             }
-
-            Animation& animation = animationComponent.CurrentAnimation.GetAs<Animation>();
-            animation.SetTarget(&spriteComponent.SpriteAssetRef);
-            animation.Update();
-        });
+        }
     }
 
     void AnimationSystem::OnFinish()

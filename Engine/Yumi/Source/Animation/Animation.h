@@ -23,9 +23,6 @@ namespace Yumi
             const Vector2& atlasTileSize, uint32_t numOfTiles, float keyTime = .1f, bool atlasIsHorizontal = true);
 
         Animation() = default;
-        Animation(AssetRef* target);
-
-        void SetTarget(AssetRef* target);
 
         bool Load() override { return true; }
         void Unload() override {}
@@ -34,35 +31,18 @@ namespace Yumi
         
         void SetTime(float time) { m_Time = time; }
         float GetTime() const { return m_Time; }
-
-        float GetCurrentTime() const { return m_CurrentTime; }
-
-        void SetLoopEnabled(bool loopEnabled) { m_LoopEnabled = loopEnabled; }
-        bool IsLoopEnabled() const { return m_LoopEnabled; }
-
-        void Play();
-        void Pause();
-        void Stop();
-        void Reset();
-        bool IsPlaying() const { return m_IsPlaying; }
         
         void PushKey(const Key& key);
         void PopKey(uint32_t index);
-        Key& GetKey(uint32_t index);
+        const Key& GetKey(uint32_t index) const;
+        size_t GetSize() const;
         void AdjustTime();
         void Clear();
 
-        void Update();
-
     private:
         AssetData m_AssetData;
-        AssetRef* m_Target = nullptr;
         DynamicArray<Key> m_Keys;
-        uint32_t m_CurrentIndex = 0;
         float m_Time = 0.f;
-        float m_CurrentTime = 0.f;
-        bool m_LoopEnabled = true;
-        bool m_IsPlaying = false;
 
         virtual void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; };
         void SortKeys();
