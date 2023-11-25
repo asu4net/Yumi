@@ -9,11 +9,6 @@ namespace Yumi
     AnimationSystem::AnimationSystem(const SharedPtr<Scene>& scene)
         : System(scene)
     {
-        GetRegistry().on_construct<AnimationSystem>().connect<&AnimationSystem::OnAnimationComponentAdded>(this);
-    }
-
-    void AnimationSystem::OnAnimationComponentAdded(entt::registry&, const entt::entity entity)
-    {
     }
 
     void AnimationSystem::OnStart()
@@ -71,10 +66,5 @@ namespace Yumi
                 animationComponent.IsPlaying = false;
             }
         }
-    }
-
-    void AnimationSystem::OnFinish()
-    {
-        GetRegistry().on_construct<AnimationSystem>().disconnect<&AnimationSystem::OnAnimationComponentAdded>(this);
     }
 }
