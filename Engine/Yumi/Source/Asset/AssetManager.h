@@ -63,12 +63,11 @@ namespace Yumi
             return AssetRef(assetData.AssetId);
         }
 
-        template<typename... Args>
-        AssetRef CreateSubTextureAsset(AssetData& assetData, Args&&... args)
+        AssetRef CreateSubTextureAsset(AssetData& assetData)
         {
             EnsureAssetDataConsistency(assetData, "SubTexture2D");
 
-            SharedPtr<SubTexture2D> subTexture = SubTexture2D::Create(std::forward<Args>(args)...);
+            SharedPtr<SubTexture2D> subTexture = CreateSharedPtr<SubTexture2D>();
             subTexture->SetAssetData(assetData);
 
             m_IdAssetMap[assetData.AssetId] = subTexture;

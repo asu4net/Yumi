@@ -9,12 +9,10 @@ namespace Yumi
     class SubTexture2D : public Asset
     {
     public:
-        static SharedPtr<SubTexture2D> Create(const AssetRef& parentTextureRef, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
-        static SharedPtr<SubTexture2D> Create(const AssetRef& parentTextureRef, const Vector2& locationInAtlas, const Vector2& size);
-        
         SubTexture2D() = default;
-        SubTexture2D(const AssetRef& parentRef, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
-        SubTexture2D(const AssetRef& parentRef, const Vector2& locationInAtlas, const Vector2& size);
+        
+        void Init(const AssetRef& parentTextureRef, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
+        void Init(const AssetRef& parentTextureRef, const Vector2& locationInAtlas, const Vector2& size);
 
         AssetRef GetParentRef() const { return m_ParentRef; }
         const Array<Vector2, 4>& GetVertexUV() const { return m_VertexUV; }

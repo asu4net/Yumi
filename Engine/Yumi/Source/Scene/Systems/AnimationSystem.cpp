@@ -3,6 +3,7 @@
 #include "Scene\Components\SpriteComponent.h"
 #include "Animation\Animation.h"
 #include "Core\Engine.h"
+#include "..\Scene.h"
 
 namespace Yumi
 {
@@ -34,7 +35,7 @@ namespace Yumi
 
     void AnimationSystem::UpdateAnimation(AnimationComponent& animationComponent)
     {
-        if (!animationComponent.IsPlaying || !animationComponent.CurrentAnimation.IsValid() || !animationComponent.Target)
+        if (!GetScene().IsRuntimeEnabled() || !animationComponent.IsPlaying || !animationComponent.CurrentAnimation.IsValid() || !animationComponent.Target)
         {
             return;
         }

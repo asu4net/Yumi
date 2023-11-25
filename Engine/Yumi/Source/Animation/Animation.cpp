@@ -28,8 +28,8 @@ namespace Yumi
 
                 if (!subTextureRef.IsValid())
                 {
-                    assetManager.CreateSubTextureAsset(AssetData{ subTextureName }, 
-                        textureAtlasRef, location, atlasTileSize);
+                    subTextureRef = assetManager.CreateSubTextureAsset(AssetData{ subTextureName });
+                    subTextureRef.GetAs<SubTexture2D>().Init(textureAtlasRef, location, atlasTileSize);
                 }
 
                 spriteRef = assetManager.CreateSpriteAsset(subTextureName);
