@@ -54,6 +54,8 @@ namespace Yumi
         void SetRuntimeEnabled(const bool bRuntimeEnabled) { m_IsRuntimeEnabled = bRuntimeEnabled; }
         bool IsRuntimeEnabled() const { return m_IsRuntimeEnabled; }
 
+        bool IsStarted() const { return m_IsStarted; }
+
         void Prepare();
         void Start();
         void Update();
@@ -71,6 +73,7 @@ namespace Yumi
         Actor m_FreeLookCameraActor;
         bool m_IsStartScene = false;
         bool m_IsRuntimeEnabled = true;
+        bool m_IsStarted = false;
         DynamicArray<SharedPtr<System>> m_Systems;
         uint32_t m_CreatedActorsCount = 0;
         AssetData m_AssetData;

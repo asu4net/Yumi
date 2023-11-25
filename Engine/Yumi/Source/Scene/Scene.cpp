@@ -83,6 +83,7 @@ namespace Yumi
     {
         for (SharedPtr<System> system : m_Systems)
             system->OnStart();
+        m_IsStarted = true;
     }
 
     void Scene::Update()
@@ -101,5 +102,6 @@ namespace Yumi
     {
         for (SharedPtr<System> system : m_Systems)
             system->OnFinish();
+        m_IsStarted = false;
     }
 }

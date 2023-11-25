@@ -70,7 +70,7 @@ namespace Yumi
             scriptComponent.ScriptInstance->m_Actor = scriptComponent.OwnerActor;
             scriptComponent.ScriptInstance->Create();
 
-            if (ShouldCallRuntimeMethods(actor))
+            if (ShouldCallRuntimeMethods(actor) && scriptComponent.OwnerScene->IsStarted())
                 scriptComponent.ScriptInstance->Start();
         }
     };

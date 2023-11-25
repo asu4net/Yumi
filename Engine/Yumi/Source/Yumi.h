@@ -28,5 +28,4 @@
 #include "Scene/Components/TransformComponent.h"
 #include "Scene/Components/ScriptComponent.h"
 #include "Scene/Components/SpriteComponent.h"
-#include "Scene/Components/SpriteSheetAnimationComponent.h"
 #include "Scripting/Scripts/FreeLookCameraScript.h"

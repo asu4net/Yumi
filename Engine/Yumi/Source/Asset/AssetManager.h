@@ -7,6 +7,7 @@
 #include "Rendering/Shader.h"
 #include "Rendering/Sprite.h"
 #include "Scene/Scene.h"
+#include "Animation/Animation.h"
 
 namespace Yumi
 {
@@ -102,6 +103,20 @@ namespace Yumi
             scene->SetScenePtr(scene);
 
             m_IdAssetMap[assetData.AssetId] = scene;
+            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
+
+            return AssetRef(assetData.AssetId);
+        }
+
+        template<typename... Args>
+        AssetRef CreateAnimationAsset(AssetData& assetData, Args&&... args)
+        {
+            EnsureAssetDataConsistency(assetData, "Animation");
+
+            SharedPtr<Animation> animation = CreateSharedPtr<Animation>(std::forward<Args>(args)...);
+            animation->SetAssetData(assetData);
+
+            m_IdAssetMap[assetData.AssetId] = animation;
             m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
 
             return AssetRef(assetData.AssetId);

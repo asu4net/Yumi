@@ -48,6 +48,25 @@ class ColorScript : public Script
     }
 };
 
+class AnimationScript : public Script
+{
+    AssetRef AspidAnimationRef;
+
+    void OnStart()
+    {
+        auto& spriteComponent = Get<SpriteComponent>();
+        AspidAnimationRef = GetAssetManager().CreateAnimationAsset(AssetData{ "AspidFly" }, &spriteComponent.SpriteAssetRef);
+        Animation::PushKeysFromAtlas("AspidFly", "aspid.png", { 143, 123 }, 6);
+        AspidAnimationRef.GetAs<Animation>().Play();
+    }
+
+    void OnUpdate()
+    {
+        auto& aspidAnimation = AspidAnimationRef.GetAs<Animation>();
+        aspidAnimation.Update();
+    }
+};
+
 void CreateActors()
 {
     Scene& scene = GetWorld().GetActiveScene();
@@ -63,14 +82,9 @@ void CreateActors()
     Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
     AssetRef cppSprite = GetAssetManager().CreateSpriteAsset("cpp.png");
     cppActor.Add<SpriteComponent>(cppSprite);
-
     ScriptStatics::Attach<MoveScript>(cppActor);
 
     Actor aspidActor = scene.CreateActor({ "Aspid", Vector3::Down});
-    auto& sheetAnimation = aspidActor.Add<SpritesheetAnimationComponent>();
-
-    auto& flyAnimation = SpriteSheetAnimationStatics::PushAnimation(aspidActor, "AspidFly");
-    DynamicArray<Vector2> atlasLocations = { {0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0} };
-    SpriteSheetAnimationStatics::PushSpritesheet(flyAnimation, "aspid.png", { 143, 123 }, atlasLocations);
-    aspidActor.Add<SpriteComponent>(flyAnimation.Sprites[1]);
+    aspidActor.Add<SpriteComponent>();
+    ScriptStatics::Attach<AnimationScript>(aspidActor);
 }

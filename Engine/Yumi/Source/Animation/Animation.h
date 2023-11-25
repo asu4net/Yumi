@@ -12,10 +12,19 @@ namespace Yumi
             AssetRef KeyAssetRef;
             float KeyTime;
         };
-        
-        Animation() = default;
 
-        void SetTarget(const WeakPtr<AssetRef>& target) { m_Target = target; };
+        static void PushKeysFromAtlas(const AssetRef& animationRef, const AssetRef& spriteAtlasRef,
+            const Vector2& atlasTileSize, const DynamicArray<Vector2>& atlasLocations, const DynamicArray<float>& keyTimes);
+
+        static void PushKeysFromAtlas(const AssetRef& animationRef, const AssetRef& spriteAtlasRef,
+            const Vector2& atlasTileSize, uint32_t numOfTiles, float keyTime = .1f, bool atlasIsHorizontal = true);
+
+        static void PushKeysFromAtlas(const String& animationName, const String& atlasName,
+            const Vector2& atlasTileSize, uint32_t numOfTiles, float keyTime = .1f, bool atlasIsHorizontal = true);
+
+        Animation(AssetRef* target);
+
+        void SetTarget(AssetRef* target);
 
         bool Load() override { return true; }
         void Unload() override {}
@@ -38,18 +47,20 @@ namespace Yumi
         
         void PushKey(const Key& key);
         void PopKey(uint32_t index);
+        Key& GetKey(uint32_t index);
+        void AdjustTime();
         void Clear();
 
         void Update();
 
     private:
         AssetData m_AssetData;
-        WeakPtr<AssetRef> m_Target;
+        AssetRef* m_Target = nullptr;
         DynamicArray<Key> m_Keys;
         uint32_t m_CurrentIndex = 0;
         float m_Time = 0.f;
         float m_CurrentTime = 0.f;
-        bool m_LoopEnabled = false;
+        bool m_LoopEnabled = true;
         bool m_IsPlaying = false;
 
         virtual void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; };

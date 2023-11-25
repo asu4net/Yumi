@@ -30,7 +30,7 @@ namespace Yumi
     {
         OnStart();
     }
-
+    
     void Script::Update()
     {
         OnUpdate();

@@ -60,7 +60,6 @@ namespace Yumi
     private:
         Actor m_Actor;
         SharedPtr<Scene> m_Scene;
-        bool m_Started = false;
 
         friend class ScriptSystem;
         friend struct ScriptStatics;
