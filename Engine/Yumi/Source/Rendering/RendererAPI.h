@@ -3,14 +3,6 @@
 namespace Yumi
 {
     class VertexArray;
-
-    enum class BlendingMode
-    {
-        Alpha,
-        Solid,
-        Add,
-        Multiply
-    };
     
     class RendererAPI
     {

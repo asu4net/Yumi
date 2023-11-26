@@ -4,6 +4,8 @@ namespace Yumi
 {
     struct AssetData
     {
+        inline static const char* s_EmptyPathString = "NO_PATH";
+
         String Name;
         String Path;
         String AbsolutePath;
@@ -20,9 +22,6 @@ namespace Yumi
         virtual void Unload() = 0;
 
         virtual AssetData GetAssetData() const = 0;
-
-    private:
         virtual void SetAssetData(const AssetData& assetData) = 0;
-        friend class AssetManager;
     };
 }

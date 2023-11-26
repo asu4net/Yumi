@@ -3,7 +3,6 @@
 #include "Asset/AssetManager.h"
 #include "Scene/World.h"
 #include "Rendering/Renderer.h"
-#include "Rendering/Shader.h"
 
 namespace Yumi
 {
@@ -18,14 +17,9 @@ namespace Yumi
         m_Window       = Window::Create();
         m_Time         = new Time();
         m_Input        = new Input(m_Window);
+        m_Renderer     = new Renderer(m_GraphicsApi);
         m_AssetManager = new AssetManager(GetWorkingDirectory(), m_GraphicsApi);
-        
         m_AssetManager->ImportAndLoadAssets();
-        
-        // TODO: Move this to engine modules
-        static constexpr char* s_SpriteShaderName = "Sprite.glsl";
-        SharedPtr<Shader> spriteShader = m_AssetManager->GetAssetByName(s_SpriteShaderName).GetPtrAs<Shader>().lock();
-        m_Renderer     = new Renderer(m_GraphicsApi, spriteShader);
         m_World        = new World();
         
         m_World->Prepare();
@@ -101,6 +95,7 @@ namespace Yumi
         
         delete m_World;
         delete m_AssetManager;
+        delete m_Renderer;
         delete m_Input;
         delete m_Time;
         

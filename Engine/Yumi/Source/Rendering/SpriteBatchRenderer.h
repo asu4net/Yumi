@@ -9,14 +9,14 @@ namespace Yumi
     class VertexArray;
     class VertexBuffer;
     class IndexBuffer;
-    class Texture2D;
+    class RendererTexture2D;
 
     struct SpritePrimitive
     {
         Array<Vector3, 4> VertexPositions;
         Array<Color, 4> VertexColors;
         Array<Vector2, 4> VertexUV = Sprite::GetDefaultSpriteUVs();
-        SharedPtr<Texture2D> Texture = nullptr;
+        SharedPtr<RendererTexture2D> Texture = nullptr;
     };
 
     class SpriteBatchRenderer
@@ -55,7 +55,7 @@ namespace Yumi
         void CreateWhiteTexture();
         void CreateTextureSlots();
         void CreateRenderObjects();
-        int CalculateTextureSlot(const SharedPtr<Texture2D>& texture);
+        int CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture);
         void StartBatch();
         void Flush();
         
@@ -66,7 +66,7 @@ namespace Yumi
         SharedPtr<VertexArray> m_VertexArray;
         SharedPtr<VertexBuffer> m_VertexBuffer;
         SharedPtr<IndexBuffer> m_IndexBuffer;
-        SharedPtr<Texture2D> m_WhiteTexture;
+        SharedPtr<RendererTexture2D> m_WhiteTexture;
 
         // Per batch data
         const uint32_t m_MaxSprites;
@@ -80,6 +80,6 @@ namespace Yumi
         uint32_t m_LastTextureSlot = 1;
         SpriteVertex* m_Vertices;
         SpriteVertex* m_LastVertex;
-        DynamicArray<SharedPtr<Texture2D>> m_Textures;
+        DynamicArray<SharedPtr<RendererTexture2D>> m_Textures;
     };
 }

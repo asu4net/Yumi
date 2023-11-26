@@ -18,6 +18,8 @@
 #include "Rendering/Shader.h"
 #include "Rendering/Renderer.h"
 #include "Rendering/Sprite.h"
+#include "Rendering/Texture2D.h"
+#include "Rendering/RendererTexture2D.h"
 
 // Scene
 #include "Scene/World.h"

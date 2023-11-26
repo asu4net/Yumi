@@ -49,12 +49,11 @@ namespace Yumi
             return AssetRef(assetData.AssetId);
         }
 
-        template<typename... Args>
-        AssetRef CreateTextureAsset(AssetData& assetData, Args&&... args)
+        AssetRef CreateTextureAsset(AssetData& assetData)
         {
             EnsureAssetDataConsistency(assetData, "Texture2D");
 
-            SharedPtr<Texture2D> texture = Texture2D::Create(m_GraphicsApi, std::forward<Args>(args)...);
+            SharedPtr<Texture2D> texture = CreateSharedPtr<Texture2D>();
             texture->SetAssetData(assetData);
 
             m_IdAssetMap[assetData.AssetId] = texture;

@@ -1,18 +1,14 @@
 #include "Renderer.h"
 #include "Shader.h"
+#include "RendererTexture2D.h"
+#include "RawShaderStrings.h"
 
 namespace Yumi
 {
-    const String GetSpriteShaderName()
-    {
-        static const String spriteShaderName = "Sprite.glsl";
-        return spriteShaderName;
-    }
-
-    Renderer::Renderer(GraphicsAPI api, const SharedPtr<Shader> spriteShader)
+    Renderer::Renderer(GraphicsAPI api)
         : m_RendererAPI(RendererAPI::Create(api))
         , m_CommandQueue(CreateSharedPtr<RenderCommandQueue>())
-        , m_SpriteShader(spriteShader)
+        , m_SpriteShader(Shader::Create(api))
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         YLOG_TRACE("Renderer created!\n");
@@ -21,6 +17,8 @@ namespace Yumi
         SetBlendingModeEnabled(true);
         SetBlendingMode(BlendingMode::Alpha);
         SetClearColor(Color::DarkGrey);
+
+        m_SpriteShader->Compile(g_SpriteVertexShaderSource, g_SpriteFragmentShaderSource);
     }
 
     Renderer::~Renderer()
@@ -58,9 +56,19 @@ namespace Yumi
         m_CommandQueue->Submit<SetViewPortCommand>(m_RendererAPI, x, y, width, height);
     }
 
-    void Renderer::SubmitSpritePrimitive(const SpritePrimitive& sprite)
+    void Renderer::SubmitSprite(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors,
+        const Array<Vector2, 4>& vertexUV, Id rendererTextureId)
     {
-        m_SpritePrimitivesDrawList.emplace_back(sprite);
+        SharedPtr<RendererTexture2D> texture = rendererTextureId != 0 ? m_Textures[rendererTextureId] : nullptr;
+
+        SpritePrimitive spritePrimitive{
+            vertexPositions,
+            vertexColors,
+            vertexUV,
+            texture
+        };
+
+        m_SpritePrimitivesDrawList.emplace_back(spritePrimitive);
     }
 
     void Renderer::DrawPrimitives()
@@ -80,5 +88,27 @@ namespace Yumi
 
         m_SpritePrimitivesDrawList.clear();
         m_SpriteRenderer->End();
+    }
+
+    Id Renderer::CreateTexture2D(const Texture2DSettings& settings, const void* data)
+    {
+        Id id;
+        SharedPtr<RendererTexture2D> texture = RendererTexture2D::Create(m_RendererAPI->GetGraphicsAPI());
+        texture->UploadToGPU(settings, data);
+        m_Textures[id] = texture;
+        return id;
+    }
+
+    RendererTexture2D& Renderer::GetTexture2D(Id id)
+    {
+        YCHECK(m_Textures.count(id), "Invalid id!");
+        return *m_Textures[id];
+    }
+
+    void Renderer::DestroyTexture2D(Id id)
+    {
+        YCHECK(m_Textures.count(id), "Invalid id!");
+        SharedPtr<RendererTexture2D> texture = m_Textures[id];
+        m_Textures.erase(id);
     }
 }

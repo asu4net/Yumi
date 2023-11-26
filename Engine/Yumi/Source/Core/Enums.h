@@ -16,4 +16,12 @@ namespace Yumi
     {
         None, X, Y, Both
     };
+
+    enum class BlendingMode
+    {
+        Alpha,
+        Solid,
+        Add,
+        Multiply
+    };
 }

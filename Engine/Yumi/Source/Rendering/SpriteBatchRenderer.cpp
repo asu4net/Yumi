@@ -2,8 +2,8 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
-#include "Texture2D.h"
 #include "FrameBuffer.h"
+#include "RendererTexture2D.h"
 
 namespace Yumi
 {
@@ -99,15 +99,13 @@ namespace Yumi
     void SpriteBatchRenderer::CreateWhiteTexture()
     {
         Texture2DSettings settings;
-        settings.CreateFromFile = false;
         settings.Width = 1;
         settings.Height = 1;
+        settings.Channels = 4;
 
-        m_WhiteTexture = Texture2D::Create(m_RendererAPI->GetGraphicsAPI());
-        m_WhiteTexture->Configure(settings);
-        m_WhiteTexture->UploadToGPU();
+        m_WhiteTexture = RendererTexture2D::Create(m_RendererAPI->GetGraphicsAPI());
         constexpr uint32_t whiteTextureData = 0xffffffff;
-        m_WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+        m_WhiteTexture->UploadToGPU(settings, &whiteTextureData);
         m_Textures[0] = m_WhiteTexture;
     }
 
@@ -159,7 +157,7 @@ namespace Yumi
         delete[] indices;
     }
 
-    int SpriteBatchRenderer::CalculateTextureSlot(const SharedPtr<Texture2D>& texture)
+    int SpriteBatchRenderer::CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture)
     {
         int textureSlot = 0;
 

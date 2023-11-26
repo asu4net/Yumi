@@ -2,8 +2,9 @@
 #include "Rendering\Renderer.h"
 #include "Scene\Components\SpriteComponent.h"
 #include "Scene\Components\TransformComponent.h"
-#include "Rendering\Texture2D.h"
+#include "Rendering\RendererTexture2D.h"
 #include "Core\Engine.h"
+#include "Rendering\Texture2D.h"
 
 namespace Yumi
 {
@@ -87,14 +88,9 @@ namespace Yumi
             const SharedPtr<Texture2D> texture = sprite.SpriteAssetRef.IsValid() ? 
                 sprite.SpriteAssetRef.GetAs<Sprite>().GetTextureRef().GetPtrAs<Texture2D>().lock() : nullptr;
 
-            SpritePrimitive spritePrimitive{
-                sprite.VertexPositions,
-                sprite.VertexColors,
-                sprite.VertexUVs,
-                texture
-            };
+            const Id id = texture ? texture->GetRendererId() : 0;
 
-            renderer.SubmitSpritePrimitive(spritePrimitive);
+            renderer.SubmitSprite(spriteComponent.VertexPositions, spriteComponent.VertexColors, spriteComponent.VertexUVs, id);
         });
     }
 

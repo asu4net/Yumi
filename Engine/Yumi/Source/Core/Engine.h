@@ -9,6 +9,7 @@ namespace Yumi
     public:
         bool                IsInitialized()   const { return m_IsInitialized; }
         bool                IsRunning()       const { return m_IsRunning;     }
+        GraphicsAPI         GetGraphicsApi()  const { return m_GraphicsApi;     }
         class Window&       GetWindow()       const { return *m_Window;       }
         class Time&         GetTime()         const { return *m_Time;         }
         class Input&        GetInput()        const { return *m_Input;        }

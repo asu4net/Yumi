@@ -2,8 +2,6 @@
 
 namespace Yumi
 {
-    static constexpr char* s_EmptyPathString = "NO_PATH";
-
     AssetRef AssetManager::CreateSpriteAsset(const String& textureAssetName)
     {
         return CreateSpriteAsset(AssetData{ textureAssetName + " [Sprite]" }, GetAssetByName(textureAssetName));
@@ -90,8 +88,8 @@ namespace Yumi
 
         if (assetData.Path.empty())
         {
-            assetData.Path = s_EmptyPathString;
-            assetData.AbsolutePath = s_EmptyPathString;
+            assetData.Path = AssetData::s_EmptyPathString;
+            assetData.AbsolutePath = AssetData::s_EmptyPathString;
         }
         else
         {

@@ -4,7 +4,7 @@
 
 namespace Yumi
 {
-    class Texture2D;
+    class RendererTexture2D;
     class SubTexture2D;
 
     class Sprite : public Asset

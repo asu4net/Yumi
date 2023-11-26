@@ -27,14 +27,13 @@ namespace Yumi
         void Unbind() const override;
 
         AssetData GetAssetData() const override { return m_AssetData; }
+        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
 
     private:
+        AssetData m_AssetData;
         uint32_t m_ShaderId{ 0 };
         bool m_bCompiled{ false };
         String m_VertexSource;
         String m_FragmentSource;
-        
-        AssetData m_AssetData;
-        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
     };
 }
