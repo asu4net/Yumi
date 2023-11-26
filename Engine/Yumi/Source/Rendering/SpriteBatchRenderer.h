@@ -10,6 +10,7 @@ namespace Yumi
     class VertexBuffer;
     class IndexBuffer;
     class RendererTexture2D;
+    class RendererShader;
 
     struct SpritePrimitive
     {
@@ -34,7 +35,7 @@ namespace Yumi
         {
             RenderTarget CurrentRenderTarget;
             Matrix4 ProjectionViewMat4;
-            SharedPtr<Shader> SpriteShader;
+            SharedPtr<RendererShader> SpriteShader;
         };
 
         SpriteBatchRenderer(const SharedPtr<RendererAPI> API, 

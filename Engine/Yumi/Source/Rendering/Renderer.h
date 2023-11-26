@@ -3,7 +3,7 @@
 
 namespace Yumi
 {
-    class Shader;
+    class RendererShader;
     class RendererTexture2D;
     struct Texture2DSettings;
     class RendererAPI;
@@ -15,7 +15,7 @@ namespace Yumi
         Renderer(GraphicsAPI api);
         ~Renderer();
 
-        void SetSpriteShader(const SharedPtr<Shader> spriteShader) { m_SpriteShader = spriteShader; }
+        void SetSpriteShader(const SharedPtr<RendererShader> spriteShader) { m_SpriteShader = spriteShader; }
         void SetProjectionViewMatrix(const Matrix4& matrix) { m_ProjectionViewMatrix = matrix; }
         void SetRenderTarget(RenderTarget renderTarget) { m_CurrentRenderTarget = renderTarget; }
         void SetBlendingModeEnabled(bool enabled);
@@ -42,7 +42,7 @@ namespace Yumi
         Map<Id, SharedPtr<RendererTexture2D>> m_Textures;
 
         // Sprite Rendering
-        SharedPtr<Shader> m_SpriteShader;
+        SharedPtr<RendererShader> m_SpriteShader;
         UniquePtr<SpriteBatchRenderer> m_SpriteRenderer;
         DynamicArray<SpritePrimitive> m_SpritePrimitivesDrawList;
     };

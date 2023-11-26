@@ -17,9 +17,11 @@
 #include "Rendering/VertexArray.h"
 #include "Rendering/Shader.h"
 #include "Rendering/Renderer.h"
-#include "Rendering/Sprite.h"
 #include "Rendering/Texture2D.h"
+#include "Rendering/SubTexture2D.h"
+#include "Rendering/Sprite.h"
 #include "Rendering/RendererTexture2D.h"
+#include "Rendering/RendererShader.h"
 
 // Scene
 #include "Scene/World.h"
@@ -32,3 +34,5 @@
 #include "Scene/Components/SpriteComponent.h"
 #include "Scene/Components/AnimationComponent.h"
 #include "Scripting/Scripts/FreeLookCameraScript.h"
+
+#include "Animation/Animation.h"

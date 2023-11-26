@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "Shader.h"
+#include "RendererShader.h"
 #include "RendererTexture2D.h"
 #include "RawShaderStrings.h"
 
@@ -8,7 +8,7 @@ namespace Yumi
     Renderer::Renderer(GraphicsAPI api)
         : m_RendererAPI(RendererAPI::Create(api))
         , m_CommandQueue(CreateSharedPtr<RenderCommandQueue>())
-        , m_SpriteShader(Shader::Create(api))
+        , m_SpriteShader(RendererShader::Create(api))
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         YLOG_TRACE("Renderer created!\n");

@@ -2,12 +2,6 @@
 
 #include "Asset.h"
 #include "AssetRef.h"
-#include "Rendering/Texture2D.h"
-#include "Rendering/SubTexture2D.h"
-#include "Rendering/Shader.h"
-#include "Rendering/Sprite.h"
-#include "Scene/Scene.h"
-#include "Animation/Animation.h"
 
 namespace Yumi
 {
@@ -35,20 +29,6 @@ namespace Yumi
         WeakPtr<Asset> GetAssetById(Id id);
 
         AssetRef GetAssetByName(const String& name);
-
-        template<typename... Args>
-        AssetRef CreateShaderAsset(AssetData&& assetData, Args&&... args)
-        {
-            EnsureAssetDataConsistency(assetData);
-
-            SharedPtr<Shader> shader = Shader::Create(GraphicsAPI::OpenGL, std::forward<Args>(args)...);
-            shader->SetAssetData(assetData);
-            
-            m_IdAssetMap[assetData.AssetId] = shader;
-            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
- 
-            return AssetRef(assetData.AssetId);
-        }
 
         template<typename T, typename... TArgs>
         AssetRef CreateAsset(AssetData&& assetData, TArgs&&... args)

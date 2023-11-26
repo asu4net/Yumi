@@ -2,7 +2,7 @@
 
 namespace Yumi
 {
-    const String g_SpriteVertexShaderSource = R"(
+    const char* g_SpriteVertexShaderSource = R"(
         #version 410 core
         
         layout(location = 0) in vec3 a_Position;
@@ -27,7 +27,7 @@ namespace Yumi
         }
     )";
 
-    const String g_SpriteFragmentShaderSource = R"(
+    const char* g_SpriteFragmentShaderSource = R"(
         #version 410 core
         
         layout(location = 0) out vec4 color;
@@ -45,7 +45,7 @@ namespace Yumi
         }
     )";
 
-    const String g_FlatColorVertexShaderSource = R"(
+    const char* g_FlatColorVertexShaderSource = R"(
         #version 410 core
         
         layout(location = 0) in vec3 a_Position;
@@ -58,7 +58,7 @@ namespace Yumi
         }
     )";
 
-    const String g_FlatColorFragmentShaderSource = R"(        
+    const char* g_FlatColorFragmentShaderSource = R"(        
         #version 410 core
         
         layout(location = 0) out vec4 color;

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "RendererAPI.h"
 #include "VertexArray.h"
-#include "Shader.h"
+#include "RendererShader.h"
 
 namespace Yumi
 {
@@ -133,7 +133,7 @@ namespace Yumi
     {
     public:
         
-        SetUniformCommand(const SharedPtr<RendererAPI>& api, const SharedPtr<Shader>& shader, const char* uniformName)
+        SetUniformCommand(const SharedPtr<RendererAPI>& api, const SharedPtr<RendererShader>& shader, const char* uniformName)
             : RenderCommand(api)
             , m_Shader(shader)
             , m_UniformName(uniformName)
@@ -145,7 +145,7 @@ namespace Yumi
         }
 
     protected:
-        const SharedPtr<Shader> m_Shader;
+        const SharedPtr<RendererShader> m_Shader;
         const char* m_UniformName;
     };
     
@@ -153,7 +153,7 @@ namespace Yumi
     {
     public:
         
-        SetUniformMat4Command(const SharedPtr<RendererAPI>& api, const SharedPtr<Shader>& shader, const char* uniformName, const Matrix4& mat)
+        SetUniformMat4Command(const SharedPtr<RendererAPI>& api, const SharedPtr<RendererShader>& shader, const char* uniformName, const Matrix4& mat)
             : SetUniformCommand(api, shader, uniformName)
             , m_Mat(mat)
         {}
@@ -174,7 +174,7 @@ namespace Yumi
     {
     public:
         
-        SetUniformVec4Command(const SharedPtr<RendererAPI>& api, const SharedPtr<Shader>& shader, const char* uniformName, const Vector4& vec)
+        SetUniformVec4Command(const SharedPtr<RendererAPI>& api, const SharedPtr<RendererShader>& shader, const char* uniformName, const Vector4& vec)
             : SetUniformCommand(api, shader, uniformName)
             , m_Vec4(vec)
         {}
@@ -195,7 +195,7 @@ namespace Yumi
     {
     public:
         
-        SetUniformIntCommand(const SharedPtr<RendererAPI>& api, const SharedPtr<Shader>& shader, const char* uniformName, const int num)
+        SetUniformIntCommand(const SharedPtr<RendererAPI>& api, const SharedPtr<RendererShader>& shader, const char* uniformName, const int num)
             : SetUniformCommand(api, shader, uniformName)
             , m_Num(num)
         {}

@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include "Asset/Asset.h"
 
 namespace Yumi
@@ -7,20 +6,20 @@ namespace Yumi
     class Shader : public Asset
     {
     public:
-        static SharedPtr<Shader> Create(GraphicsAPI api);
+        Shader() = default;
 
-        virtual bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource) = 0;
-        virtual bool Initialized() const = 0;
+        AssetData GetAssetData() const override { return m_AssetData; }
+        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
 
-        virtual void Compile() = 0;
-        virtual void Compile(const String& vertexSource, const String& fragmentSource) = 0;
-        
-        virtual void SetUniformMat4(const char* uniformName, const Matrix4& mat) const = 0;
-        virtual void SetUniformVec4(const char* uniformName, const Vector4& vec) const = 0;
-        virtual void SetUniformInt(const char* uniformName, int num) = 0;
-        virtual void SetUniformIntArray(const char* uniformName, const int32_t* array, int32_t size) = 0;
-        
-        virtual void Bind() const = 0;
-        virtual void Unbind() const = 0;      
+        bool Load() override;
+        void Unload() override;
+
+    private:
+        AssetData m_AssetData;
+        Id m_RendererShaderId = 0;
+        String m_VertexSource;
+        String m_FragmentSource;
+
+        bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource);
     };
 }

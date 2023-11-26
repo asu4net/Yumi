@@ -2,6 +2,7 @@
 #include "Core/Engine.h"
 #include "Asset/AssetManager.h"
 #include "Rendering/Sprite.h"
+#include "Rendering/SubTexture2D.h"
 
 namespace Yumi
 {

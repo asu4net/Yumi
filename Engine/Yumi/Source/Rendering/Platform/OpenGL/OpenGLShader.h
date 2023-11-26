@@ -1,22 +1,15 @@
 #pragma once
-#include "Rendering/Shader.h"
+#include "Rendering/RendererShader.h"
 
 namespace Yumi
 {
-    class OpenGLShader : public Shader
+    class OpenGLShader : public RendererShader
     {
     public:
         OpenGLShader();
-        ~OpenGLShader() override = default;
+        ~OpenGLShader();
 
-        bool Load() override;
-        void Unload() override;
-
-        bool ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource) override;
-        bool Initialized() const override { return m_bCompiled; }
-
-        void Compile() override;
-        void Compile(const String& vertexSource, const String& fragmentSource) override;
+        void Compile(const char* vertexSource, const char* fragmentSource) override;
 
         void SetUniformMat4(const char* uniformName, const Matrix4& mat) const override;
         void SetUniformVec4(const char* uniformName, const Vector4& vec) const override;
@@ -26,14 +19,8 @@ namespace Yumi
         void Bind() const override;
         void Unbind() const override;
 
-        AssetData GetAssetData() const override { return m_AssetData; }
-        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
-
     private:
-        AssetData m_AssetData;
-        uint32_t m_ShaderId{ 0 };
-        bool m_bCompiled{ false };
-        String m_VertexSource;
-        String m_FragmentSource;
+        uint32_t m_ShaderId = 0;
+        bool m_Compiled = false;
     };
 }

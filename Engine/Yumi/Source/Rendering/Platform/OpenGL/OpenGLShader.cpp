@@ -5,39 +5,25 @@ namespace Yumi
 {
     OpenGLShader::OpenGLShader() = default;
 
-    bool OpenGLShader::Load()
-    {
-        const String absolutePath = GetAssetData().AbsolutePath;
-        if (absolutePath == "None")
-            return true;
-
-        if (!ReadFromFile(absolutePath, m_VertexSource, m_FragmentSource))
-            return false;
-
-        Compile();
-        return true;
-    }
-
-    void OpenGLShader::Unload()
+    OpenGLShader::~OpenGLShader()
     {
         glDeleteProgram(m_ShaderId);
     }
-    
-    void OpenGLShader::Compile()
-    {
-        Compile(m_VertexSource, m_FragmentSource);
-    }
 
-    void OpenGLShader::Compile(const String& vertexSource, const String& fragmentSource)
+    void OpenGLShader::Compile(const char* vertexSource, const char* fragmentSource)
     {
-        if (m_bCompiled) return;
+        if (m_Compiled)
+        {
+            glDeleteProgram(m_ShaderId);
+            m_Compiled = false;
+        }
 
         // Create an empty vertex shader handle
         const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
         // Send the vertex shader source code to GL
         // Note that String's .c_str is NULL character terminated.
-        const GLchar* source = vertexSource.c_str();
+        const GLchar* source = vertexSource;
         glShaderSource(vertexShader, 1, &source, nullptr);
 
         // Compile the vertex shader
@@ -66,7 +52,7 @@ namespace Yumi
 
         // Send the fragment shader source code to GL
         // Note that String's .c_str is NULL character terminated.
-        source = fragmentSource.c_str();
+        source = fragmentSource;
         glShaderSource(fragmentShader, 1, &source, nullptr);
 
         // Compile the fragment shader
@@ -128,54 +114,7 @@ namespace Yumi
         glDetachShader(m_ShaderId, vertexShader);
         glDetachShader(m_ShaderId, fragmentShader);
 
-        m_bCompiled = true;
-    }
-
-    bool OpenGLShader::ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource)
-    {
-        static String content;
-        std::ifstream fileStream(fileLocation, std::ios::in);
-
-        if (!fileStream.is_open())
-        {
-            printf("Failed to read %s! File doesn't exist.\n", fileLocation.c_str());
-            return false;
-        }
-
-        String line;
-
-        enum class ShaderType { None, Vertex, Fragment };
-        ShaderType currentShader = ShaderType::None;
-
-        while (!fileStream.eof())
-        {
-            std::getline(fileStream, line);
-
-            if (line.find("#type") != String::npos)
-            {
-                if (line.find("vertex") != String::npos)
-                {
-                    currentShader = ShaderType::Vertex;
-                    continue;
-                }
-
-                if (line.find("fragment") != String::npos)
-                {
-                    currentShader = ShaderType::Fragment;
-                    continue;
-                }
-            }
-
-            switch (currentShader)
-            {
-            case ShaderType::None: continue;
-            case ShaderType::Vertex: vertexSource.append(line + "\n"); continue;
-            case ShaderType::Fragment: fragmentSource.append(line + "\n"); continue;
-            }
-        }
-
-        fileStream.close();
-        return true;
+        m_Compiled = true;
     }
 
     void OpenGLShader::SetUniformMat4(const char* uniformName, const Matrix4& mat) const

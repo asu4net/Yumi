@@ -4,6 +4,7 @@
 #include "IndexBuffer.h"
 #include "FrameBuffer.h"
 #include "RendererTexture2D.h"
+#include "RendererShader.h"
 
 namespace Yumi
 {
