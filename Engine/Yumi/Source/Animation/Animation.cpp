@@ -30,12 +30,10 @@ namespace Yumi
 
                 if (!subTextureRef.IsValid())
                 {
-                    subTextureRef = assetManager.CreateSubTextureAsset({ subTextureName });
-                    subTextureRef.GetAs<SubTexture2D>().Init(textureAtlasRef, location, atlasTileSize);
+                    subTextureRef = assetManager.CreateAsset<SubTexture2D>(subTextureName, textureAtlasRef, location, atlasTileSize);
                 }
-
-                spriteRef = assetManager.CreateSpriteAsset({subSpriteName});
-                spriteRef.GetAs<Sprite>().InitFromSubTexture(subTextureRef);
+                
+                spriteRef = assetManager.CreateAsset<Sprite>(subSpriteName, subTextureRef, true);
             }
             animation.PushKey({spriteRef, keyTimes[i]});
         }

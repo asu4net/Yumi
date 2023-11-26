@@ -50,10 +50,9 @@ class ColorScript : public Script
 
 void CreateActors()
 {
-    AssetRef catSpriteRef = GetAssetManager().CreateAsset<Sprite>({ "Bola.jpg [Sprite]" }, "Bola.jpg");
-    
-    AssetRef cppSprite = GetAssetManager().CreateSpriteAsset({ "cpp.png [Sprite]" });
-    cppSprite.GetAs<Sprite>().InitFromTexture(GetAssetManager().GetAssetByName("cpp.png"));
+    AssetRef catSpriteRef = GetAssetManager().CreateAsset<Sprite>("Bola.jpg [Sprite]", "Bola.jpg");
+    AssetRef cppSpriteRef = GetAssetManager().CreateAsset<Sprite>("cpp.png [Sprite]", "cpp.png");
+    AssetRef aspidAnimationRef = GetAssetManager().CreateAsset<Animation>("AspidFly");
 
     Scene& scene = GetWorld().GetActiveScene();
     
@@ -65,12 +64,11 @@ void CreateActors()
     catActor.Add<SpriteComponent>(catSpriteRef);
 
     Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
-    cppActor.Add<SpriteComponent>(cppSprite);
+    cppActor.Add<SpriteComponent>(cppSpriteRef);
     ScriptStatics::Attach<MoveScript>(cppActor);
 
     Actor aspidActor = scene.CreateActor({ "Aspid", Vector3::Down});
     auto& spriteComponent = aspidActor.Add<SpriteComponent>();
-    AssetRef aspidAnimationRef = GetAssetManager().CreateAnimationAsset(AssetData{ "AspidFly" });
     Animation::PushKeysFromAtlas("AspidFly", "aspid.png", { 143, 123 }, 6);
     aspidActor.Add<AnimationComponent>(aspidAnimationRef, &spriteComponent.SpriteAssetRef);
 }

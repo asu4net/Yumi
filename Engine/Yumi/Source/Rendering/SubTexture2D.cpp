@@ -3,6 +3,16 @@
 
 namespace Yumi
 {
+    SubTexture2D::SubTexture2D(const AssetRef& parentTextureRef, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size)
+    {
+        Init(parentTextureRef, uvMin, uvMax, size);
+    }
+
+    SubTexture2D::SubTexture2D(const AssetRef& parentTextureRef, const Vector2& locationInAtlas, const Vector2& size)
+    {
+        Init(parentTextureRef, locationInAtlas, size);
+    }
+
     void SubTexture2D::Init(const AssetRef& parentRef, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size)
     {
         YCHECK(m_ParentRef.IsValid(), "SubTexture2D requires a valid parent!");

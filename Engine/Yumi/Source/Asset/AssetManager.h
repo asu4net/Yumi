@@ -37,7 +37,7 @@ namespace Yumi
         AssetRef GetAssetByName(const String& name);
 
         template<typename... Args>
-        AssetRef CreateShaderAsset(AssetData& assetData, Args&&... args)
+        AssetRef CreateShaderAsset(AssetData&& assetData, Args&&... args)
         {
             EnsureAssetDataConsistency(assetData);
 
@@ -61,69 +61,10 @@ namespace Yumi
             return AssetRef(assetData.AssetId);
         }
 
-        AssetRef CreateTextureAsset(AssetData&& assetData)
+        template<typename T, typename... TArgs>
+        AssetRef CreateAsset(const String& assetName, TArgs&&... args)
         {
-            EnsureAssetDataConsistency(assetData);
-
-            SharedPtr<Texture2D> texture = CreateSharedPtr<Texture2D>();
-            texture->SetAssetData(assetData);
-
-            m_IdAssetMap[assetData.AssetId] = texture;
-            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
-
-            return AssetRef(assetData.AssetId);
-        }
-
-        AssetRef CreateSubTextureAsset(AssetData&& assetData)
-        {
-            EnsureAssetDataConsistency(assetData);
-
-            SharedPtr<SubTexture2D> subTexture = CreateSharedPtr<SubTexture2D>();
-            subTexture->SetAssetData(assetData);
-
-            m_IdAssetMap[assetData.AssetId] = subTexture;
-            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
-
-            return AssetRef(assetData.AssetId);
-        }
-
-        AssetRef CreateSpriteAsset(AssetData&& assetData)
-        {
-            EnsureAssetDataConsistency(assetData);
-
-            SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>();
-            sprite->SetAssetData(assetData);
-
-            m_IdAssetMap[assetData.AssetId] = sprite;
-            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
-
-            return AssetRef(assetData.AssetId);
-        }
-
-        AssetRef CreateSceneAsset(AssetData&& assetData)
-        {
-            EnsureAssetDataConsistency(assetData);
-
-            SharedPtr<Scene> scene = CreateSharedPtr<Scene>();
-            scene->SetAssetData(assetData);
-
-            m_IdAssetMap[assetData.AssetId] = scene;
-            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
-
-            return AssetRef(assetData.AssetId);
-        }
-
-        AssetRef CreateAnimationAsset(AssetData&& assetData)
-        {
-            EnsureAssetDataConsistency(assetData);
-
-            SharedPtr<Animation> animation = CreateSharedPtr<Animation>();
-            animation->SetAssetData(assetData);
-
-            m_IdAssetMap[assetData.AssetId] = animation;
-            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
-
-            return AssetRef(assetData.AssetId);
+            return CreateAsset<T>(AssetData{ assetName }, std::forward<TArgs>(args)...);
         }
 
     private:

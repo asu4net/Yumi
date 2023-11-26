@@ -10,7 +10,9 @@ namespace Yumi
     {
     public:
         SubTexture2D() = default;
-        
+        SubTexture2D(const AssetRef& parentTextureRef, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
+        SubTexture2D(const AssetRef& parentTextureRef, const Vector2& locationInAtlas, const Vector2& size);
+
         void Init(const AssetRef& parentTextureRef, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size);
         void Init(const AssetRef& parentTextureRef, const Vector2& locationInAtlas, const Vector2& size);
 

@@ -50,11 +50,11 @@ namespace Yumi
 
             if (dirPath.extension() == ".png" || dirPath.extension() == ".jpg")
             {
-                TryLoadAsset(CreateTextureAsset(AssetData{ fileName, localPath }));
+                TryLoadAsset(CreateAsset<Texture2D>({ fileName, localPath }));
             }
             else if (dirPath.extension() == ".glsl")
             {
-                TryLoadAsset(CreateShaderAsset(AssetData{ fileName, localPath }));
+                TryLoadAsset(CreateShaderAsset({ fileName, localPath }));
             }
         }
     }
