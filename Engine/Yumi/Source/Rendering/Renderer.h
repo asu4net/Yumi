@@ -32,6 +32,10 @@ namespace Yumi
         RendererTexture2D& GetTexture2D(Id id);
         void DestroyTexture2D(Id id);
 
+        Id CreateShader(const char* vertexSource, const char* fragmentSource);
+        RendererShader& GetShader(Id id);
+        void DestroyShader(Id id);
+
     private:
         Matrix4 m_ProjectionViewMatrix;
         RenderTarget m_CurrentRenderTarget = RenderTarget::Default;
@@ -40,6 +44,7 @@ namespace Yumi
         SharedPtr<RenderCommandQueue> m_CommandQueue;
 
         Map<Id, SharedPtr<RendererTexture2D>> m_Textures;
+        Map<Id, SharedPtr<RendererShader>> m_Shaders;
 
         // Sprite Rendering
         SharedPtr<RendererShader> m_SpriteShader;

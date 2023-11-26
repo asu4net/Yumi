@@ -1,4 +1,6 @@
 ﻿#include "Shader.h"
+#include "Core\Engine.h"
+#include "Renderer.h"
 
 namespace Yumi
 {
@@ -11,14 +13,13 @@ namespace Yumi
         if (!ReadFromFile(absolutePath, m_VertexSource, m_FragmentSource))
             return false;
 
-        //create shader from renderer
-        //compile shader from renderer
+        GetRenderer().CreateShader(m_VertexSource.c_str(), m_FragmentSource.c_str());
         return true;
     }
 
     void Shader::Unload()
     {
-        //remove shader from renderer
+        GetRenderer().DestroyShader(m_RendererShaderId);
     }
 
     bool Shader::ReadFromFile(const String& fileLocation, String& vertexSource, String& fragmentSource)

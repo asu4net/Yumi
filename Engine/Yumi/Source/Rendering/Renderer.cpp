@@ -111,4 +111,26 @@ namespace Yumi
         SharedPtr<RendererTexture2D> texture = m_Textures[id];
         m_Textures.erase(id);
     }
+    
+    Id Renderer::CreateShader(const char* vertexSource, const char* fragmentSource)
+    {
+        Id id;
+        SharedPtr<RendererShader> shader = RendererShader::Create(m_RendererAPI->GetGraphicsAPI());
+        shader->Compile(vertexSource, fragmentSource);
+        m_Shaders[id] = shader;
+        return id;
+    }
+
+    RendererShader& Renderer::GetShader(Id id)
+    {
+        YCHECK(m_Shaders.count(id), "Invalid id!");
+        return *m_Shaders[id];
+    }
+
+    void Renderer::DestroyShader(Id id)
+    {
+        YCHECK(m_Shaders.count(id), "Invalid id!");
+        SharedPtr<RendererShader> texture = m_Shaders[id];
+        m_Shaders.erase(id);
+    }
 }
