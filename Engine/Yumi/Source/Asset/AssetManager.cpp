@@ -89,6 +89,15 @@ namespace Yumi
         }
     }
 
+    AssetRef AssetManager::RegistryAsset(const SharedPtr<Asset>& asset, AssetData& assetData)
+    {
+        EnsureAssetDataConsistency(assetData);
+        asset->SetAssetData(assetData);
+        m_IdAssetMap[assetData.AssetId] = asset;
+        m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
+        return AssetRef(assetData.AssetId);
+    }
+
     void AssetManager::TryLoadAsset(AssetRef assetRef)
     {
         SharedPtr<Asset> asset = assetRef.GetPtr().lock();

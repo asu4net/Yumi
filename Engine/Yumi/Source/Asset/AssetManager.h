@@ -53,12 +53,7 @@ namespace Yumi
         template<typename T, typename... TArgs>
         AssetRef CreateAsset(AssetData&& assetData, TArgs&&... args)
         {
-            EnsureAssetDataConsistency(assetData);
-            SharedPtr<T> asset = CreateSharedPtr<T>(std::forward<TArgs>(args)...);
-            asset->SetAssetData(assetData);
-            m_IdAssetMap[assetData.AssetId] = asset;
-            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
-            return AssetRef(assetData.AssetId);
+            return RegistryAsset(CreateSharedPtr<T>(std::forward<TArgs>(args)...), assetData);
         }
 
         template<typename T, typename... TArgs>
@@ -70,6 +65,7 @@ namespace Yumi
     private:
         void UnloadAssets();
         void EnsureAssetDataConsistency(AssetData& assetData);
+        AssetRef RegistryAsset(const SharedPtr<Asset>& asset, AssetData& assetData);
 
         void TryLoadAsset(AssetRef assetLink);
 
