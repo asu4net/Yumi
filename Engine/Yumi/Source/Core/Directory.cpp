@@ -20,4 +20,21 @@ namespace Yumi
         static const String s_AssetFolderName = "Assets";
         return s_AssetFolderName;
     }
+
+    void GetAssetDirectoryLocalPath(const String& filePath, String& localPath)
+    {
+        DynamicArray<String> splitPath;
+        String subString;
+        std::stringstream ss(filePath);
+        bool bProceed = false;
+        while (std::getline(ss, subString, '\\'))
+        {
+            if (subString.find(GetAssetsFolderName()) != String::npos)
+                bProceed = true;
+            if (bProceed)
+                splitPath.push_back("/" + subString);
+        }
+        for (int i = 0; i < splitPath.size(); i++)
+            localPath += splitPath[i];
+    }
 }

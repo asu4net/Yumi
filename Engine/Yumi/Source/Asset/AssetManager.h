@@ -69,8 +69,6 @@ namespace Yumi
 
         void TryLoadAsset(AssetRef assetLink);
 
-        static void GetAssetDirectoryLocalPath(const String& filePath, String& localPath);
-
         const String m_WorkingDirectory;
         const String m_AssetDirectory;
         

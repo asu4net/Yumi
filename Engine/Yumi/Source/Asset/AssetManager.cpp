@@ -114,21 +114,4 @@ namespace Yumi
             m_IdAssetMap.erase(assetData.AssetId);
         }
     }
-
-    void AssetManager::GetAssetDirectoryLocalPath(const String& path, String& localPath)
-    {
-        DynamicArray<String> splitPath;
-        String subString;
-        std::stringstream ss(path);
-        bool bProceed = false;
-        while (std::getline(ss, subString, '\\'))
-        {
-            if (subString.find(GetAssetsFolderName()) != String::npos) 
-                bProceed = true;
-            if (bProceed) 
-                splitPath.push_back("/" + subString);
-        }
-        for (int i = 0; i < splitPath.size(); i++)
-            localPath += splitPath[i];
-    }
 }
