@@ -16,10 +16,13 @@ namespace Yumi
         static void FlipVertexUVs(Flip flip, Array<Vector2, 4>& vertexUVs);
 
         Sprite() = default;
-        
+        Sprite(AssetRef textureRef, bool isSubTexture = false);
+        Sprite(const String& textureAssetName, bool isSubTexture = false);
+
         bool Load() override { return true; }
         void Unload() override {}
         
+        void Init(const AssetRef& textureRef, bool isSubTexture);
         void InitFromTexture(const AssetRef& textureRef);
         void InitFromSubTexture(const AssetRef& subTextureRef);
 

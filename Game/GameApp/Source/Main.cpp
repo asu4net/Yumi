@@ -50,9 +50,8 @@ class ColorScript : public Script
 
 void CreateActors()
 {
-    AssetRef catSprite = GetAssetManager().CreateSpriteAsset({ "Bola.jpg [Sprite]" });
-    catSprite.GetAs<Sprite>().InitFromTexture(GetAssetManager().GetAssetByName("Bola.jpg"));
-
+    AssetRef catSpriteRef = GetAssetManager().CreateAsset<Sprite>({ "Bola.jpg [Sprite]" }, "Bola.jpg");
+    
     AssetRef cppSprite = GetAssetManager().CreateSpriteAsset({ "cpp.png [Sprite]" });
     cppSprite.GetAs<Sprite>().InitFromTexture(GetAssetManager().GetAssetByName("cpp.png"));
 
@@ -63,7 +62,7 @@ void CreateActors()
     ScriptStatics::Attach<ColorScript>(emptySpriteActor);
 
     Actor catActor = scene.CreateActor();
-    catActor.Add<SpriteComponent>(catSprite);
+    catActor.Add<SpriteComponent>(catSpriteRef);
 
     Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
     cppActor.Add<SpriteComponent>(cppSprite);

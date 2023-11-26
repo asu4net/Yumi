@@ -33,6 +33,7 @@ namespace Yumi
         }
 
         WeakPtr<Asset> GetAssetById(Id id);
+
         AssetRef GetAssetByName(const String& name);
 
         template<typename... Args>
@@ -50,9 +51,14 @@ namespace Yumi
         }
 
         template<typename T, typename... TArgs>
-        std::pair<AssetRef, T> CreateAsset(AssetData&& assetData, TArgs&&... args)
+        AssetRef CreateAsset(AssetData&& assetData, TArgs&&... args)
         {
-
+            EnsureAssetDataConsistency(assetData);
+            SharedPtr<T> asset = CreateSharedPtr<T>(std::forward<TArgs>(args)...);
+            asset->SetAssetData(assetData);
+            m_IdAssetMap[assetData.AssetId] = asset;
+            m_AssetNameIdMap[assetData.Name] = assetData.AssetId;
+            return AssetRef(assetData.AssetId);
         }
 
         AssetRef CreateTextureAsset(AssetData&& assetData)

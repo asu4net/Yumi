@@ -1,6 +1,8 @@
 #include "Sprite.h"
 #include "Texture2D.h"
 #include "SubTexture2D.h"
+#include "Core\Engine.h"
+#include "Asset\AssetManager.h"
 
 namespace Yumi
 {
@@ -69,6 +71,28 @@ namespace Yumi
             vertexUVs[2] = uv[1];
             vertexUVs[3] = uv[0];
         }
+    }
+
+    Sprite::Sprite(AssetRef textureRef, bool isSubTexture /*= false*/)
+    {
+        Init(textureRef, isSubTexture);
+    }
+
+    Sprite::Sprite(const String& textureAssetName, bool isSubTexture /*= false*/)
+    {
+        AssetRef textureRef = GetAssetManager().GetAssetByName(textureAssetName);
+        Init(textureRef, isSubTexture);
+    }
+
+    void Sprite::Init(const AssetRef& textureRef, bool isSubTexture)
+    {
+        if (!isSubTexture)
+        {
+            InitFromTexture(textureRef);
+            return;
+        }
+
+        InitFromSubTexture(textureRef);
     }
 
     void Sprite::InitFromTexture(const AssetRef& textureRef)
