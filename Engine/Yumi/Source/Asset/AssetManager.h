@@ -38,7 +38,7 @@ namespace Yumi
         template<typename... Args>
         AssetRef CreateShaderAsset(AssetData& assetData, Args&&... args)
         {
-            EnsureAssetDataConsistency(assetData, "Shader");
+            EnsureAssetDataConsistency(assetData);
 
             SharedPtr<Shader> shader = Shader::Create(GraphicsAPI::OpenGL, std::forward<Args>(args)...);
             shader->SetAssetData(assetData);
@@ -49,9 +49,15 @@ namespace Yumi
             return AssetRef(assetData.AssetId);
         }
 
+        template<typename T, typename... TArgs>
+        std::pair<AssetRef, T> CreateAsset(AssetData&& assetData, TArgs&&... args)
+        {
+
+        }
+
         AssetRef CreateTextureAsset(AssetData&& assetData)
         {
-            EnsureAssetDataConsistency(assetData, "Texture2D");
+            EnsureAssetDataConsistency(assetData);
 
             SharedPtr<Texture2D> texture = CreateSharedPtr<Texture2D>();
             texture->SetAssetData(assetData);
@@ -64,7 +70,7 @@ namespace Yumi
 
         AssetRef CreateSubTextureAsset(AssetData&& assetData)
         {
-            EnsureAssetDataConsistency(assetData, "SubTexture2D");
+            EnsureAssetDataConsistency(assetData);
 
             SharedPtr<SubTexture2D> subTexture = CreateSharedPtr<SubTexture2D>();
             subTexture->SetAssetData(assetData);
@@ -77,7 +83,7 @@ namespace Yumi
 
         AssetRef CreateSpriteAsset(AssetData&& assetData)
         {
-            EnsureAssetDataConsistency(assetData, "Sprite");
+            EnsureAssetDataConsistency(assetData);
 
             SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>();
             sprite->SetAssetData(assetData);
@@ -90,7 +96,7 @@ namespace Yumi
 
         AssetRef CreateSceneAsset(AssetData&& assetData)
         {
-            EnsureAssetDataConsistency(assetData, "Scene");
+            EnsureAssetDataConsistency(assetData);
 
             SharedPtr<Scene> scene = CreateSharedPtr<Scene>();
             scene->SetAssetData(assetData);
@@ -103,7 +109,7 @@ namespace Yumi
 
         AssetRef CreateAnimationAsset(AssetData&& assetData)
         {
-            EnsureAssetDataConsistency(assetData, "Animation");
+            EnsureAssetDataConsistency(assetData);
 
             SharedPtr<Animation> animation = CreateSharedPtr<Animation>();
             animation->SetAssetData(assetData);
@@ -116,7 +122,7 @@ namespace Yumi
 
     private:
         void UnloadAssets();
-        void EnsureAssetDataConsistency(AssetData& assetData, const String& assetType);
+        void EnsureAssetDataConsistency(AssetData& assetData);
 
         void TryLoadAsset(AssetRef assetLink);
 

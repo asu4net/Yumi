@@ -9,7 +9,6 @@ namespace Yumi
         String Name;
         String Path;
         String AbsolutePath;
-        String AssetType;
         Id AssetId;
     };
 

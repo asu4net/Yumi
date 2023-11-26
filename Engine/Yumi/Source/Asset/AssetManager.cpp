@@ -72,13 +72,11 @@ namespace Yumi
         YLOG_TRACE("Assets unloaded!\n");
     }
 
-    void AssetManager::EnsureAssetDataConsistency(AssetData& assetData, const String& assetType)
+    void AssetManager::EnsureAssetDataConsistency(AssetData& assetData)
     {
         YCHECK(!assetData.Name.empty(), "Asset must have a name!");
         YCHECK(!m_AssetNameIdMap.count(assetData.Name), "An asset with the same Name already exists!");
         YCHECK(!m_IdAssetMap.count(assetData.AssetId), "An asset with the same AssetId already exists!");
-        YCHECK(!assetType.empty(), "Asset must have a type")
-        assetData.AssetType = assetType;
 
         if (assetData.Path.empty())
         {
@@ -96,15 +94,14 @@ namespace Yumi
         SharedPtr<Asset> asset = assetRef.GetPtr().lock();
         const AssetData assetData = asset->GetAssetData();
         const char* fileName = assetData.Name.c_str();
-        const char* assetType = assetData.AssetType.c_str();
 
         if (asset->Load())
         {
-            YLOG_TRACE("%s loaded: %s\n", assetType, fileName);
+            YLOG_TRACE("loaded: %s\n", fileName);
         }
         else
         {
-            YLOG_WARN("Failed to load %s: %s", assetType, fileName);
+            YLOG_WARN("Failed to load: %s", fileName);
             m_IdAssetMap.erase(assetData.AssetId);
         }
     }

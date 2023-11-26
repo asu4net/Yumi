@@ -6,7 +6,7 @@ namespace Yumi
     class Texture2D : public Asset
     {
     public:
-        Texture2D() = default;
+        Texture2D();
 
         AssetData GetAssetData() const override { return m_AssetData; }
         void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
