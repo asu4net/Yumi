@@ -1,5 +1,6 @@
 #pragma once
 #include "SpriteBatchRenderer.h"
+#include "CircleBatchRenderer.h"
 
 namespace Yumi
 {
@@ -24,18 +25,18 @@ namespace Yumi
         void SetClearColor(const Color& clearColor);
         void Clear();
         void SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height);
-        void SubmitSprite(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors,
-            const Array<Vector2, 4>& vertexUV, Id rendererTextureId);
+        void SubmitSprite(const SpritePrimitive& sprite);
         void SubmitLine2D(const Vector2& start, const Vector2& end, const Vector2& normal, 
             const Color& color = Color::White, float thickness = .01f);
+        void SubmitCircle(const CirclePrimitive& circle);
         void DrawPrimitives();
 
         Id CreateTexture2D(const Texture2DSettings& settings, const void* data);
-        RendererTexture2D& GetTexture2D(Id id);
+        SharedPtr<RendererTexture2D> GetTexture2D(Id id);
         void DestroyTexture2D(Id id);
 
         Id CreateShader(const char* vertexSource, const char* fragmentSource);
-        RendererShader& GetShader(Id id);
+        SharedPtr<RendererShader> GetShader(Id id);
         void DestroyShader(Id id);
 
     private:
@@ -52,5 +53,10 @@ namespace Yumi
         SharedPtr<RendererShader> m_SpriteShader;
         UniquePtr<SpriteBatchRenderer> m_SpriteRenderer;
         DynamicArray<SpritePrimitive> m_SpritePrimitivesDrawList;
+        
+        // Circle Rendering
+        SharedPtr<RendererShader> m_CircleShader;
+        UniquePtr<CircleBatchRenderer> m_CircleRenderer;
+        DynamicArray<CirclePrimitive> m_CirclePrimitivesDrawList;
     };
 }

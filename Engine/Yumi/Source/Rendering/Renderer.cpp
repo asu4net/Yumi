@@ -10,6 +10,8 @@ namespace Yumi
         , m_CommandQueue(CreateSharedPtr<RenderCommandQueue>())
         , m_SpriteShader(RendererShader::Create(api))
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
+        , m_CircleShader(RendererShader::Create(api))
+        , m_CircleRenderer(CreateUniquePtr<CircleBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         YLOG_TRACE("Renderer created!\n");
         
@@ -19,6 +21,7 @@ namespace Yumi
         SetClearColor(Color::DarkGrey);
 
         m_SpriteShader->Compile(g_SpriteVertexShaderSource, g_SpriteFragmentShaderSource);
+        m_CircleShader->Compile(g_CircleVertexShaderSource, g_CircleFragmentShaderSource);
     }
 
     Renderer::~Renderer()
@@ -56,19 +59,9 @@ namespace Yumi
         m_CommandQueue->Submit<SetViewPortCommand>(m_RendererAPI, x, y, width, height);
     }
 
-    void Renderer::SubmitSprite(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors,
-        const Array<Vector2, 4>& vertexUV, Id rendererTextureId)
+    void Renderer::SubmitSprite(const SpritePrimitive& sprite)
     {
-        SharedPtr<RendererTexture2D> texture = rendererTextureId != 0 ? m_Textures[rendererTextureId] : nullptr;
-
-        SpritePrimitive spritePrimitive{
-            vertexPositions,
-            vertexColors,
-            vertexUV,
-            texture
-        };
-
-        m_SpritePrimitivesDrawList.emplace_back(spritePrimitive);
+        m_SpritePrimitivesDrawList.emplace_back(sprite);
     }
 
     void Renderer::SubmitLine2D(const Vector2& start, const Vector2& end, const Vector2& normal, 
@@ -83,11 +76,26 @@ namespace Yumi
         vertexPositions[1] = end   + normal *  halfThickness;
         vertexPositions[2] = end   + normal * -halfThickness;
         vertexPositions[3] = start + normal * -halfThickness;
-        SubmitSprite(vertexPositions, vertexColors, Sprite::GetDefaultSpriteUVs(), 0);
+
+        SpritePrimitive spritePrimitive{
+            vertexPositions,
+            vertexColors,
+            Sprite::GetDefaultSpriteUVs(),
+            nullptr
+        };
+
+        SubmitSprite(spritePrimitive);
+    }
+
+    void Renderer::SubmitCircle(const CirclePrimitive& circle)
+    {
+        m_CirclePrimitivesDrawList.push_back(circle);
     }
 
     void Renderer::DrawPrimitives()
     {
+        // Sprite Rendering
+
         SpriteBatchRenderer::RenderData spriteRenderData{
             m_CurrentRenderTarget,
             m_ProjectionViewMatrix,
@@ -103,6 +111,24 @@ namespace Yumi
 
         m_SpritePrimitivesDrawList.clear();
         m_SpriteRenderer->End();
+
+        // Circle Rendering
+
+        CircleBatchRenderer::RenderData circleRenderData{
+            m_CurrentRenderTarget,
+            m_ProjectionViewMatrix,
+            m_CircleShader
+        };
+
+        m_CircleRenderer->Begin(circleRenderData);
+
+        for (const CirclePrimitive& circle : m_CirclePrimitivesDrawList)
+        {
+            m_CircleRenderer->SubmitCirclePrimitive(circle);
+        }
+
+        m_CirclePrimitivesDrawList.clear();
+        m_CircleRenderer->End();
     }
 
     Id Renderer::CreateTexture2D(const Texture2DSettings& settings, const void* data)
@@ -114,10 +140,10 @@ namespace Yumi
         return id;
     }
 
-    RendererTexture2D& Renderer::GetTexture2D(Id id)
+    SharedPtr<RendererTexture2D> Renderer::GetTexture2D(Id id)
     {
         YCHECK(m_Textures.count(id), "Invalid id!");
-        return *m_Textures[id];
+        return m_Textures[id];
     }
 
     void Renderer::DestroyTexture2D(Id id)
@@ -136,10 +162,10 @@ namespace Yumi
         return id;
     }
 
-    RendererShader& Renderer::GetShader(Id id)
+    SharedPtr<RendererShader> Renderer::GetShader(Id id)
     {
         YCHECK(m_Shaders.count(id), "Invalid id!");
-        return *m_Shaders[id];
+        return m_Shaders[id];
     }
 
     void Renderer::DestroyShader(Id id)

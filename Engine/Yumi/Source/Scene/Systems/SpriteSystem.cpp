@@ -90,7 +90,14 @@ namespace Yumi
 
             const Id id = texture ? texture->GetRendererId() : 0;
 
-            renderer.SubmitSprite(spriteComponent.VertexPositions, spriteComponent.VertexColors, spriteComponent.VertexUVs, id);
+            SpritePrimitive spritePrimitive{
+                sprite.VertexPositions,
+                sprite.VertexColors,
+                sprite.VertexUVs,
+                id != 0 ? renderer.GetTexture2D(id) : nullptr
+            };
+
+            renderer.SubmitSprite(spritePrimitive);
         });
     }
 

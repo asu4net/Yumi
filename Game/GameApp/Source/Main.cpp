@@ -33,6 +33,14 @@ class ColorScript : public Script
     void OnUpdate()
     {
         GetRenderer().SubmitLine2D({ 0, 1 }, { 1, 1 }, Vector2::Up, Color::Yellow);
+        
+        CirclePrimitive circle;
+        circle.Transform = Matrix4::CreateTransform(Vector3::Up);
+        circle.TintColor = Color::LightGreen;
+        circle.Thickness = 0.05f;
+        circle.Fade = 0.01f;
+
+        GetRenderer().SubmitCircle(circle);
 
         SpriteComponent& spriteComponent = Get<SpriteComponent>();
 
