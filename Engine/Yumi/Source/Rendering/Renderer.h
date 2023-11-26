@@ -24,8 +24,10 @@ namespace Yumi
         void SetClearColor(const Color& clearColor);
         void Clear();
         void SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height);
-        void SubmitSprite(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, 
+        void SubmitSprite(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors,
             const Array<Vector2, 4>& vertexUV, Id rendererTextureId);
+        void SubmitLine2D(const Vector2& start, const Vector2& end, const Vector2& normal, 
+            const Color& color = Color::White, float thickness = .01f);
         void DrawPrimitives();
 
         Id CreateTexture2D(const Texture2DSettings& settings, const void* data);

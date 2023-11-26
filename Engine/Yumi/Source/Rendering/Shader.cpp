@@ -13,7 +13,7 @@ namespace Yumi
         if (!ReadFromFile(absolutePath, m_VertexSource, m_FragmentSource))
             return false;
 
-        GetRenderer().CreateShader(m_VertexSource.c_str(), m_FragmentSource.c_str());
+        m_RendererShaderId = GetRenderer().CreateShader(m_VertexSource.c_str(), m_FragmentSource.c_str());
         return true;
     }
 

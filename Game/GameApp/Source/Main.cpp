@@ -32,6 +32,8 @@ class ColorScript : public Script
 
     void OnUpdate()
     {
+        GetRenderer().SubmitLine2D({ 0, 1 }, { 1, 1 }, Vector2::Up, Color::Yellow);
+
         SpriteComponent& spriteComponent = Get<SpriteComponent>();
 
         if (!SpacePressed && GetInput().IsKeyPressed(KEY_SPACE))

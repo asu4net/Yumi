@@ -71,6 +71,21 @@ namespace Yumi
         m_SpritePrimitivesDrawList.emplace_back(spritePrimitive);
     }
 
+    void Renderer::SubmitLine2D(const Vector2& start, const Vector2& end, const Vector2& normal, 
+        const Color& color, float thickness)
+    {
+        Array<Color, 4> vertexColors;
+        for (Color& vertexColor : vertexColors) vertexColor = color;
+        
+        Array<Vector3, 4> vertexPositions;
+        const float halfThickness = thickness / 2;
+        vertexPositions[0] = start + normal *  halfThickness;
+        vertexPositions[1] = end   + normal *  halfThickness;
+        vertexPositions[2] = end   + normal * -halfThickness;
+        vertexPositions[3] = start + normal * -halfThickness;
+        SubmitSprite(vertexPositions, vertexColors, Sprite::GetDefaultSpriteUVs(), 0);
+    }
+
     void Renderer::DrawPrimitives()
     {
         SpriteBatchRenderer::RenderData spriteRenderData{
