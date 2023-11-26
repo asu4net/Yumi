@@ -14,7 +14,7 @@ namespace Yumi
     class AssetManager
     {
     public:
-        AssetManager(const String& workingDirectory, GraphicsAPI api);
+        AssetManager(const String& workingDirectory);
         ~AssetManager();
 
         void ImportAndLoadAssets();
@@ -40,7 +40,7 @@ namespace Yumi
         {
             EnsureAssetDataConsistency(assetData, "Shader");
 
-            SharedPtr<Shader> shader = Shader::Create(m_GraphicsApi, std::forward<Args>(args)...);
+            SharedPtr<Shader> shader = Shader::Create(GraphicsAPI::OpenGL, std::forward<Args>(args)...);
             shader->SetAssetData(assetData);
             
             m_IdAssetMap[assetData.AssetId] = shader;
@@ -124,7 +124,6 @@ namespace Yumi
 
         const String m_WorkingDirectory;
         const String m_AssetDirectory;
-        const GraphicsAPI m_GraphicsApi;
         
         Map<Id, SharedPtr<Asset>> m_IdAssetMap;
         Map<String, Id> m_AssetNameIdMap;

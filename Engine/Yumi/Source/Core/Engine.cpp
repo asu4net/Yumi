@@ -18,7 +18,7 @@ namespace Yumi
         m_Time         = new Time();
         m_Input        = new Input(m_Window);
         m_Renderer     = new Renderer(m_GraphicsApi);
-        m_AssetManager = new AssetManager(GetWorkingDirectory(), m_GraphicsApi);
+        m_AssetManager = new AssetManager(GetWorkingDirectory());
         m_AssetManager->ImportAndLoadAssets();
         m_World        = new World();
         

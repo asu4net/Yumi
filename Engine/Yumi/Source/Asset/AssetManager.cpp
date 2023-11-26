@@ -2,10 +2,9 @@
 
 namespace Yumi
 {
-    AssetManager::AssetManager(const String& workingDirectory, GraphicsAPI api)
+    AssetManager::AssetManager(const String& workingDirectory)
         : m_WorkingDirectory(workingDirectory)
         , m_AssetDirectory(m_WorkingDirectory + "\\" + GetAssetsFolderName())
-        , m_GraphicsApi(api)
     {
         YLOG_TRACE("AssetManager created!\n");
     }
