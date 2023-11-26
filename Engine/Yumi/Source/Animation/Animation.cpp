@@ -1,6 +1,7 @@
 #include "Animation.h"
 #include "Core/Engine.h"
 #include "Asset/AssetManager.h"
+#include "Rendering/Sprite.h"
 
 namespace Yumi
 {
@@ -10,7 +11,7 @@ namespace Yumi
         YCHECK(animationRef.IsValid(), "Animation should be valid");
         YCHECK(textureAtlasRef.IsValid(), "Sprite atlas should be valid");
         YCHECK(atlasLocations.size() == keyTimes.size(), "atlasLocations, keyTimes missmatch")
-
+        
         AssetManager& assetManager = GetAssetManager();
         const String textureAtlasName = textureAtlasRef.GetPtr().lock()->GetAssetData().Name;
         Animation& animation = animationRef.GetAs<Animation>();
@@ -19,8 +20,9 @@ namespace Yumi
         {
             const Vector2& location = atlasLocations[i];
             const String subTextureName = textureAtlasName + "[" + std::to_string(i) + "]";
-                        
-            AssetRef spriteRef = assetManager.GetAssetByName(subTextureName + " [Sprite]");
+            const String subSpriteName = subTextureName + " [Sprite]";
+
+            AssetRef spriteRef = assetManager.GetAssetByName(subSpriteName);
 
             if (!spriteRef.IsValid())
             {
@@ -28,11 +30,12 @@ namespace Yumi
 
                 if (!subTextureRef.IsValid())
                 {
-                    subTextureRef = assetManager.CreateSubTextureAsset(AssetData{ subTextureName });
+                    subTextureRef = assetManager.CreateSubTextureAsset({ subTextureName });
                     subTextureRef.GetAs<SubTexture2D>().Init(textureAtlasRef, location, atlasTileSize);
                 }
 
-                spriteRef = assetManager.CreateSpriteAsset(subTextureName);
+                spriteRef = assetManager.CreateSpriteAsset({subSpriteName});
+                spriteRef.GetAs<Sprite>().InitFromSubTexture(subTextureRef);
             }
             animation.PushKey({spriteRef, keyTimes[i]});
         }

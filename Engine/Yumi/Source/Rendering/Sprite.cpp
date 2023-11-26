@@ -4,40 +4,6 @@
 
 namespace Yumi
 {
-    SharedPtr<Sprite> Sprite::Create(const AssetRef& textureRef)
-    {
-        SharedPtr<Asset> asset = textureRef.GetPtr().lock();
-        if (asset->GetAssetData().AssetType == "Texture2D")
-            return CreateFromTexture(textureRef);
-        if (asset->GetAssetData().AssetType == "SubTexture2D")
-            return CreateFromSubTexture(textureRef);
-        YCHECK(false, "Invalid asset type");
-        return nullptr;
-    }
-
-    SharedPtr<Sprite> Sprite::CreateFromTexture(const AssetRef& textureRef)
-    {
-        YCHECK(textureRef.IsValid(), "A valid Texture2D is required!");
-        SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>();
-        sprite->m_TextureRef = textureRef;
-        CalculateSpriteVertexPositions(sprite->m_TextureRef.GetAs<Texture2D>().GetSize(), sprite->m_VertexPositions);
-        sprite->m_VertexUVs = GetDefaultSpriteUVs();
-        return sprite;
-    }
-
-    SharedPtr<Sprite> Sprite::CreateFromSubTexture(const AssetRef& subTextureRef)
-    {
-        YCHECK(subTextureRef.IsValid(), "A valid SubTexture is required!");
-        SharedPtr<Sprite> sprite = CreateSharedPtr<Sprite>();
-        sprite->m_SubTextureRef = subTextureRef;
-        SubTexture2D& subTexture = sprite->m_SubTextureRef.GetAs<SubTexture2D>();
-        sprite->m_TextureRef = subTexture.GetParentRef();
-        YCHECK(sprite->m_TextureRef.IsValid(), "Missing parent in subtexture!");
-        CalculateSpriteVertexPositions(subTexture.GetSize(), sprite->m_VertexPositions);
-        sprite->m_VertexUVs = subTexture.GetVertexUV();
-        return sprite;
-    }
-
     const Array<Vector2, 4>& Sprite::GetDefaultSpriteUVs()
     {
         static Array<Vector2, 4> uv =
@@ -71,8 +37,8 @@ namespace Yumi
             pos = textureSize.Normalized() / 2;
 
         vertexPositions[0] = { -pos.x, -pos.y, 0 };
-        vertexPositions[1] = { pos.x, -pos.y, 0 };
-        vertexPositions[2] = { pos.x,  pos.y, 0 };
+        vertexPositions[1] = {  pos.x, -pos.y, 0 };
+        vertexPositions[2] = {  pos.x,  pos.y, 0 };
         vertexPositions[3] = { -pos.x,  pos.y, 0 };
     }
 
@@ -105,12 +71,23 @@ namespace Yumi
         }
     }
 
-    bool Sprite::Load()
+    void Sprite::InitFromTexture(const AssetRef& textureRef)
     {
-        return true;
+        YCHECK(textureRef.IsValid(), "A valid Texture2D is required!");
+        m_TextureRef = textureRef;
+        CalculateSpriteVertexPositions(m_TextureRef.GetAs<Texture2D>().GetSize(), m_VertexPositions);
+        m_VertexUVs = GetDefaultSpriteUVs();
     }
 
-    void Sprite::Unload()
+    void Sprite::InitFromSubTexture(const AssetRef& subTextureRef)
     {
+        YCHECK(subTextureRef.IsValid(), "A valid SubTexture is required!");
+        m_SubTextureRef = subTextureRef;
+        SubTexture2D& subTexture = m_SubTextureRef.GetAs<SubTexture2D>();
+        m_TextureRef = subTexture.GetParentRef();
+
+        YCHECK(m_TextureRef.IsValid(), "Missing parent in SubTexture!");
+        CalculateSpriteVertexPositions(subTexture.GetSize(), m_VertexPositions);
+        m_VertexUVs = subTexture.GetVertexUV();
     }
 }

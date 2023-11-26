@@ -2,11 +2,6 @@
 
 namespace Yumi
 {
-    AssetRef AssetManager::CreateSpriteAsset(const String& textureAssetName)
-    {
-        return CreateSpriteAsset(AssetData{ textureAssetName + " [Sprite]" }, GetAssetByName(textureAssetName));
-    }
-
     AssetManager::AssetManager(const String& workingDirectory, GraphicsAPI api)
         : m_WorkingDirectory(workingDirectory)
         , m_AssetDirectory(m_WorkingDirectory + "\\" + GetAssetsFolderName())

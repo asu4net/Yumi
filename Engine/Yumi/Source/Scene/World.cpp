@@ -51,8 +51,9 @@ namespace Yumi
         }
         else
         {
-            AssetRef emptySceneRef = assetManager.CreateSceneAsset(AssetData{ "EmptyScene" });
+            AssetRef emptySceneRef = assetManager.CreateSceneAsset({"EmptyScene"});
             m_ActiveScene = emptySceneRef.GetPtrAs<Scene>();
+            m_ActiveScene.lock()->SetScenePtr(m_ActiveScene.lock());
         }
 
         YLOG_TRACE("Scene opened! %s\n", m_ActiveScene.lock()->GetAssetData().Name.c_str());

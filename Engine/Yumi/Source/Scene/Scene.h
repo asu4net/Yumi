@@ -38,8 +38,11 @@ namespace Yumi
         }
 
         AssetData GetAssetData() const override { return m_AssetData; }
+        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
         bool Load() override;
         void Unload() override;
+
+        void SetScenePtr(const SharedPtr<Scene> scene) { m_This = scene; }
 
         WeakPtr<entt::registry> GetRegistry() const { return m_Registry; }
 
@@ -64,9 +67,6 @@ namespace Yumi
 
     private:
         std::pair<Id, entt::entity> CreateEntity(Id specificId = 0);
-
-        void SetScenePtr(const SharedPtr<Scene> scene) { m_This = scene; }
-        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
         void CreateFreeLookCamera();
 
         WeakPtr<class CameraSystem> m_CameraSystem;
