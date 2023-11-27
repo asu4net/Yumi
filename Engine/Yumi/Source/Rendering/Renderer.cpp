@@ -77,7 +77,7 @@ namespace Yumi
         SpritePrimitive spritePrimitive{
             vertexPositions,
             vertexColors,
-            Sprite::GetDefaultSpriteUVs(),
+            Math::GetDefaultSpriteUVs(),
             nullptr
         };
 

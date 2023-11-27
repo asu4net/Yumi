@@ -6,30 +6,6 @@
 
 namespace Yumi
 {
-    const Array<Vector2, 4>& Sprite::GetDefaultSpriteUVs()
-    {
-        static Array<Vector2, 4> uv =
-        {
-            Vector2(0, 0), // bottom-left
-            Vector2(1, 0), // bottom-right
-            Vector2(1, 1), // top-right
-            Vector2(0, 1), // top-left
-        };
-        return uv;
-    }
-
-    const Array<Vector3, 4>& Sprite::GetDefaultSpriteVertexPositions()
-    {
-        static Array<Vector3, 4> vertexPositions =
-        {
-            Vector3(-.5f, -.5f, 0),
-            Vector3(.5f, -.5f, 0),
-            Vector3(.5f,  .5f, 0),
-            Vector3(-.5f,  .5f, 0)
-        };
-        return vertexPositions;
-    }
-
     void Sprite::CalculateSpriteVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions)
     {
         static Vector2 s_VertexMag = Vector2::One / 2;
@@ -100,7 +76,7 @@ namespace Yumi
         YCHECK(textureRef.IsValid(), "A valid Texture2D is required!");
         m_TextureRef = textureRef;
         CalculateSpriteVertexPositions(m_TextureRef.GetAs<Texture2D>().GetSize(), m_VertexPositions);
-        m_VertexUVs = GetDefaultSpriteUVs();
+        m_VertexUVs = Math::GetDefaultSpriteUVs();
     }
 
     void Sprite::InitFromSubTexture(const AssetRef& subTextureRef)

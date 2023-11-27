@@ -16,7 +16,7 @@ namespace Yumi
     {
         Array<Vector3, 4> VertexPositions;
         Array<Color, 4> VertexColors;
-        Array<Vector2, 4> VertexUV = Sprite::GetDefaultSpriteUVs();
+        Array<Vector2, 4> VertexUV = Math::GetDefaultSpriteUVs();
         SharedPtr<RendererTexture2D> Texture = nullptr;
         
         // Circle stuff

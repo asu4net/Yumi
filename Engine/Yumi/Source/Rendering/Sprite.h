@@ -9,9 +9,7 @@ namespace Yumi
 
     class Sprite : public Asset
     {
-    public:        
-        static const Array<Vector2, 4>& GetDefaultSpriteUVs();
-        static const Array<Vector3, 4>& GetDefaultSpriteVertexPositions();
+    public:
         static void CalculateSpriteVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions);
         static void FlipVertexUVs(Flip flip, Array<Vector2, 4>& vertexUVs);
 
