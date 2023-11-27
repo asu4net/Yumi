@@ -2,6 +2,7 @@
 #include "RendererShader.h"
 #include "RendererTexture2D.h"
 #include "RawShaderStrings.h"
+#include "SpriteBatchRenderer.h"
 
 namespace Yumi
 {
@@ -56,32 +57,9 @@ namespace Yumi
         m_CommandQueue->Submit<SetViewPortCommand>(m_RendererAPI, x, y, width, height);
     }
 
-    void Renderer::SubmitSprite(const SpritePrimitive& sprite)
+    void Renderer::SubmitSpritePrimitive(const SpritePrimitive& sprite)
     {
         m_SpritePrimitivesDrawList.emplace_back(sprite);
-    }
-
-    void Renderer::SubmitLine2D(const Vector2& start, const Vector2& end, const Vector2& normal, 
-        const Color& color, float thickness)
-    {
-        Array<Color, 4> vertexColors;
-        for (Color& vertexColor : vertexColors) vertexColor = color;
-        
-        Array<Vector3, 4> vertexPositions;
-        const float halfThickness = thickness / 2;
-        vertexPositions[0] = start + normal *  halfThickness;
-        vertexPositions[1] = end   + normal *  halfThickness;
-        vertexPositions[2] = end   + normal * -halfThickness;
-        vertexPositions[3] = start + normal * -halfThickness;
-
-        SpritePrimitive spritePrimitive{
-            vertexPositions,
-            vertexColors,
-            Math::GetDefaultSpriteUVs(),
-            nullptr
-        };
-
-        SubmitSprite(spritePrimitive);
     }
 
     void Renderer::DrawPrimitives()

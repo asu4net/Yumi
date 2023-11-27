@@ -32,20 +32,8 @@ class ColorScript : public Script
 
     void OnUpdate()
     {
-        GetRenderer().SubmitLine2D({ 0, 1 }, { 1, 1 }, Vector2::Up, Color::Yellow);
-        
-        SpritePrimitive circle;
-        circle.VertexPositions = Math::GetDefaultSpriteVertexPositions();
-        circle.LocalVertexPositions = Math::GetDefaultSpriteVertexPositions();
-        Array<Color, 4> vertexColors;
-        for (Color& color : vertexColors) color = Color::LightGreen;
-        circle.VertexColors = vertexColors;
-        circle.VertexUV = Math::GetDefaultSpriteUVs();
-        circle.IsCircle = true;
-        circle.Thickness = 0.05f;
-        circle.Fade = 0.01f;
-
-        GetRenderer().SubmitSprite(circle);
+        GetRenderer().SubmitSpritePrimitive(SpritePrimitive::CreateLine({ 0, 1 }, { 1, 1 }, Vector2::Up, Color::Yellow));
+        GetRenderer().SubmitSpritePrimitive(SpritePrimitive::CreateCircle());
 
         SpriteComponent& spriteComponent = Get<SpriteComponent>();
 

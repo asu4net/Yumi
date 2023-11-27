@@ -1,20 +1,21 @@
 #pragma once
-#include "SpriteBatchRenderer.h"
 
 namespace Yumi
 {
+    struct SpritePrimitive;
+    struct Texture2DSettings;
     class RendererShader;
     class RendererTexture2D;
-    struct Texture2DSettings;
     class RendererAPI;
     class RenderCommandQueue;
+    class SpriteBatchRenderer;
 
     class Renderer
     {
     public:
         Renderer(GraphicsAPI api);
         ~Renderer();
-
+        
         void SetSpriteShader(const SharedPtr<RendererShader> spriteShader) { m_SpriteShader = spriteShader; }
         void SetProjectionViewMatrix(const Matrix4& matrix) { m_ProjectionViewMatrix = matrix; }
         void SetRenderTarget(RenderTarget renderTarget) { m_CurrentRenderTarget = renderTarget; }
@@ -24,9 +25,7 @@ namespace Yumi
         void SetClearColor(const Color& clearColor);
         void Clear();
         void SetViewport(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height);
-        void SubmitSprite(const SpritePrimitive& sprite);
-        void SubmitLine2D(const Vector2& start, const Vector2& end, const Vector2& normal, 
-            const Color& color = Color::White, float thickness = .01f);
+        void SubmitSpritePrimitive(const SpritePrimitive& sprite);
         void DrawPrimitives();
 
         Id CreateTexture2D(const Texture2DSettings& settings, const void* data);

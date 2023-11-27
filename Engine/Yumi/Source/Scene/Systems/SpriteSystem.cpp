@@ -5,6 +5,7 @@
 #include "Rendering\RendererTexture2D.h"
 #include "Core\Engine.h"
 #include "Rendering\Texture2D.h"
+#include "Rendering\Primitives.h"
 
 namespace Yumi
 {
@@ -97,7 +98,7 @@ namespace Yumi
                 id != 0 ? renderer.GetTexture2D(id) : nullptr
             };
 
-            renderer.SubmitSprite(spritePrimitive);
+            renderer.SubmitSpritePrimitive(spritePrimitive);
         });
     }
 

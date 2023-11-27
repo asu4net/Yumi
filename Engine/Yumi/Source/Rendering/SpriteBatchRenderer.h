@@ -2,6 +2,7 @@
 #include "RenderCommandQueue.h"
 #include "RendererAPI.h"
 #include "Sprite.h"
+#include "Primitives.h"
 
 namespace Yumi
 {
@@ -11,20 +12,6 @@ namespace Yumi
     class IndexBuffer;
     class RendererTexture2D;
     class RendererShader;
-
-    struct SpritePrimitive
-    {
-        Array<Vector3, 4> VertexPositions;
-        Array<Color, 4> VertexColors;
-        Array<Vector2, 4> VertexUV = Math::GetDefaultSpriteUVs();
-        SharedPtr<RendererTexture2D> Texture = nullptr;
-        
-        // Circle stuff
-        bool IsCircle = false;
-        Array<Vector3, 4> LocalVertexPositions;
-        float Thickness = .05f;
-        float Fade = .01f;
-    };
 
     class SpriteBatchRenderer
     {
