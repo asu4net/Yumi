@@ -14,7 +14,8 @@ namespace Yumi
         return line;
     }
 
-    SpritePrimitive SpritePrimitive::CreateBox(const Vector3& position, const Vector3& rotation, const Color& color, const Vector2& size, float thickness)
+    //TODO: Add vertex attributte (is rect), and add rect fragment discard to shader
+    SpritePrimitive SpritePrimitive::CreateRect(const Vector3& position, const Vector3& rotation, const Color& color, const Vector2& size, float thickness)
     {
         return SpritePrimitive();
     }

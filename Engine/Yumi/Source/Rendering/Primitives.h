@@ -7,7 +7,7 @@ namespace Yumi
         static SpritePrimitive CreateLine(const Vector2& start, const Vector2& end, const Vector2& normal,
             const Color& color = Color::White, float thickness = .05f);
 
-        static SpritePrimitive CreateBox(const Vector3& position = Vector3::Zero, const Vector3& rotation = Vector3::Zero, const Color& color = Color::White,
+        static SpritePrimitive CreateRect(const Vector3& position = Vector3::Zero, const Vector3& rotation = Vector3::Zero, const Color& color = Color::White,
             const Vector2& size = Vector2::One, float thickness = .05f);
 
         static SpritePrimitive CreateCircle(const Vector3& position = Vector3::Zero, const Vector3& rotation = Vector3::Zero, const Color& color = Color::White,
