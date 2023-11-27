@@ -18,6 +18,12 @@ namespace Yumi
         Array<Color, 4> VertexColors;
         Array<Vector2, 4> VertexUV = Sprite::GetDefaultSpriteUVs();
         SharedPtr<RendererTexture2D> Texture = nullptr;
+        
+        // Circle stuff
+        bool IsCircle = false;
+        Array<Vector3, 4> LocalVertexPositions;
+        float Thickness = .05f;
+        float Fade = .01f;
     };
 
     class SpriteBatchRenderer
@@ -29,6 +35,12 @@ namespace Yumi
             Color TintColor;
             Vector2 UV;
             uint32_t TextureSlot;
+
+            // Circle stuff
+            uint32_t IsCircle;
+            Vector3 LocalPosition;
+            float Thickness;
+            float Fade;
         };
 
         struct RenderData

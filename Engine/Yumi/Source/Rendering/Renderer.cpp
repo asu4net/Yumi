@@ -10,8 +10,6 @@ namespace Yumi
         , m_CommandQueue(CreateSharedPtr<RenderCommandQueue>())
         , m_SpriteShader(RendererShader::Create(api))
         , m_SpriteRenderer(CreateUniquePtr<SpriteBatchRenderer>(m_RendererAPI, m_CommandQueue))
-        , m_CircleShader(RendererShader::Create(api))
-        , m_CircleRenderer(CreateUniquePtr<CircleBatchRenderer>(m_RendererAPI, m_CommandQueue))
     {
         YLOG_TRACE("Renderer created!\n");
         
@@ -21,7 +19,6 @@ namespace Yumi
         SetClearColor(Color::DarkGrey);
 
         m_SpriteShader->Compile(g_SpriteVertexShaderSource, g_SpriteFragmentShaderSource);
-        m_CircleShader->Compile(g_CircleVertexShaderSource, g_CircleFragmentShaderSource);
     }
 
     Renderer::~Renderer()
@@ -87,11 +84,6 @@ namespace Yumi
         SubmitSprite(spritePrimitive);
     }
 
-    void Renderer::SubmitCircle(const CirclePrimitive& circle)
-    {
-        m_CirclePrimitivesDrawList.push_back(circle);
-    }
-
     void Renderer::DrawPrimitives()
     {
         // Sprite Rendering
@@ -111,24 +103,6 @@ namespace Yumi
 
         m_SpritePrimitivesDrawList.clear();
         m_SpriteRenderer->End();
-
-        // Circle Rendering
-
-        CircleBatchRenderer::RenderData circleRenderData{
-            m_CurrentRenderTarget,
-            m_ProjectionViewMatrix,
-            m_CircleShader
-        };
-
-        m_CircleRenderer->Begin(circleRenderData);
-
-        for (const CirclePrimitive& circle : m_CirclePrimitivesDrawList)
-        {
-            m_CircleRenderer->SubmitCirclePrimitive(circle);
-        }
-
-        m_CirclePrimitivesDrawList.clear();
-        m_CircleRenderer->End();
     }
 
     Id Renderer::CreateTexture2D(const Texture2DSettings& settings, const void* data)

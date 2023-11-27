@@ -50,6 +50,10 @@ namespace Yumi
             m_LastVertex->TintColor = sprite.VertexColors[i];
             m_LastVertex->UV = sprite.VertexUV[i];
             m_LastVertex->TextureSlot = CalculateTextureSlot(sprite.Texture);
+            m_LastVertex->IsCircle = (uint32_t) sprite.IsCircle;
+            m_LastVertex->LocalPosition = sprite.LocalVertexPositions[i];
+            m_LastVertex->Thickness = sprite.Thickness;
+            m_LastVertex->Fade = sprite.Fade;
 
             m_LastVertex++;
         }
@@ -126,10 +130,14 @@ namespace Yumi
         m_VertexBuffer = VertexBuffer::Create(API, m_MaxVertices * sizeof(SpriteVertex));
 
         m_VertexBuffer->SetLayout({
-            {ShaderDataType::Float3, "a_Position"   },
-            {ShaderDataType::Float4, "a_Color"      },
-            {ShaderDataType::Float2, "a_UV"         },
-            {ShaderDataType::Float , "a_TextureSlot"}
+            {ShaderDataType::Float3, "a_Position"      },
+            {ShaderDataType::Float4, "a_Color"         },
+            {ShaderDataType::Float2, "a_UV"            },
+            {ShaderDataType::Float , "a_TextureSlot"   },
+            {ShaderDataType::Float , "a_IsCircle"      },
+            {ShaderDataType::Float3, "a_LocalPosition" },
+            {ShaderDataType::Float , "a_Thickness"     },
+            {ShaderDataType::Float , "a_Fade"          }
         });
 
         m_VertexArray->AddVertexBuffer(m_VertexBuffer);

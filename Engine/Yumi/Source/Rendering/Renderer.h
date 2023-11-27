@@ -1,6 +1,5 @@
 #pragma once
 #include "SpriteBatchRenderer.h"
-#include "CircleBatchRenderer.h"
 
 namespace Yumi
 {
@@ -28,7 +27,6 @@ namespace Yumi
         void SubmitSprite(const SpritePrimitive& sprite);
         void SubmitLine2D(const Vector2& start, const Vector2& end, const Vector2& normal, 
             const Color& color = Color::White, float thickness = .01f);
-        void SubmitCircle(const CirclePrimitive& circle);
         void DrawPrimitives();
 
         Id CreateTexture2D(const Texture2DSettings& settings, const void* data);
@@ -53,10 +51,5 @@ namespace Yumi
         SharedPtr<RendererShader> m_SpriteShader;
         UniquePtr<SpriteBatchRenderer> m_SpriteRenderer;
         DynamicArray<SpritePrimitive> m_SpritePrimitivesDrawList;
-        
-        // Circle Rendering
-        SharedPtr<RendererShader> m_CircleShader;
-        UniquePtr<CircleBatchRenderer> m_CircleRenderer;
-        DynamicArray<CirclePrimitive> m_CirclePrimitivesDrawList;
     };
 }
