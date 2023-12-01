@@ -23,6 +23,7 @@ namespace Yumi
         float    Thickness = .05f;
         float    Fade = .01f;
         Vector2  Bounds = Vector2::Zero;
+        Color    RectColor = Color::Orange;
     };
 
     class SpriteBatchRenderer

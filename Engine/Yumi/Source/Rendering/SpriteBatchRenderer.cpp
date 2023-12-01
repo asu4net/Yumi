@@ -130,7 +130,8 @@ namespace Yumi
             {ShaderDataType::Float3, "a_LocalPosition" },
             {ShaderDataType::Float , "a_Thickness"     },
             {ShaderDataType::Float , "a_Fade"          },
-            {ShaderDataType::Float2, "a_Bounds"        }
+            {ShaderDataType::Float2, "a_Bounds"        },
+            {ShaderDataType::Float4, "a_RectColor"     }
         });
 
         m_VertexArray->AddVertexBuffer(m_VertexBuffer);

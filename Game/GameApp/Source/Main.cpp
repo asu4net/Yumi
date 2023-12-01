@@ -44,7 +44,7 @@ class ColorScript : public Script
 
         SpritePrimitive rectSprite;
         rectSprite.TransformMatrix = Matrix4::CreateTransform(Vector3::Down + Vector3::Right);
-        rectSprite.TintColor = Color::Cyan;
+        rectSprite.TintColor = Color::Clear;
         rectSprite.GenerateVertexData(SpriteShape::Rect);
         GetRenderer().SubmitSpritePrimitive(rectSprite);
 

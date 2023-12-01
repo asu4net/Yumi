@@ -101,6 +101,7 @@ namespace Yumi
                 spriteVertices[i].Thickness = sprite.Thickness;
                 spriteVertices[i].Fade = sprite.Fade;
                 spriteVertices[i].Bounds = sprite.Bounds;
+                spriteVertices[i].RectColor = sprite.RectColor;
             }
 
             m_SpriteRenderer->SubmitSpriteVertexData(spriteVertices);

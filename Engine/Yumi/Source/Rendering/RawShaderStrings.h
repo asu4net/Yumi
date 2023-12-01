@@ -14,6 +14,7 @@ namespace Yumi
         layout(location = 6) in float a_Thickness;
         layout(location = 7) in float a_Fade;
         layout(location = 8) in vec2  a_Bounds;
+        layout(location = 9) in vec4  a_RectColor;
         
         uniform mat4 u_ProjectionViewMatrix;
         
@@ -27,6 +28,7 @@ namespace Yumi
         out float    v_Thickness;
         out float    v_Fade;
         out vec2     v_Bounds;
+        out vec4     v_RectColor;
         
         void main()
         {
@@ -40,6 +42,7 @@ namespace Yumi
             v_Thickness     = a_Thickness;
             v_Fade          = a_Fade;
             v_Bounds        = a_Bounds;
+            v_RectColor     = a_RectColor;
         }
     )";
 
@@ -57,6 +60,7 @@ namespace Yumi
         in float    v_Thickness;
         in float    v_Fade;
         in vec2     v_Bounds; 
+        in vec4     v_RectColor; 
 
         uniform sampler2D u_TextureSlots[32];
         
@@ -95,12 +99,11 @@ namespace Yumi
     
                 if (abs(v_LocalPosition.x) <= xBound && abs(v_LocalPosition.y) <= yBound)
                 {
-                    if (v_TextureSlot != 0) FragColor = texture(u_TextureSlots[v_TextureSlot], v_UV) * v_Color;
-                    else discard;
+                    FragColor = texture(u_TextureSlots[v_TextureSlot], v_UV) * v_Color;
                 }
                 else
                 {
-                    FragColor = v_Color;
+                    FragColor = v_RectColor;
                 }                 
                 return;
             }                  

@@ -20,6 +20,7 @@ namespace Yumi
         static const Color LightRed;
         static const Color White;
         static const Color Yellow;
+        static const Color Orange;
 
         float r, g, b, a;
 

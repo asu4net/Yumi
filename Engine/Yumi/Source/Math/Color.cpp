@@ -18,6 +18,7 @@ namespace Yumi
     const Color Color::LightRed = { 1, .3f, .3f, 1 };
     const Color Color::White = { 1, 1, 1, 1 };
     const Color Color::Yellow = { 1, .92f, .016f, 1 };
+    const Color Color::Orange = { .97f, .60f, .11f, 1 };
 
     Color::Color()
         : r(0)
