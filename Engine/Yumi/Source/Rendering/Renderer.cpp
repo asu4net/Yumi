@@ -3,6 +3,8 @@
 #include "RendererTexture2D.h"
 #include "RawShaderStrings.h"
 #include "SpriteBatchRenderer.h"
+#include "SpritePrimitive.h"
+#include "Texture2D.h"
 
 namespace Yumi
 {
@@ -76,7 +78,26 @@ namespace Yumi
 
         for (const SpritePrimitive& sprite : m_SpritePrimitivesDrawList)
         {
-            m_SpriteRenderer->SubmitSpritePrimitive(sprite);
+            SharedPtr<RendererTexture2D> texture = nullptr;
+
+            if (sprite.SpriteSource)
+            {
+                AssetRef textureRef = sprite.SpriteSource->GetTextureRef();
+                YCHECK(textureRef.IsValid(), "Texture ref should be valid!");
+                const Id textureId = textureRef.GetAs<Texture2D>().GetRendererId();
+                texture = GetTexture2D(textureId);
+            }
+
+            m_SpriteRenderer->SubmitSpriteVertexData(
+                sprite.GetVertexPositions(),
+                sprite.GetVertexColors(),
+                sprite.GetVertexUV(),
+                texture,
+                (uint32_t) sprite.Shape,
+                sprite.GetLocalVertexPositions(),
+                sprite.Thickness,
+                sprite.Fade
+            );
         }
 
         m_SpritePrimitivesDrawList.clear();

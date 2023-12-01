@@ -42,18 +42,20 @@ namespace Yumi
         StartBatch();
     }
 
-    void SpriteBatchRenderer::SubmitSpritePrimitive(const SpritePrimitive& sprite)
+    void SpriteBatchRenderer::SubmitSpriteVertexData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, 
+        const Array<Vector2, 4>& vertexUVs, const SharedPtr<RendererTexture2D>& texture, uint32_t shape, 
+        const Array<Vector3, 4>& localVertexPositions, float thickness, float fade)
     {
         for (int i = 0; i < 4; i++)
         {
-            m_LastVertex->Position = sprite.VertexPositions[i];
-            m_LastVertex->TintColor = sprite.VertexColors[i];
-            m_LastVertex->UV = sprite.VertexUV[i];
-            m_LastVertex->TextureSlot = CalculateTextureSlot(sprite.Texture);
-            m_LastVertex->IsCircle = (uint32_t) sprite.IsCircle;
-            m_LastVertex->LocalPosition = sprite.LocalVertexPositions[i];
-            m_LastVertex->Thickness = sprite.Thickness;
-            m_LastVertex->Fade = sprite.Fade;
+            m_LastVertex->Position = vertexPositions[i];
+            m_LastVertex->TintColor = vertexColors[i];
+            m_LastVertex->UV = vertexUVs[i];
+            m_LastVertex->TextureSlot = CalculateTextureSlot(texture);
+            m_LastVertex->Shape = shape;
+            m_LastVertex->LocalPosition = localVertexPositions[i];
+            m_LastVertex->Thickness = thickness;
+            m_LastVertex->Fade = fade;
 
             m_LastVertex++;
         }
@@ -134,7 +136,7 @@ namespace Yumi
             {ShaderDataType::Float4, "a_Color"         },
             {ShaderDataType::Float2, "a_UV"            },
             {ShaderDataType::Float , "a_TextureSlot"   },
-            {ShaderDataType::Float , "a_IsCircle"      },
+            {ShaderDataType::Float , "a_Shape"      },
             {ShaderDataType::Float3, "a_LocalPosition" },
             {ShaderDataType::Float , "a_Thickness"     },
             {ShaderDataType::Float , "a_Fade"          }

@@ -32,8 +32,15 @@ class ColorScript : public Script
 
     void OnUpdate()
     {
-        GetRenderer().SubmitSpritePrimitive(SpritePrimitive::CreateLine({ 0, 0 }, { 1, 1 }, Vector2::Up, Color::Yellow));
-        GetRenderer().SubmitSpritePrimitive(SpritePrimitive::CreateCircle());
+        SpritePrimitive lineSprite;
+        lineSprite.TintColor = Color::Yellow;
+        lineSprite.GenerateLineVertexData({ 0, 0 }, { 1, 1 }, Vector2::Up);
+        GetRenderer().SubmitSpritePrimitive(lineSprite);
+
+        SpritePrimitive circleSprite;
+        circleSprite.TintColor = Color::Green;
+        circleSprite.GenerateCircleVertexData(.5f);
+        GetRenderer().SubmitSpritePrimitive(circleSprite);
 
         SpriteComponent& spriteComponent = Get<SpriteComponent>();
 

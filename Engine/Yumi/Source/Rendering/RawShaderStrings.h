@@ -9,7 +9,7 @@ namespace Yumi
         layout(location = 1) in vec4  a_Color;
         layout(location = 2) in vec2  a_UV;
         layout(location = 3) in int   a_TextureSlot;
-        layout(location = 4) in int   a_IsCircle;
+        layout(location = 4) in int   a_Shape;
         layout(location = 5) in vec3  a_LocalPosition;
         layout(location = 6) in float a_Thickness;
         layout(location = 7) in float a_Fade;
@@ -21,7 +21,7 @@ namespace Yumi
         out vec4     v_Color;
         out vec2     v_UV;
         flat out int v_TextureSlot;
-        flat out int v_IsCircle;
+        flat out int v_Shape;
         out vec3     v_LocalPosition;
         out float    v_Thickness;
         out float    v_Fade;
@@ -33,7 +33,7 @@ namespace Yumi
             v_Color         = a_Color;
             v_UV            = a_UV;
             v_TextureSlot   = a_TextureSlot;
-            v_IsCircle      = a_IsCircle;
+            v_Shape         = a_Shape;
             v_LocalPosition = a_LocalPosition;
             v_Thickness     = a_Thickness;
             v_Fade          = a_Fade;
@@ -49,7 +49,7 @@ namespace Yumi
         in vec4     v_Color;
         in vec2     v_UV;
         flat in int v_TextureSlot;
-        flat in int v_IsCircle;
+        flat in int v_Shape;
         in vec3     v_LocalPosition;
         in float    v_Thickness;
         in float    v_Fade;
@@ -58,7 +58,13 @@ namespace Yumi
         
         void main()
         {
-            if (v_IsCircle == 1)
+            if (v_Shape == 0)
+            {
+                FragColor = texture(u_TextureSlots[v_TextureSlot], v_UV) * v_Color;
+                return;
+            }
+            
+            if (v_Shape == 1)
             {
                 // Calculate distance and fill circle with white
                 vec2 localPos = vec2(v_LocalPosition.x * 2, v_LocalPosition.y * 2);
@@ -76,9 +82,7 @@ namespace Yumi
                 vec3 circleColor = vec3(v_Color.r, v_Color.g, v_Color.b);
                 FragColor.rgb *= circleColor;
                 return;
-            }
-                     
-            FragColor = texture(u_TextureSlots[v_TextureSlot], v_UV) * v_Color;
+            }                     
         }
     )";
 

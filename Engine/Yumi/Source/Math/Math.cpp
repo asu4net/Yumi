@@ -15,7 +15,7 @@ namespace Yumi::Math
         return { nearResult.x, nearResult.y, 0 };
     }
 
-    const Array<Vector2, 4>& Math::GetDefaultSpriteUVs()
+    const Array<Vector2, 4>& Math::GetDefaultQuadUVs()
     {
         static Array<Vector2, 4> uv =
         {
@@ -27,7 +27,7 @@ namespace Yumi::Math
         return uv;
     }
 
-    const Array<Vector3, 4>& Math::GetDefaultSpriteVertexPositions()
+    const Array<Vector3, 4>& Math::GetDefaultQuadVertexPositions()
     {
         static Array<Vector3, 4> vertexPositions =
         {
@@ -37,5 +37,48 @@ namespace Yumi::Math
             Vector3(-.5f,  .5f, 0)
         };
         return vertexPositions;
+    }
+
+    void CalculateQuadVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions)
+    {
+        static Vector2 s_VertexMag = Vector2::One / 2;
+        Vector2 pos = s_VertexMag;
+
+        if (std::abs(textureSize.x - textureSize.y) > 0.0001f)
+            pos = textureSize.Normalized() / 2;
+
+        vertexPositions[0] = { -pos.x, -pos.y, 0 };
+        vertexPositions[1] = {  pos.x, -pos.y, 0 };
+        vertexPositions[2] = {  pos.x,  pos.y, 0 };
+        vertexPositions[3] = { -pos.x,  pos.y, 0 };
+    }
+
+    void FlipQuadVertexUVs(Flip flip, Array<Vector2, 4>& vertexUVs)
+    {
+        if (flip == Flip::None)
+            return;
+
+        Array<Vector2, 4> uv = vertexUVs;
+
+        switch (flip)
+        {
+        case Flip::X:
+            vertexUVs[0] = uv[1];
+            vertexUVs[1] = uv[0];
+            vertexUVs[2] = uv[3];
+            vertexUVs[3] = uv[2];
+            return;
+        case Flip::Y:
+            vertexUVs[0] = uv[2];
+            vertexUVs[1] = uv[3];
+            vertexUVs[2] = uv[0];
+            vertexUVs[3] = uv[1];
+            return;
+        case Flip::Both:
+            vertexUVs[0] = uv[3];
+            vertexUVs[1] = uv[2];
+            vertexUVs[2] = uv[1];
+            vertexUVs[3] = uv[0];
+        }
     }
 }

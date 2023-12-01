@@ -2,8 +2,8 @@
 
 namespace Yumi
 {
-    struct SpritePrimitive;
     struct Texture2DSettings;
+    class SpritePrimitive;
     class RendererShader;
     class RendererTexture2D;
     class RendererAPI;

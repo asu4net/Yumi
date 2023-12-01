@@ -6,18 +6,14 @@ namespace Yumi
 {
     struct SpriteComponent
     {
-        Matrix4 TransformMatrix;
         bool IsVisible = true;
-        AssetRef SpriteAssetRef;
-        Color TintColor = Color::White;
-        Vector2 Size = Vector2::One;
-        Flip FlipMode = Flip::None;
-        Vector2 UVScale = Vector2::One;
         int OrderInLayer = 0;
 
-        Array<Vector3, 4> VertexPositions;
-        Array<Vector2, 4> VertexUVs;
-        Array<Color, 4> VertexColors;
+        AssetRef SpriteAssetRef;
+        Vector2 Size = Vector2::One;
+        Color TintColor = Color::White;
+        Flip FlipMode = Flip::None;
+        Vector2 UVScale = Vector2::One;
 
         SpriteComponent() = default;
 

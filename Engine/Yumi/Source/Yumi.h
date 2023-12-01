@@ -22,7 +22,7 @@
 #include "Rendering/Sprite.h"
 #include "Rendering/RendererTexture2D.h"
 #include "Rendering/RendererShader.h"
-#include "Rendering/Primitives.h"
+#include "Rendering/SpritePrimitive.h"
 
 // Scene
 #include "Scene/World.h"

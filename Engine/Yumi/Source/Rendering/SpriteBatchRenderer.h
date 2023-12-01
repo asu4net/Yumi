@@ -2,7 +2,6 @@
 #include "RenderCommandQueue.h"
 #include "RendererAPI.h"
 #include "Sprite.h"
-#include "Primitives.h"
 
 namespace Yumi
 {
@@ -13,23 +12,21 @@ namespace Yumi
     class RendererTexture2D;
     class RendererShader;
 
+    struct SpriteVertex
+    {
+        Vector3 Position;
+        Color TintColor;
+        Vector2 UV;
+        uint32_t TextureSlot;
+        uint32_t Shape;
+        Vector3 LocalPosition;
+        float Thickness;
+        float Fade;
+    };
+
     class SpriteBatchRenderer
     {
     public:
-        struct SpriteVertex
-        {
-            Vector3 Position;
-            Color TintColor;
-            Vector2 UV;
-            uint32_t TextureSlot;
-
-            // Circle stuff
-            uint32_t IsCircle;
-            Vector3 LocalPosition;
-            float Thickness;
-            float Fade;
-        };
-
         struct RenderData
         {
             RenderTarget CurrentRenderTarget;
@@ -47,7 +44,9 @@ namespace Yumi
 
         void Begin(RenderData& renderData);
         
-        void SubmitSpritePrimitive(const SpritePrimitive& sprite);
+        void SubmitSpriteVertexData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors,
+            const Array<Vector2, 4>& vertexUVs, const SharedPtr<RendererTexture2D>& texture, uint32_t shape,
+            const Array<Vector3, 4>& localVertexPositions, float thickness, float fade);
         
         void End();
 

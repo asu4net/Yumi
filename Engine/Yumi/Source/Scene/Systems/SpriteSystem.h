@@ -13,9 +13,5 @@ namespace Yumi
 
         int GetExecutionOrder() const { return SystemExecutionOrder::SpriteSystemIndex; };
         void OnUpdate() override;
-        void OnFinish() override;
-
-    private:
-        void OnSpriteComponentAdded(entt::registry&, const entt::entity entity);
     };
 }
