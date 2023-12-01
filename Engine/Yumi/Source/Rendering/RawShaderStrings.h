@@ -58,13 +58,13 @@ namespace Yumi
         
         void main()
         {
-            if (v_Shape == 0)
+            if (v_Shape == 0) // Sprite
             {
                 FragColor = texture(u_TextureSlots[v_TextureSlot], v_UV) * v_Color;
                 return;
             }
             
-            if (v_Shape == 1)
+            if (v_Shape == 1) // Circle
             {
                 // Calculate distance and fill circle with white
                 vec2 localPos = vec2(v_LocalPosition.x * 2, v_LocalPosition.y * 2);
@@ -82,7 +82,24 @@ namespace Yumi
                 vec3 circleColor = vec3(v_Color.r, v_Color.g, v_Color.b);
                 FragColor.rgb *= circleColor;
                 return;
-            }                     
+            }
+
+            if (v_Shape == 2) // Rect
+            {
+                float xBound = 0.5 - v_Thickness;
+                float yBound = 0.5 - v_Thickness;
+
+                if (abs(v_LocalPosition.x) <= xBound && abs(v_LocalPosition.y) <= yBound)
+                {
+                    if (v_TextureSlot != 0) FragColor = texture(u_TextureSlots[v_TextureSlot], v_UV) * v_Color;
+                    else discard;
+                }
+                else
+                {
+                    FragColor = v_Color;
+                }                 
+                return;
+            }                  
         }
     )";
 

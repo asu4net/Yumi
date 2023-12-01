@@ -42,6 +42,12 @@ class ColorScript : public Script
         circleSprite.GenerateCircleVertexData(.5f);
         GetRenderer().SubmitSpritePrimitive(circleSprite);
 
+        SpritePrimitive rectSprite;
+        rectSprite.TransformMatrix = Matrix4::CreateTransform(Vector3::Down + Vector3::Right);
+        rectSprite.TintColor = Color::Cyan;
+        rectSprite.GenerateRectVertexData();
+        GetRenderer().SubmitSpritePrimitive(rectSprite);
+
         SpriteComponent& spriteComponent = Get<SpriteComponent>();
 
         if (!SpacePressed && GetInput().IsKeyPressed(KEY_SPACE))
