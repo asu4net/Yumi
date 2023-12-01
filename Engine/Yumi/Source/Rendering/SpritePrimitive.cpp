@@ -6,39 +6,61 @@ namespace Yumi
     SpritePrimitive::SpritePrimitive()  = default;
     SpritePrimitive::~SpritePrimitive() = default;
 
+    void SpritePrimitive::GenerateVertexData(SpriteShape shape)
+    {
+        switch (shape)
+        {
+        case Yumi::SpriteShape::Defaut:
+            GenerateSpriteVertexData();
+            break;
+        case Yumi::SpriteShape::Circle:
+            GenerateCircleVertexData();
+            break;
+        case Yumi::SpriteShape::Rect:
+            GenerateRectVertexData();
+            break;
+        case Yumi::SpriteShape::Line:
+            GenerateLineVertexData();
+            break;
+        default:
+            YCHECK(false, "Unhandled Fragment Shape");
+            break;
+        }
+    }
+
     void SpritePrimitive::GenerateSpriteVertexData()
     {
-        Shape = FragmentShape::Defaut;
+        m_FragmentShape = FragmentShape::Defaut;
         UpdateLocalVertexPositions();
         UpdateVertexPositions();
         UpdateVertexUVs();
         UpdateVertexColors();
     }
 
-    void SpritePrimitive::GenerateCircleVertexData(float radius)
+    void SpritePrimitive::GenerateCircleVertexData()
     {
-        Shape = FragmentShape::Circle;
-        Size = Vector2::One * radius * 2.f;
+        m_FragmentShape = FragmentShape::Circle;
+        Size = Vector2::One * Radius * 2.f;
         UpdateLocalVertexPositions();
         UpdateVertexPositions();
         UpdateVertexUVs();
         UpdateVertexColors();
     }
 
-    void SpritePrimitive::GenerateLineVertexData(const Vector2& start, const Vector2& end, const Vector2& normal)
+    void SpritePrimitive::GenerateLineVertexData()
     {
-        Shape = FragmentShape::Defaut;
+        m_FragmentShape = FragmentShape::Defaut;
         UpdateVertexUVs();
-        m_VertexPositions[0] = start + normal *  Thickness / 2;
-        m_VertexPositions[1] = end   + normal *  Thickness / 2;
-        m_VertexPositions[2] = end   + normal * -Thickness / 2;
-        m_VertexPositions[3] = start + normal * -Thickness / 2;
+        m_VertexPositions[0] = StartPosition + NormalVector *  Thickness / 2;
+        m_VertexPositions[1] = EndPosition   + NormalVector *  Thickness / 2;
+        m_VertexPositions[2] = EndPosition   + NormalVector * -Thickness / 2;
+        m_VertexPositions[3] = StartPosition + NormalVector * -Thickness / 2;
         UpdateVertexColors();
     }
 
     void SpritePrimitive::GenerateRectVertexData()
     {
-        Shape = FragmentShape::Rect;
+        m_FragmentShape = FragmentShape::Rect;
         UpdateVertexUVs();
         UpdateLocalVertexPositions();
         UpdateVertexPositions();
@@ -67,6 +89,7 @@ namespace Yumi
             m_VertexPositions[i].y *= Size.y;
         }
     }
+
     void SpritePrimitive::UpdateVertexUVs()
     {
         m_VertexUVs = SpriteSource ? SpriteSource->GetVertexUVs() : Math::GetDefaultQuadUVs();

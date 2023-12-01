@@ -93,7 +93,7 @@ namespace Yumi
                 sprite.GetVertexColors(),
                 sprite.GetVertexUV(),
                 texture,
-                (uint32_t) sprite.Shape,
+                (uint32_t) sprite.GetFragmentShape(),
                 sprite.GetLocalVertexPositions(),
                 sprite.Thickness,
                 sprite.Fade,

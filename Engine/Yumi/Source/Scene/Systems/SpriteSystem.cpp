@@ -31,7 +31,6 @@ namespace Yumi
                 return;
 
             SpritePrimitive primitive;
-            primitive.Shape = FragmentShape::Defaut;
             primitive.FlipMode = sprite.FlipMode;
             primitive.TransformMatrix = transformComponent.GetMatrix();
             primitive.TintColor = sprite.TintColor;
@@ -41,7 +40,7 @@ namespace Yumi
             primitive.SpriteSource = sprite.SpriteAssetRef.IsValid() ? 
                 sprite.SpriteAssetRef.GetPtrAs<Sprite>().lock() : nullptr;
 
-            primitive.GenerateSpriteVertexData();
+            primitive.GenerateVertexData();
             renderer.SubmitSpritePrimitive(primitive);
         });
     }

@@ -34,18 +34,18 @@ class ColorScript : public Script
     {
         SpritePrimitive lineSprite;
         lineSprite.TintColor = Color::Yellow;
-        lineSprite.GenerateLineVertexData({ 0, 0 }, { 1, 1 }, Vector2::Up);
+        lineSprite.GenerateVertexData(SpriteShape::Line);
         GetRenderer().SubmitSpritePrimitive(lineSprite);
 
         SpritePrimitive circleSprite;
         circleSprite.TintColor = Color::Green;
-        circleSprite.GenerateCircleVertexData(.5f);
+        circleSprite.GenerateVertexData(SpriteShape::Circle);
         GetRenderer().SubmitSpritePrimitive(circleSprite);
 
         SpritePrimitive rectSprite;
         rectSprite.TransformMatrix = Matrix4::CreateTransform(Vector3::Down + Vector3::Right);
         rectSprite.TintColor = Color::Cyan;
-        rectSprite.GenerateRectVertexData();
+        rectSprite.GenerateVertexData(SpriteShape::Rect);
         GetRenderer().SubmitSpritePrimitive(rectSprite);
 
         SpriteComponent& spriteComponent = Get<SpriteComponent>();
