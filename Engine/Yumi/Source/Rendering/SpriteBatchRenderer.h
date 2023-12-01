@@ -22,6 +22,7 @@ namespace Yumi
         Vector3 LocalPosition;
         float Thickness;
         float Fade;
+        Vector2 Bounds;
     };
 
     class SpriteBatchRenderer
@@ -46,7 +47,7 @@ namespace Yumi
         
         void SubmitSpriteVertexData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors,
             const Array<Vector2, 4>& vertexUVs, const SharedPtr<RendererTexture2D>& texture, uint32_t shape,
-            const Array<Vector3, 4>& localVertexPositions, float thickness, float fade);
+            const Array<Vector3, 4>& localVertexPositions, float thickness, float fade, const Vector2& bounds);
         
         void End();
 

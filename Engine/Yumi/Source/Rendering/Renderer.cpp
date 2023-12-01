@@ -96,7 +96,8 @@ namespace Yumi
                 (uint32_t) sprite.Shape,
                 sprite.GetLocalVertexPositions(),
                 sprite.Thickness,
-                sprite.Fade
+                sprite.Fade,
+                sprite.Bounds
             );
         }
 

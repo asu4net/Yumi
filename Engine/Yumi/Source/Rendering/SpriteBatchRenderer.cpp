@@ -44,7 +44,7 @@ namespace Yumi
 
     void SpriteBatchRenderer::SubmitSpriteVertexData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, 
         const Array<Vector2, 4>& vertexUVs, const SharedPtr<RendererTexture2D>& texture, uint32_t shape, 
-        const Array<Vector3, 4>& localVertexPositions, float thickness, float fade)
+        const Array<Vector3, 4>& localVertexPositions, float thickness, float fade, const Vector2& bounds)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -56,6 +56,7 @@ namespace Yumi
             m_LastVertex->LocalPosition = localVertexPositions[i];
             m_LastVertex->Thickness = thickness;
             m_LastVertex->Fade = fade;
+            m_LastVertex->Bounds = bounds;
 
             m_LastVertex++;
         }
@@ -136,10 +137,11 @@ namespace Yumi
             {ShaderDataType::Float4, "a_Color"         },
             {ShaderDataType::Float2, "a_UV"            },
             {ShaderDataType::Float , "a_TextureSlot"   },
-            {ShaderDataType::Float , "a_Shape"      },
+            {ShaderDataType::Float , "a_Shape"         },
             {ShaderDataType::Float3, "a_LocalPosition" },
             {ShaderDataType::Float , "a_Thickness"     },
-            {ShaderDataType::Float , "a_Fade"          }
+            {ShaderDataType::Float , "a_Fade"          },
+            {ShaderDataType::Float2, "a_Bounds"        }
         });
 
         m_VertexArray->AddVertexBuffer(m_VertexBuffer);

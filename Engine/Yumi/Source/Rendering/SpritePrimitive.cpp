@@ -43,6 +43,14 @@ namespace Yumi
         UpdateLocalVertexPositions();
         UpdateVertexPositions();
         UpdateVertexColors();
+
+        for (const Vector3& vertexPosition : m_LocalVertexPositions)
+        {
+            const float x = std::abs(vertexPosition.x);
+            const float y = std::abs(vertexPosition.y);
+            if (x > Bounds.x) Bounds.x = x;
+            if (y > Bounds.y) Bounds.y = y;
+        }
     }
     
     void SpritePrimitive::UpdateLocalVertexPositions()

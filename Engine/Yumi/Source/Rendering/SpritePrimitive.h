@@ -39,6 +39,7 @@ namespace Yumi
         FragmentShape     Shape = FragmentShape::Defaut;
         float             Thickness = .05f;
         float             Fade = .01f;
+        Vector2           Bounds = Vector2::Zero;
 
     private:
         void UpdateLocalVertexPositions();
