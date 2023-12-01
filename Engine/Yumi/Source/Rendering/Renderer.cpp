@@ -88,17 +88,22 @@ namespace Yumi
                 texture = GetTexture2D(textureId);
             }
 
-            m_SpriteRenderer->SubmitSpriteVertexData(
-                sprite.GetVertexPositions(),
-                sprite.GetVertexColors(),
-                sprite.GetVertexUV(),
-                texture,
-                (uint32_t) sprite.GetFragmentShape(),
-                sprite.GetLocalVertexPositions(),
-                sprite.Thickness,
-                sprite.Fade,
-                sprite.Bounds
-            );
+            Array<SpriteVertex, 4> spriteVertices;
+
+            for (uint32_t i = 0; i < 4; i++)
+            {
+                spriteVertices[i].Position = sprite.GetVertexPositions()[i];
+                spriteVertices[i].LocalPosition = sprite.GetLocalVertexPositions()[i];
+                spriteVertices[i].TintColor = sprite.GetVertexColors()[i];
+                spriteVertices[i].UV = sprite.GetVertexUV()[i];
+                spriteVertices[i].TextureSlot = m_SpriteRenderer->CalculateTextureSlot(texture);
+                spriteVertices[i].Shape = (uint32_t) sprite.GetFragmentShape();
+                spriteVertices[i].Thickness = sprite.Thickness;
+                spriteVertices[i].Fade = sprite.Fade;
+                spriteVertices[i].Bounds = sprite.Bounds;
+            }
+
+            m_SpriteRenderer->SubmitSpriteVertexData(spriteVertices);
         }
 
         m_SpritePrimitivesDrawList.clear();

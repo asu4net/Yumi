@@ -14,15 +14,15 @@ namespace Yumi
 
     struct SpriteVertex
     {
-        Vector3 Position;
-        Color TintColor;
-        Vector2 UV;
-        uint32_t TextureSlot;
-        uint32_t Shape;
-        Vector3 LocalPosition;
-        float Thickness;
-        float Fade;
-        Vector2 Bounds;
+        Vector3  Position = Vector2::Zero;
+        Color    TintColor = Color::White;
+        Vector2  UV = Vector2::One;
+        uint32_t TextureSlot = 0;
+        uint32_t Shape = 0;
+        Vector3  LocalPosition = Vector2::Zero;
+        float    Thickness = .05f;
+        float    Fade = .01f;
+        Vector2  Bounds = Vector2::Zero;
     };
 
     class SpriteBatchRenderer
@@ -43,19 +43,15 @@ namespace Yumi
 
         ~SpriteBatchRenderer();
 
+        int CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture);
         void Begin(RenderData& renderData);
-        
-        void SubmitSpriteVertexData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors,
-            const Array<Vector2, 4>& vertexUVs, const SharedPtr<RendererTexture2D>& texture, uint32_t shape,
-            const Array<Vector3, 4>& localVertexPositions, float thickness, float fade, const Vector2& bounds);
-        
+        void SubmitSpriteVertexData(const Array<SpriteVertex, 4>& spriteVertices);
         void End();
 
     private:
         void CreateWhiteTexture();
         void CreateTextureSlots();
         void CreateRenderObjects();
-        int CalculateTextureSlot(const SharedPtr<RendererTexture2D>& texture);
         void StartBatch();
         void Flush();
         

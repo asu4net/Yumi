@@ -42,22 +42,11 @@ namespace Yumi
         StartBatch();
     }
 
-    void SpriteBatchRenderer::SubmitSpriteVertexData(const Array<Vector3, 4>& vertexPositions, const Array<Color, 4>& vertexColors, 
-        const Array<Vector2, 4>& vertexUVs, const SharedPtr<RendererTexture2D>& texture, uint32_t shape, 
-        const Array<Vector3, 4>& localVertexPositions, float thickness, float fade, const Vector2& bounds)
+    void SpriteBatchRenderer::SubmitSpriteVertexData(const Array<SpriteVertex, 4>& spriteVertices)
     {
-        for (int i = 0; i < 4; i++)
+        for (const SpriteVertex& spriteVertex : spriteVertices)
         {
-            m_LastVertex->Position = vertexPositions[i];
-            m_LastVertex->TintColor = vertexColors[i];
-            m_LastVertex->UV = vertexUVs[i];
-            m_LastVertex->TextureSlot = CalculateTextureSlot(texture);
-            m_LastVertex->Shape = shape;
-            m_LastVertex->LocalPosition = localVertexPositions[i];
-            m_LastVertex->Thickness = thickness;
-            m_LastVertex->Fade = fade;
-            m_LastVertex->Bounds = bounds;
-
+            *m_LastVertex = spriteVertex;
             m_LastVertex++;
         }
 
