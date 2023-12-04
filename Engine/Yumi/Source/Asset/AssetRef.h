@@ -14,8 +14,8 @@ namespace Yumi
 
         AssetRef& operator = (const AssetRef& other);
         AssetRef& operator = (AssetRef&& other) noexcept;
-        bool operator == (const AssetRef& other);
-        bool operator != (const AssetRef& other);
+        bool operator == (const AssetRef& other) const;
+        bool operator != (const AssetRef& other) const;
         
         Id GetAssetId() const { return m_AssetId; }
         bool IsValid() const { return !m_Asset.expired(); }
@@ -35,11 +35,14 @@ namespace Yumi
             YCHECK(IsValid(), "AssetRef needs to point to a valid target!");
             return *asset.lock().get();
         }
-                
+        
         void Retarget();
         void Retarget(Id id);
         void Clear();
         
+        RTTR_ENABLE()
+        RTTR_REGISTRATION_FRIEND
+
     private:
         Id m_AssetId;
         WeakPtr<Asset> m_Asset;

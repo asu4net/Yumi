@@ -21,7 +21,7 @@ namespace Yumi
         void operator*=(float num);
         Vector4 operator/(float num) const;
         void operator/=(float num);
-        bool operator<=(const Vector4& other);
+        bool operator<=(const Vector4& other) const;
         
         Vector4 Abs() const;
         float Magnitude() const;
@@ -32,5 +32,7 @@ namespace Yumi
         //static float Dot(const Vector3& a, const Vector3& b);
 
         static float Distance(const Vector4& a, const Vector4& b);
+
+        RTTR_ENABLE_NO_VIRTUAL
     };
 }

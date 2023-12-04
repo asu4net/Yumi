@@ -1,6 +1,6 @@
 project "GLFW"
     kind "StaticLib"
-    language "C"
+    language "C++"
     staticruntime "off"
 
     targetdir (targetroot .. "%{prj.name}")

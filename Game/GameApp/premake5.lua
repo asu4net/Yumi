@@ -22,7 +22,8 @@ project "GameApp"
     {
         "Source",
         "%{IncludeDirs.Yumi}",
-        "%{IncludeDirs.entt}"
+        "%{IncludeDirs.entt}",
+        "%{IncludeDirs.RTTR}"
     }
 
     links

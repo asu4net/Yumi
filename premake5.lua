@@ -17,6 +17,7 @@ group ""
 group "ThirdParty"
     include "ThirdParty/GLFW/premake5.lua"
     include "ThirdParty/GLAD/premake5.lua"
+    include "ThirdParty/RTTR/premake5.lua"
 group ""
 
 group "Game"

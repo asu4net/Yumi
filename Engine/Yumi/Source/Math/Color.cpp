@@ -1,5 +1,17 @@
 #include "Color.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+
+    rttr::registration::class_<Color>("Color")
+        .constructor<>()
+        .property("r", &Color::r)
+        .property("g", &Color::g)
+        .property("b", &Color::b)
+        .property("a", &Color::a);
+}
+
 namespace Yumi
 {
     const Color Color::Black = { 0, 0, 0, 1 };
@@ -88,17 +100,17 @@ namespace Yumi
         *this = *this / num;
     }
 
-    bool Color::operator<=(const Color& other)
+    bool Color::operator<=(const Color& other) const
     {
         return r <= other.r && g <= other.g && b <= other.b && a <= other.a;
     }
 
-    bool Color::operator==(const Color& other)
+    bool Color::operator==(const Color& other) const
     {
         return r == other.r && g== other.g && b == other.b && a == other.a;
     }
 
-    bool Color::operator!=(const Color& other)
+    bool Color::operator!=(const Color& other) const
     {
         return r != other.r && g != other.g && b != other.b && a != other.a;
     }

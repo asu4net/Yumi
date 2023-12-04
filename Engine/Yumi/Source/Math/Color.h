@@ -4,6 +4,7 @@ namespace Yumi
 {
     struct Color
     {
+
         static const Color Black;
         static const Color Blue;
         static const Color LightBlue;
@@ -37,10 +38,12 @@ namespace Yumi
         void operator*=(float num);
         Color operator/(float num) const;
         void operator/=(float num);
-        bool operator<=(const Color& other);
-        bool operator==(const Color& other);
-        bool operator!=(const Color& other);
+        bool operator<=(const Color& other) const;
+        bool operator==(const Color& other) const;
+        bool operator!=(const Color& other) const;
 
         String ToString() const;
+
+        RTTR_ENABLE_NO_VIRTUAL
     };
 }

@@ -23,14 +23,17 @@ project "Yumi"
         "%{IncludeDirs.GLFW}",
         "%{IncludeDirs.GLAD}",
         "%{IncludeDirs.STB}",
-        "%{IncludeDirs.entt}"
+        "%{IncludeDirs.entt}",
+        "%{IncludeDirs.RTTR}",
+        "%{IncludeDirs.rapidjson}"
     }
 
     links
     {
         "GLFW",
         "opengl32.lib",
-        "GLAD"
+        "GLAD",
+        "RTTR"
     }
 
     filter "system:windows"

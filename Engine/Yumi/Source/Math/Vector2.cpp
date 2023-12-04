@@ -1,5 +1,16 @@
 #include "Vector2.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+
+    rttr::registration::class_<Vector2>("Vector2")
+        .constructor<>()
+        .property("x", &Vector2::x)
+        .property("y", &Vector2::y);
+}
+
+
 namespace Yumi
 {
     const Vector2 Vector2::Zero = { 0, 0 };
@@ -24,12 +35,12 @@ namespace Yumi
         , y(other.y)
     {}
 
-    bool Vector2::operator==(const Vector2& other)
+    bool Vector2::operator==(const Vector2& other) const
     {
         return x == other.x && y == other.y;
     }
 
-    bool Vector2::operator!=(const Vector2& other)
+    bool Vector2::operator!=(const Vector2& other) const
     {
         return x != other.x || y != other.y;
     }

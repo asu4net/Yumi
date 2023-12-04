@@ -1,5 +1,15 @@
 #include "Id.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+
+    rttr::registration::class_<Id>("Id")
+        .constructor<>()
+        .constructor<uint64_t>()
+        .property("IdHandler", &Id::m_IdHandler);
+}
+
 namespace Yumi
 {
     //Idk wtf is this, but it generates a random number.

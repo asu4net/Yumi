@@ -1,5 +1,14 @@
 #include "Matrix4.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+    
+    rttr::registration::class_<Matrix4>("Matrix4")
+        .constructor<>()
+        .property("n", &Matrix4::n);
+}
+
 namespace Yumi
 {
     Matrix4::Matrix4()

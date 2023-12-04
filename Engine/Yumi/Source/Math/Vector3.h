@@ -31,7 +31,7 @@ namespace Yumi
         void operator*=(float num);
         Vector3 operator/(float num) const;
         void operator/=(float num);
-        bool operator<=(const Vector3& other);
+        bool operator<=(const Vector3& other) const;
         bool operator==(const Vector3& other) const;
         bool operator!=(const Vector3& other) const;
         
@@ -44,5 +44,7 @@ namespace Yumi
         //static Vector3 LookAt(const glm::quat& rot, const Vector3& axis);
         static float Dot(const Vector3& a, const Vector3& b);
         static float Distance(const Vector3& a, const Vector3& b);
+
+        RTTR_ENABLE_NO_VIRTUAL
     };
 }

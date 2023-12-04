@@ -5,7 +5,6 @@
 #include "GLFW\glfw3native.h"
 
 //TODO: Make this platform independent
-
 namespace Yumi
 {
     static GLFWwindow* g_WindowHandler = nullptr;

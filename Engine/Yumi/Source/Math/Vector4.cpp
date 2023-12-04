@@ -1,5 +1,17 @@
 #include "Vector4.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+
+    rttr::registration::class_<Vector4>("Vector4")
+        .constructor<>()
+        .property("x", &Vector4::x)
+        .property("y", &Vector4::y)
+        .property("z", &Vector4::z)
+        .property("w", &Vector4::w);
+}
+
 namespace Yumi
 {
     Vector4::Vector4()
@@ -73,7 +85,7 @@ namespace Yumi
         *this = *this / num;
     }
 
-    bool Vector4::operator<=(const Vector4& other)
+    bool Vector4::operator<=(const Vector4& other) const
     {
         return x <= other.x && y <= other.y && z <= other.z && w <= other.w;
     }

@@ -2,6 +2,16 @@
 #include "Asset/AssetManager.h"
 #include "Core/Engine.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+
+    rttr::registration::class_<AssetRef>("AssetRef")
+        .constructor<>()
+        .constructor<Id>()
+        .property("AssetId", &AssetRef::m_AssetId);
+}
+
 namespace Yumi
 {
     AssetRef::AssetRef() = default;
@@ -32,12 +42,12 @@ namespace Yumi
         return *this;
     }
 
-    bool AssetRef::operator==(const AssetRef& other)
+    bool AssetRef::operator==(const AssetRef& other) const
     {
         return m_AssetId == other.m_AssetId;
     }
 
-    bool AssetRef::operator!=(const AssetRef& other)
+    bool AssetRef::operator!=(const AssetRef& other) const
     {
         return !(operator==(other));
     }
