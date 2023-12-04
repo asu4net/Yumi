@@ -14,14 +14,28 @@ namespace Yumi
         Always
     };
 
+    // INFO: Estos scripts son bastante placeholder
+    // TODO: Hacer que los scripts hereden de Asset e integrarlos en ciclo de ejecución de los mismos
     struct ScriptComponent
     {
-        UniquePtr<Script> ScriptInstance;
-        SharedPtr<Scene> OwnerScene;
-        Actor OwnerActor;
-        int ExecutionOrder = 0;
+        String ScriptType;
+        uint32_t ExecutionOrder = 0;
         ScriptExecutionContext ExecutionContext = ScriptExecutionContext::Runtime;
-        //TODO: script type
+        
+        String PrevScriptType;
+        Actor OwnerActor;
+        SharedPtr<Script> ScriptInstance;
+        SharedPtr<Scene> OwnerScene;
+
+        ScriptComponent() = default;
+        
+        ScriptComponent(const String& scriptType)
+            : ScriptType(scriptType)
+        {}
+
+        ScriptComponent(Type type)
+            : ScriptType(type.get_name().to_string())
+        {}
     };
 
     class Actor;
@@ -49,29 +63,6 @@ namespace Yumi
                 YCHECK(false, "Unhandled case")
                     return false;
             };
-        }
-
-        static void Detach(Actor& actor);
-
-        template<typename T>
-        inline static void Attach(Actor& actor)
-        {
-            if (!actor.Has<ScriptComponent>())
-                actor.Add<ScriptComponent>();
-
-            ScriptComponent& scriptComponent = actor.Get<ScriptComponent>();
-            if (scriptComponent.ScriptInstance)
-            {
-                scriptComponent.ScriptInstance->Finish();
-                scriptComponent.ScriptInstance->Destroy();
-            }
-            scriptComponent.ScriptInstance = CreateUniquePtr<T>();
-            scriptComponent.ScriptInstance->m_Scene = scriptComponent.OwnerScene;
-            scriptComponent.ScriptInstance->m_Actor = scriptComponent.OwnerActor;
-            scriptComponent.ScriptInstance->Create();
-
-            if (ShouldCallRuntimeMethods(actor) && scriptComponent.OwnerScene->IsStarted())
-                scriptComponent.ScriptInstance->Start();
         }
     };
 }

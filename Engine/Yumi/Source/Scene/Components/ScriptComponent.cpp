@@ -1,16 +1,21 @@
 #include "ScriptComponent.h"
 
-namespace Yumi
+RTTR_REGISTRATION
 {
-    void ScriptStatics::Detach(Actor& actor)
-    {
-        ScriptComponent& scriptComponent = actor.Get<ScriptComponent>();
-        YCHECK(scriptComponent.ScriptInstance, "There is no script attached!");
+    using namespace Yumi;
 
-        if (ShouldCallRuntimeMethods(actor))
-            scriptComponent.ScriptInstance->Finish();
+    rttr::registration::enumeration<ScriptExecutionContext>("ScriptExecutionContext")
+    (
+        rttr::value("Runtime", ScriptExecutionContext::Runtime),
+        rttr::value("OutOfRuntime", ScriptExecutionContext::OutOfRuntime),
+        rttr::value("Always", ScriptExecutionContext::Always)
+    );
+    
+    rttr::registration::class_<ScriptComponent>("ScriptComponent")
+        .constructor<>()
+        .property("ScriptType", &ScriptComponent::ScriptType)
+        .property("ExecutionOrder", &ScriptComponent::ExecutionOrder)
+        .property("ExecutionContext", &ScriptComponent::ExecutionContext);
 
-        scriptComponent.ScriptInstance->Destroy();
-        scriptComponent.ScriptInstance.reset();
-    }
+    ComponentReflection::RegisterComponentType<ScriptComponent>();
 }

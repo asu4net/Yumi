@@ -19,5 +19,7 @@ namespace Yumi
         }
 
         Matrix4 GetMatrix() const { return Matrix4::CreateTransform(Position, Rotation, Scale); }
+
+        RTTR_ENABLE_NO_VIRTUAL
     };
 }

@@ -9,6 +9,8 @@ namespace Yumi
         float FarPlane = 1000.f;
         Matrix4 ProjectionMatrix;
         Matrix4 ViewMatrix;
+
+        RTTR_ENABLE_NO_VIRTUAL
     };
 
     class Actor;

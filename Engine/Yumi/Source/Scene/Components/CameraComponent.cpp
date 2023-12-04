@@ -4,6 +4,21 @@
 #include "Window\Window.h"
 #include "Core\Engine.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+    
+    rttr::registration::class_<CameraComponent>("CameraComponent")
+        .constructor<>()
+        .property("Size", &CameraComponent::Size)
+        .property("NearPlane", &CameraComponent::NearPlane)
+        .property("FarPlane", &CameraComponent::FarPlane)
+        .property("ProjectionMatrix", &CameraComponent::ProjectionMatrix)
+        .property("ViewMatrix", &CameraComponent::ViewMatrix);
+
+    ComponentReflection::RegisterComponentType<CameraComponent>();
+}
+
 namespace Yumi
 {
     void CameraStatics::UpdateCameraMatrices(Actor& actor)

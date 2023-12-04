@@ -1,5 +1,14 @@
 #include "TransformComponent.h"
 
-namespace Yumi
+RTTR_REGISTRATION
 {
+    using namespace Yumi;
+
+    rttr::registration::class_<TransformComponent>("TransformComponent")
+        .constructor<>()
+        .property("Position", &TransformComponent::Position)
+        .property("Rotation", &TransformComponent::Rotation)
+        .property("Scale", &TransformComponent::Scale);
+
+    ComponentReflection::RegisterComponentType<TransformComponent>();
 }

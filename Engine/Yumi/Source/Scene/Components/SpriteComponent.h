@@ -26,5 +26,7 @@ namespace Yumi
             : TintColor(tintColor)
         {
         }
+
+        RTTR_ENABLE_NO_VIRTUAL
     };
 }

@@ -23,5 +23,9 @@ namespace Yumi
         Matrix4 m_AuxCameraMatrix;
         bool m_bMouseDown = false;
         Vector3 m_Offset;
+    
+        RTTR_ENABLE(Script)
     };
+
+    YFORCE_LINK(FreeLookCameraScript);
 }

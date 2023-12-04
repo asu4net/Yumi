@@ -19,5 +19,7 @@ namespace Yumi
             , ID(id)
             , IsSerializable(isSerializable)
         {}
+
+        RTTR_ENABLE_NO_VIRTUAL
     };
 }

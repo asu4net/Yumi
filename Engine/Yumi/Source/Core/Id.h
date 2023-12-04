@@ -12,7 +12,7 @@ namespace Yumi
         bool operator ==(const Id& other) const;
         bool operator !=(const Id& other) const;
 
-        RTTR_ENABLE()
+        RTTR_ENABLE_NO_VIRTUAL
         RTTR_REGISTRATION_FRIEND
 
     private:

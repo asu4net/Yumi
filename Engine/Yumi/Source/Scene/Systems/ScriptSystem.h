@@ -4,9 +4,13 @@
 
 namespace Yumi
 {
+    struct ScriptComponent;
+
     class ScriptSystem : public System
     {
     public:
+        static void UpdateScriptInstance(ScriptComponent& scriptComponent);
+        
         ScriptSystem(const SharedPtr<Scene>& scene);
         ~ScriptSystem();
 

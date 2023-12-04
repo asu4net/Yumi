@@ -1,9 +1,20 @@
 #include "Script.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+    
+    rttr::registration::class_<Script>("Script")
+        .constructor<>();
+}
+
 namespace Yumi
 {
+    Script::Script()
+        : m_Actor(Actor())
+        , m_Scene(nullptr)
+    {}
 
-    Script::Script() = default;
     Script::~Script() = default;
     
     TransformComponent& Script::GetTransform() const

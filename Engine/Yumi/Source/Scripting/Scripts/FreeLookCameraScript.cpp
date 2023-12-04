@@ -6,8 +6,18 @@
 #include "Window\Window.h"
 #include "Core\Engine.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+
+    rttr::registration::class_<FreeLookCameraScript>("FreeLookCameraScript")
+        .constructor<>();
+}
+
 namespace Yumi
 {
+    YFORCE_LINK_IMPL(FreeLookCameraScript);
+
     void FreeLookCameraScript::OnStart()
     {
         auto& camera = Get<CameraComponent>();

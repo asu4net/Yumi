@@ -63,5 +63,7 @@ namespace Yumi
 
         friend class ScriptSystem;
         friend struct ScriptStatics;
+
+        RTTR_ENABLE()
     };
 }

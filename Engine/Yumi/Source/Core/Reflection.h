@@ -7,7 +7,8 @@ namespace Yumi
 {
     using Type = rttr::type;
     using Instance = rttr::instance;
-    
+    using Variant = rttr::variant;
+
     class Actor;
 
     using FnHas       = Delegate<bool(const Actor&)>;
@@ -73,3 +74,11 @@ RTTR_BEGIN_DISABLE_OVERRIDE_WARNING \
     RTTR_INLINE ::rttr::detail::derived_info get_derived_info() { return {reinterpret_cast<void*>(this), ::rttr::detail::get_type_from_instance(this)}; } \
 RTTR_END_DISABLE_OVERRIDE_WARNING \
 private:
+
+#define YFORCE_LINK(_TYPE) \
+    struct ForceLink##_TYPE##Class { ForceLink##_TYPE##Class(); }; \
+    inline ForceLink##_TYPE##Class g_ForceLink##_TYPE##Variable;
+
+#define YFORCE_LINK_IMPL(_TYPE) \
+    ForceLink##_TYPE##Class::ForceLink##_TYPE##Class() { _TYPE _TYPE##ForceLink; };
+

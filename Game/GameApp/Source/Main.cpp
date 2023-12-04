@@ -24,6 +24,8 @@ class MoveScript : public Script
         if (GetInput().IsKeyPressed(KEY_A))
             GetTransform().Position += Vector3::Left * speed * GetDeltaTime();
     }
+
+    RTTR_ENABLE(Script)
 };
 
 class ColorScript : public Script
@@ -62,7 +64,18 @@ class ColorScript : public Script
             SpacePressed = false;
         }
     }
+
+    RTTR_ENABLE(Script)
 };
+
+namespace main_registration
+{
+    RTTR_REGISTRATION
+    {
+        rttr::registration::class_<MoveScript>("MoveScript").constructor<>();
+        rttr::registration::class_<ColorScript>("ColorScript").constructor<>();
+    }
+}
 
 void CreateActors()
 {
@@ -74,14 +87,14 @@ void CreateActors()
     
     Actor emptySpriteActor = scene.CreateActor({ "Empty", Vector3::Left });
     emptySpriteActor.Add<SpriteComponent>(Color::LightRed);
-    ScriptStatics::Attach<ColorScript>(emptySpriteActor);
+    emptySpriteActor.Add<ScriptComponent>(Type::get<ColorScript>());
 
     Actor catActor = scene.CreateActor();
     catActor.Add<SpriteComponent>(catSpriteRef);
 
     Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
     cppActor.Add<SpriteComponent>(cppSpriteRef);
-    ScriptStatics::Attach<MoveScript>(cppActor);
+    cppActor.Add<ScriptComponent>(Type::get<MoveScript>());
 
     Actor aspidActor = scene.CreateActor({ "Aspid", Vector3::Down});
     auto& spriteComponent = aspidActor.Add<SpriteComponent>();

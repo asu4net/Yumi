@@ -40,7 +40,7 @@ namespace Yumi
         void Retarget(Id id);
         void Clear();
         
-        RTTR_ENABLE()
+        RTTR_ENABLE_NO_VIRTUAL
         RTTR_REGISTRATION_FRIEND
 
     private:
