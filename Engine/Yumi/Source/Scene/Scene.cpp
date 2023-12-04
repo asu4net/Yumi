@@ -65,7 +65,7 @@ namespace Yumi
 
     Actor Scene::GetMainCameraActor() const
     {
-        YCHECK(m_CameraSystem.expired(), "Not a valid camera system");
+        YCHECK(!m_CameraSystem.expired(), "Not a valid camera system");
         return m_CameraSystem.lock()->GetMainCameraActor();
     }
 
