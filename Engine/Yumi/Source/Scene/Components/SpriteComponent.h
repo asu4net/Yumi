@@ -29,4 +29,6 @@ namespace Yumi
 
         RTTR_ENABLE_NO_VIRTUAL
     };
+
+    YFORCE_LINK(SpriteComponent)
 }

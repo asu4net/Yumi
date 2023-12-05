@@ -93,6 +93,7 @@ namespace Yumi
     {
         YLOG_TRACE("Finishing engine...\n");
         
+        m_World->Finish();
         delete m_World;
         delete m_AssetManager;
         delete m_Renderer;

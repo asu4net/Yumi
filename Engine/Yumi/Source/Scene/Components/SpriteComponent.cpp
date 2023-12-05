@@ -2,6 +2,11 @@
 #include "TransformComponent.h"
 #include "Scene\Actor.h"
 
+namespace Yumi
+{
+    YFORCE_LINK_IMPL(SpriteComponent);
+}
+
 RTTR_REGISTRATION
 {
     using namespace Yumi;

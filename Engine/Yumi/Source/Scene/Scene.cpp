@@ -78,6 +78,7 @@ namespace Yumi
 
         m_CameraSystem = GetSystemOfType<CameraSystem>();
         CreateFreeLookCamera();
+        m_Serializer = SceneSerializer(m_This);
     }
     
     void Scene::Start()
@@ -85,6 +86,7 @@ namespace Yumi
         for (SharedPtr<System> system : m_Systems)
             system->OnStart();
         m_IsStarted = true;
+        m_Serializer.Serialize();
     }
 
     void Scene::Update()

@@ -4,6 +4,11 @@
 #include "Window\Window.h"
 #include "Core\Engine.h"
 
+namespace Yumi
+{
+    YFORCE_LINK_IMPL(CameraComponent)
+}
+
 RTTR_REGISTRATION
 {
     using namespace Yumi;

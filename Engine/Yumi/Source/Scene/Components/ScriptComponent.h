@@ -38,6 +38,8 @@ namespace Yumi
         {}
     };
 
+    YFORCE_LINK(ScriptComponent)
+
     class Actor;
 
     struct ScriptStatics

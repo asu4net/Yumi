@@ -1,6 +1,7 @@
 #pragma once
 #include "Asset/Asset.h"
 #include "Actor.h"
+#include "Serialization/SceneSerializer.h"
 
 namespace Yumi
 {
@@ -13,7 +14,7 @@ namespace Yumi
         Vector3 Rotation;
         Vector3 Scale = Vector3::One;
         Id SpecificId = 0;
-        bool IsSerializable;
+        bool IsSerializable = true;
         // TODO: component type collection
     };
 
@@ -42,6 +43,8 @@ namespace Yumi
         bool Load() override;
         void Unload() override;
 
+        String GetData() const { return m_Data; }
+
         void SetScenePtr(const SharedPtr<Scene> scene) { m_This = scene; }
 
         WeakPtr<entt::registry> GetRegistry() const { return m_Registry; }
@@ -69,6 +72,8 @@ namespace Yumi
         std::pair<Id, entt::entity> CreateEntity(Id specificId = 0);
         void CreateFreeLookCamera();
 
+        String m_Data;
+        SceneSerializer m_Serializer;
         WeakPtr<class CameraSystem> m_CameraSystem;
         Actor m_FreeLookCameraActor;
         bool m_IsStartScene = false;
@@ -81,6 +86,7 @@ namespace Yumi
         Map<Id, entt::entity> m_IdEntityMap;
         SharedPtr<Scene> m_This;
 
+        friend class SceneSerializer;
         friend class AssetManager;
     };
 }

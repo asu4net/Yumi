@@ -42,4 +42,12 @@ namespace Yumi
     {
         return m_Components[type];
     }
+
+    void ComponentReflection::Each(Delegate<void(Type, const SharedPtr<ComponentType>&)> iterateFunc)
+    {
+        for (auto& [type, componentType] : m_Components)
+        {
+            iterateFunc(type, componentType);
+        }
+    }
 }

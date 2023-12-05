@@ -12,3 +12,8 @@ RTTR_REGISTRATION
 
     ComponentReflection::RegisterComponentType<TransformComponent>();
 }
+
+namespace Yumi
+{
+    YFORCE_LINK_IMPL(TransformComponent)
+}

@@ -13,3 +13,8 @@ RTTR_REGISTRATION
 
     ComponentReflection::RegisterComponentType<InformationComponent>();
 }
+
+namespace Yumi
+{
+    YFORCE_LINK_IMPL(InformationComponent)
+}

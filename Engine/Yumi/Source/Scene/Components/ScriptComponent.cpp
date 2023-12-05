@@ -1,5 +1,10 @@
 #include "ScriptComponent.h"
 
+namespace Yumi
+{
+    YFORCE_LINK_IMPL(ScriptComponent)
+}
+
 RTTR_REGISTRATION
 {
     using namespace Yumi;

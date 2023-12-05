@@ -1,6 +1,11 @@
 #include "AnimationComponent.h"
 #include "Scene/Actor.h"
 
+namespace Yumi
+{
+    YFORCE_LINK_IMPL(AnimationComponent)
+}
+
 RTTR_REGISTRATION
 {
     using namespace Yumi;

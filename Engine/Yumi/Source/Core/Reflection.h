@@ -60,6 +60,8 @@ namespace Yumi
         
         static const SharedPtr<ComponentType>& GetComponentOfType(Type type);
 
+        static void Each(Delegate<void(Type, const SharedPtr<ComponentType>&)> iterateFunc);
+
     private:
         inline static Map<Type, SharedPtr<ComponentType>> m_Components;
     };
