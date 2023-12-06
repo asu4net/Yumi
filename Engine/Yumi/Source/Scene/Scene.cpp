@@ -10,8 +10,18 @@
 #include "Scripting\Scripts\FreeLookCameraScript.h"
 #include "Systems\AnimationSystem.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+
+    rttr::registration::class_<Scene>("Scene")
+        .constructor<>();
+}
+
 namespace Yumi
 {
+    YFORCE_LINK_IMPL(Scene)
+
     Scene::Scene()
         : m_Registry(CreateSharedPtr<entt::registry>())
     {

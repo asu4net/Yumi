@@ -10,17 +10,29 @@ namespace Yumi
         String Path;
         String AbsolutePath;
         Id AssetId;
+        String AssetType;
     };
+    
+    YFORCE_LINK(AssetData)
 
     class Asset
     {
     public:
+        Asset() = default;
         virtual ~Asset() {};
 
-        virtual bool Load() = 0;
-        virtual void Unload() = 0;
+        virtual bool Load() { return false; };
+        virtual void Unload() {};
 
-        virtual AssetData GetAssetData() const = 0;
-        virtual void SetAssetData(const AssetData& assetData) = 0;
+        AssetData GetAssetData() const { return m_AssetData; };
+        void SetAssetData(const AssetData& assetData) { m_AssetData = assetData; };
+        
+    private:
+        AssetData m_AssetData;
+
+        RTTR_ENABLE()
+        RTTR_REGISTRATION_FRIEND
     };
+
+    YFORCE_LINK(Asset)
 }

@@ -7,11 +7,21 @@
 #include <STB/stb_image.h>
 #include <GLAD/glad.h>
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+    rttr::registration::class_<Texture2D>("Texture2D")
+        .constructor<>()
+        .property("Settings", &Texture2D::m_Settings);
+}
+
 namespace Yumi
 {
+    YFORCE_LINK_IMPL(Texture2D)
+
     bool Texture2D::Load()
     {
-        const String absolutePath = m_AssetData.AbsolutePath;
+        const String absolutePath = GetAssetData().AbsolutePath;
         if (absolutePath == AssetData::s_EmptyPathString) return true;
         
         int width, height, channels;
@@ -27,12 +37,11 @@ namespace Yumi
         m_Size = { (float) width, (float) height };
         m_Channels = channels;
 
-        Texture2DSettings settings;
-        settings.Width = width;
-        settings.Height = height;
-        settings.Channels = channels;
+        m_Settings.Width = width;
+        m_Settings.Height = height;
+        m_Settings.Channels = channels;
 
-        m_RendererTextureId = GetRenderer().CreateTexture2D(settings, m_Data);
+        m_RendererTextureId = GetRenderer().CreateTexture2D(m_Settings, m_Data);
 
         return true;
     }

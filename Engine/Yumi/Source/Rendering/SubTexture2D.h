@@ -23,17 +23,16 @@ namespace Yumi
         bool Load() override { return true; }
         void Unload() override {};
         
-        AssetData GetAssetData() const override { return m_AssetData; }
-
     private:
         AssetRef m_ParentRef;
         Array<Vector2, 4> m_VertexUV;
         Vector2 m_Size;
-        AssetData m_AssetData;
 
         void SetUVCoords(const Vector2& uvMin, const Vector2& uvMax);
-        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
 
-        friend class AssetManager;
+        RTTR_ENABLE(Asset)
+        RTTR_REGISTRATION_FRIEND
     };
+
+    YFORCE_LINK(SubTexture2D)
 }

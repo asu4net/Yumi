@@ -1,5 +1,6 @@
 #pragma once
 #include "Asset\Asset.h"
+#include "RendererTexture2D.h"
 
 namespace Yumi
 {
@@ -7,9 +8,9 @@ namespace Yumi
     {
     public:
         Texture2D() = default;
-
-        AssetData GetAssetData() const override { return m_AssetData; }
-        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
+        
+        void SetSettings(const Texture2DSettings& settings) { m_Settings = settings; }
+        Texture2DSettings GetSettings() const { return m_Settings; }
 
         Id GetRendererId() const { return m_RendererTextureId; }
         uint32_t GetWidth() const { return m_Width; }
@@ -20,12 +21,17 @@ namespace Yumi
         void Unload() override;
 
     private:
-        AssetData m_AssetData;
+        Texture2DSettings m_Settings;
         Id m_RendererTextureId = 0;
         uint32_t m_Width = 0;
         uint32_t m_Height = 0;
         uint32_t m_Channels = 0;
         Vector2 m_Size;
         void* m_Data = nullptr;
+
+        RTTR_ENABLE(Asset)
+        RTTR_REGISTRATION_FRIEND
     };
+    
+    YFORCE_LINK(Texture2D)
 }

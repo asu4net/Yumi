@@ -94,6 +94,7 @@ namespace Yumi
     AssetRef AssetManager::RegistryAsset(const SharedPtr<Asset>& asset, AssetData& assetData)
     {
         EnsureAssetDataConsistency(assetData);
+        assetData.AssetType = asset->get_type().get_name().to_string();
         asset->SetAssetData(assetData);
         m_IdAssetMap[assetData.AssetId] = asset;
         m_AssetNameIdMap[assetData.Name] = assetData.AssetId;

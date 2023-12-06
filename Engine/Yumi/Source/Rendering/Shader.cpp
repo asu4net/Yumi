@@ -2,6 +2,14 @@
 #include "Core\Engine.h"
 #include "Renderer.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+    
+    rttr::registration::class_<Shader>("Shader")
+        .constructor<>();
+}
+
 namespace Yumi
 {
     bool Shader::Load()

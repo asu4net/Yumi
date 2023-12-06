@@ -38,8 +38,6 @@ namespace Yumi
             return resultSystem;
         }
 
-        AssetData GetAssetData() const override { return m_AssetData; }
-        void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; }
         bool Load() override;
         void Unload() override;
 
@@ -81,12 +79,13 @@ namespace Yumi
         bool m_IsStarted = false;
         DynamicArray<SharedPtr<System>> m_Systems;
         uint32_t m_CreatedActorsCount = 0;
-        AssetData m_AssetData;
         SharedPtr<entt::registry> m_Registry;
         Map<Id, entt::entity> m_IdEntityMap;
         SharedPtr<Scene> m_This;
 
+        RTTR_ENABLE(Asset)
         friend class SceneSerializer;
-        friend class AssetManager;
     };
+
+    YFORCE_LINK(Scene)
 }

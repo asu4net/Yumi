@@ -4,8 +4,23 @@
 #include "Rendering/Sprite.h"
 #include "Rendering/SubTexture2D.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+     rttr::registration::class_<Animation::Key>("Key")
+        .constructor<>()
+        .property("Key", &Animation::Key::KeyAssetRef)
+        .property("KeyTime", &Animation::Key::KeyTime);
+
+    rttr::registration::class_<Animation>("Animation")
+        .constructor<>()
+        .property("Keys", &Animation::m_Keys);
+}
+
 namespace Yumi
 {
+    YFORCE_LINK_IMPL(Animation)
+
     void Animation::PushKeysFromAtlas(const AssetRef& animationRef, const AssetRef& textureAtlasRef,
         const Vector2& atlasTileSize, const DynamicArray<Vector2>& atlasLocations, const DynamicArray<float>& keyTimes)
     {

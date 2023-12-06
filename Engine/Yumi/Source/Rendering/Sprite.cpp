@@ -4,8 +4,22 @@
 #include "Core\Engine.h"
 #include "Asset\AssetManager.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+
+    rttr::registration::class_<Sprite>("Sprite")
+        .constructor<>()
+        .property("SubTextureRef", &Sprite::m_SubTextureRef)
+        .property("SubTextureRef", &Sprite::m_TextureRef)
+        .property("VertexPositions", &Sprite::m_VertexPositions)
+        .property("VertexUVs", &Sprite::m_VertexUVs);
+}
+
 namespace Yumi
 {
+    YFORCE_LINK_IMPL(Sprite)
+
     Sprite::Sprite(AssetRef textureRef, bool isSubTexture /*= false*/)
     {
         Init(textureRef, isSubTexture);

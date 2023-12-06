@@ -26,9 +26,7 @@ namespace Yumi
 
         bool Load() override { return true; }
         void Unload() override {}
-        
-        AssetData GetAssetData() const override { return m_AssetData; };
-        
+                
         void SetTime(float time) { m_Time = time; }
         float GetTime() const { return m_Time; }
         
@@ -40,13 +38,13 @@ namespace Yumi
         void Clear();
 
     private:
-        AssetData m_AssetData;
         DynamicArray<Key> m_Keys;
         float m_Time = 0.f;
-
-        virtual void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; };
         void SortKeys();
 
-        friend class AssetManager;
+        RTTR_ENABLE(Asset)
+        RTTR_REGISTRATION_FRIEND
     };
+
+    YFORCE_LINK(Animation)
 }

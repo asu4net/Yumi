@@ -1,8 +1,20 @@
 #include "SubTexture2D.h"
 #include "Texture2D.h"
 
+RTTR_REGISTRATION
+{
+    using namespace Yumi;
+    rttr::registration::class_<SubTexture2D>("SubTexture2D")
+        .constructor<>()
+        .property("ParentRef", &SubTexture2D::m_ParentRef)
+        .property("VertexUV", &SubTexture2D::m_VertexUV)
+        .property("Size", &SubTexture2D::m_Size);
+}
+
 namespace Yumi
 {
+    YFORCE_LINK_IMPL(SubTexture2D)
+
     SubTexture2D::SubTexture2D(const AssetRef& parentTextureRef, const Vector2& uvMin, const Vector2& uvMax, const Vector2& size)
     {
         Init(parentTextureRef, uvMin, uvMax, size);

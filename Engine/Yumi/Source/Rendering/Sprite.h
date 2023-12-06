@@ -20,9 +20,6 @@ namespace Yumi
         void Init(const AssetRef& textureRef, bool isSubTexture);
         void InitFromTexture(const AssetRef& textureRef);
         void InitFromSubTexture(const AssetRef& subTextureRef);
-
-        AssetData GetAssetData() const override { return m_AssetData; };
-        virtual void SetAssetData(const AssetData& assetData) override { m_AssetData = assetData; };
         
         const AssetRef& GetTextureRef() const { return m_TextureRef; }
         const AssetRef& GetSubTextureRef() const { return m_SubTextureRef; }
@@ -30,11 +27,15 @@ namespace Yumi
         const Array<Vector2, 4>& GetVertexUVs() const { return m_VertexUVs; }
 
     private:
-        AssetData m_AssetData;
         AssetRef m_TextureRef;
         AssetRef m_SubTextureRef;
 
         Array<Vector3, 4> m_VertexPositions;
         Array<Vector2, 4> m_VertexUVs;
+    
+        RTTR_ENABLE(Asset)
+        RTTR_REGISTRATION_FRIEND
     };
+
+    YFORCE_LINK(Sprite)
 }

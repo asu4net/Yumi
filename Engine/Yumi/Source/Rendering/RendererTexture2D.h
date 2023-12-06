@@ -19,6 +19,8 @@ namespace Yumi
         TextureWrapMode WrapModeU{TextureWrapMode::Repeat};
         TextureWrapMode WrapModeV{TextureWrapMode::Repeat};
     };
+
+    YFORCE_LINK(Texture2DSettings)
         
     class RendererTexture2D    
     {
