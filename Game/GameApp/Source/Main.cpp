@@ -79,15 +79,6 @@ namespace main_registration
 
 void CreateActors()
 {
-    GetAssetManager().CreateAsset<Texture2D>({ "Bola [Texture]", "Assets/Textures/Bola.jpg" }).GetAs<Texture2D>().Load();
-    GetAssetManager().CreateAsset<Texture2D>({ "Cpp [Texture]", "Assets/Textures/cpp.png" }).GetAs<Texture2D>().Load();
-    GetAssetManager().CreateAsset<Texture2D>({ "Aspid [Texture]", "Assets/Textures/aspid.png" }).GetAs<Texture2D>().Load();
-
-    GetAssetManager().CreateAsset<Sprite>("Bola [Sprite]", "Bola [Texture]");
-    GetAssetManager().CreateAsset<Sprite>("Cpp [Sprite]", "Cpp [Texture]");
-    
-    AssetRef aspidAnimationRef = GetAssetManager().CreateAsset<Animation>("AspidFly [Animation]");
-    
     Scene& scene = GetWorld().GetActiveScene();
     
     Actor emptySpriteActor = scene.CreateActor({ "Empty", Vector3::Left });
@@ -104,5 +95,5 @@ void CreateActors()
     Actor aspidActor = scene.CreateActor({ "Aspid", Vector3::Down});
     auto& spriteComponent = aspidActor.Add<SpriteComponent>();
     Animation::PushKeysFromAtlas("AspidFly [Animation]", "Aspid [Texture]", { 143, 123 }, 6);
-    aspidActor.Add<AnimationComponent>(aspidAnimationRef, &spriteComponent.SpriteAssetRef);
+    aspidActor.Add<AnimationComponent>(GetAssetManager().GetAssetByName("AspidFly [Animation]"), &spriteComponent.SpriteAssetRef);
 }

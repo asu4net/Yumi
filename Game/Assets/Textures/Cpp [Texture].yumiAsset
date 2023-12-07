@@ -1,0 +1,16 @@
+{
+    "AssetData": {
+        "Name": "Cpp [Texture]",
+        "Path": "Assets/Textures/cpp.png",
+        "AssetId": {
+            "IdHandler": 6550145068230770525
+        },
+        "AssetType": "Texture2D"
+    },
+    "Settings": {
+        "MagFilter": "Linear",
+        "MinFilter": "Linear",
+        "WrapModeU": "Repeat",
+        "WrapModeV": "Repeat"
+    }
+}

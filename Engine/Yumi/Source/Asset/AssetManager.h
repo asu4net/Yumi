@@ -8,7 +8,7 @@ namespace Yumi
     class AssetManager
     {
     public: 
-        static void SerializeAsset(const SharedPtr<Asset>& asset);
+        static void SerializeAsset(const SharedPtr<Asset>& asset, const String& path);
         static SharedPtr<Asset> DeserializeAsset(const std::filesystem::path& assetPath);
 
         AssetManager(const String& workingDirectory);

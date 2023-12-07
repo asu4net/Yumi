@@ -6,19 +6,17 @@ namespace Yumi
 {
     static constexpr char* AssetExtension = ".yumiAsset";
 
-    //TODO: Use Asset name un serialization
     //TODO: Separar la deserialización de la llamada al load
     //TODO: Al deserializar un AssetRef siempre tienen que estar cargados todos los assets porque
     // se ha de resolver el retarget para el id del asset
-    // La creación de un asset no ha de obligar a la serialización
 
-    void AssetManager::SerializeAsset(const SharedPtr<Asset>& asset)
+    void AssetManager::SerializeAsset(const SharedPtr<Asset>& asset, const String& path)
     {
         const String jsonYumiAsset = Serialization::ToJson(asset);
         const AssetData assetData = asset->GetAssetData();
-
-        std::ofstream fileYumiAssetProject("../" + assetData.Path + AssetExtension);
-        std::ofstream fileYumiAssetBinaries(assetData.AbsolutePath + AssetExtension);
+        
+        std::ofstream fileYumiAssetProject("../" + path + "/" + assetData.Name + AssetExtension);
+        std::ofstream fileYumiAssetBinaries(GetWorkingDirectory() + "/" + path + "/" + assetData.Name + AssetExtension);
         
         fileYumiAssetProject << jsonYumiAsset;
         fileYumiAssetBinaries << jsonYumiAsset;
@@ -108,6 +106,11 @@ namespace Yumi
 
             AssetRef assetRef = RegistryAsset(asset, asset->GetAssetData());
             TryLoadAsset(assetRef);
+        }
+
+        for (auto [id, asset] : m_IdAssetMap)
+        {
+            asset->PostLoad();
         }
     }
 

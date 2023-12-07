@@ -22,8 +22,9 @@ namespace Yumi
 
         Asset() = default;
         virtual ~Asset() {};
-
+        
         virtual bool Load() { return true; };
+        virtual void PostLoad() {};
         virtual void Unload() {};
 
         AssetData GetAssetData() const { return m_AssetData; };

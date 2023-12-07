@@ -11,7 +11,7 @@ RTTR_REGISTRATION
     rttr::registration::class_<Sprite>("Sprite")
         .constructor<>()
         .property("SubTextureRef", &Sprite::m_SubTextureRef)
-        .property("SubTextureRef", &Sprite::m_TextureRef)
+        .property("TextureRef", &Sprite::m_TextureRef)
         .property("VertexPositions", &Sprite::m_VertexPositions)
         .property("VertexUVs", &Sprite::m_VertexUVs);
 }
@@ -29,6 +29,12 @@ namespace Yumi
     {
         AssetRef textureRef = GetAssetManager().GetAssetByName(textureAssetName);
         Init(textureRef, isSubTexture);
+    }
+
+    void Sprite::PostLoad()
+    {
+        m_TextureRef.Retarget();
+        m_SubTextureRef.Retarget();
     }
 
     void Sprite::Init(const AssetRef& textureRef, bool isSubTexture)

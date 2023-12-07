@@ -1,0 +1,16 @@
+{
+    "AssetData": {
+        "Name": "Bola [Texture]",
+        "Path": "Assets/Textures/Bola.jpg",
+        "AssetId": {
+            "IdHandler": 18304282123908519849
+        },
+        "AssetType": "Texture2D"
+    },
+    "Settings": {
+        "MagFilter": "Linear",
+        "MinFilter": "Linear",
+        "WrapModeU": "Repeat",
+        "WrapModeV": "Repeat"
+    }
+}
