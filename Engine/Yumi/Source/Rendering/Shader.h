@@ -21,4 +21,6 @@ namespace Yumi
         RTTR_ENABLE(Asset)
         RTTR_REGISTRATION_FRIEND
     };
+
+    YDECLARE_ASSET_EXTENSION(Shader, glsl)
 }

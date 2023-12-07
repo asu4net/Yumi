@@ -7,7 +7,10 @@ namespace Yumi
 {
     class AssetManager
     {
-    public:
+    public: 
+        static void SerializeAsset(const SharedPtr<Asset>& asset);
+        static SharedPtr<Asset> DeserializeAsset(const std::filesystem::path& assetPath);
+
         AssetManager(const String& workingDirectory);
         ~AssetManager();
 
@@ -46,7 +49,6 @@ namespace Yumi
         void UnloadAssets();
         void EnsureAssetDataConsistency(AssetData& assetData);
         AssetRef RegistryAsset(const SharedPtr<Asset>& asset, AssetData& assetData);
-
         void TryLoadAsset(AssetRef assetLink);
 
         const String m_WorkingDirectory;

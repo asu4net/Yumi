@@ -79,10 +79,15 @@ namespace main_registration
 
 void CreateActors()
 {
-    AssetRef catSpriteRef = GetAssetManager().CreateAsset<Sprite>("Bola.jpg [Sprite]", "Bola.jpg");
-    AssetRef cppSpriteRef = GetAssetManager().CreateAsset<Sprite>("cpp.png [Sprite]", "cpp.png");
-    AssetRef aspidAnimationRef = GetAssetManager().CreateAsset<Animation>("AspidFly");
+    GetAssetManager().CreateAsset<Texture2D>({ "Bola [Texture]", "Assets/Textures/Bola.jpg" }).GetAs<Texture2D>().Load();
+    GetAssetManager().CreateAsset<Texture2D>({ "Cpp [Texture]", "Assets/Textures/cpp.png" }).GetAs<Texture2D>().Load();
+    GetAssetManager().CreateAsset<Texture2D>({ "Aspid [Texture]", "Assets/Textures/aspid.png" }).GetAs<Texture2D>().Load();
 
+    GetAssetManager().CreateAsset<Sprite>("Bola [Sprite]", "Bola [Texture]");
+    GetAssetManager().CreateAsset<Sprite>("Cpp [Sprite]", "Cpp [Texture]");
+    
+    AssetRef aspidAnimationRef = GetAssetManager().CreateAsset<Animation>("AspidFly [Animation]");
+    
     Scene& scene = GetWorld().GetActiveScene();
     
     Actor emptySpriteActor = scene.CreateActor({ "Empty", Vector3::Left });
@@ -90,14 +95,14 @@ void CreateActors()
     emptySpriteActor.Add<ScriptComponent>(Type::get<ColorScript>());
 
     Actor catActor = scene.CreateActor();
-    catActor.Add<SpriteComponent>(catSpriteRef);
+    catActor.Add<SpriteComponent>("Bola [Sprite]");
 
     Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
-    cppActor.Add<SpriteComponent>(cppSpriteRef);
+    cppActor.Add<SpriteComponent>("Cpp [Sprite]");
     cppActor.Add<ScriptComponent>(Type::get<MoveScript>());
 
     Actor aspidActor = scene.CreateActor({ "Aspid", Vector3::Down});
     auto& spriteComponent = aspidActor.Add<SpriteComponent>();
-    Animation::PushKeysFromAtlas("AspidFly", "aspid.png", { 143, 123 }, 6);
+    Animation::PushKeysFromAtlas("AspidFly [Animation]", "Aspid [Texture]", { 143, 123 }, 6);
     aspidActor.Add<AnimationComponent>(aspidAnimationRef, &spriteComponent.SpriteAssetRef);
 }

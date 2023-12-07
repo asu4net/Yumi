@@ -34,4 +34,6 @@ namespace Yumi
     };
     
     YFORCE_LINK(Texture2D)
+    YDECLARE_ASSET_EXTENSION(Texture2D, png)
+    YDECLARE_ASSET_EXTENSION(Texture2D, jpg)
 }

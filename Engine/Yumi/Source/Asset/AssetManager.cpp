@@ -4,6 +4,62 @@
 
 namespace Yumi
 {
+    static constexpr char* AssetExtension = ".yumiAsset";
+
+    //TODO: Use Asset name un serialization
+    //TODO: Separar la deserialización de la llamada al load
+    //TODO: Al deserializar un AssetRef siempre tienen que estar cargados todos los assets porque
+    // se ha de resolver el retarget para el id del asset
+    // La creación de un asset no ha de obligar a la serialización
+
+    void AssetManager::SerializeAsset(const SharedPtr<Asset>& asset)
+    {
+        const String jsonYumiAsset = Serialization::ToJson(asset);
+        const AssetData assetData = asset->GetAssetData();
+
+        std::ofstream fileYumiAssetProject("../" + assetData.Path + AssetExtension);
+        std::ofstream fileYumiAssetBinaries(assetData.AbsolutePath + AssetExtension);
+        
+        fileYumiAssetProject << jsonYumiAsset;
+        fileYumiAssetBinaries << jsonYumiAsset;
+    }
+
+    SharedPtr<Asset> AssetManager::DeserializeAsset(const std::filesystem::path& assetPath)
+    {
+        if (assetPath.extension() != AssetExtension)
+        {
+            return nullptr;
+        }
+
+        const std::ifstream fileStream(assetPath);
+
+        if (fileStream.fail())
+        {
+            return nullptr;
+        }
+
+        StringStream assetDataStream;
+        assetDataStream << fileStream.rdbuf();
+
+        Asset assetData;
+        Serialization::FromJson(assetDataStream.str(), assetData);
+
+        Type assetType = rttr::type::get_by_name(assetData.GetAssetData().AssetType);
+
+        if (!assetType.is_valid())
+            return nullptr;
+
+        Variant variant = assetType.create();
+        
+        if (!variant.is_valid())
+            return nullptr;
+        
+        Instance instance = variant;
+        Serialization::FromJson(assetDataStream.str(), instance);
+        SharedPtr<Asset> asset = variant.get_value<SharedPtr<Asset>>();
+        return asset;
+    }
+
     AssetManager::AssetManager(const String& workingDirectory)
         : m_WorkingDirectory(workingDirectory)
         , m_AssetDirectory(m_WorkingDirectory + "\\" + GetAssetsFolderName())
@@ -45,19 +101,13 @@ namespace Yumi
             if (dirEntry.is_directory()) 
                 continue;
 
-            const String fileName = dirPath.filename().string();
+            SharedPtr<Asset> asset = DeserializeAsset(dirPath);
             
-            String localPath;
-            GetAssetDirectoryLocalPath(dirPath.string(), localPath);
+            if (!asset)
+                continue;
 
-            if (dirPath.extension() == ".png" || dirPath.extension() == ".jpg")
-            {
-                TryLoadAsset(CreateAsset<Texture2D>({ fileName, localPath }));
-            }
-            else if (dirPath.extension() == ".glsl")
-            {
-                TryLoadAsset(CreateAsset<Shader>({ fileName, localPath }));
-            }
+            AssetRef assetRef = RegistryAsset(asset, asset->GetAssetData());
+            TryLoadAsset(assetRef);
         }
     }
 
@@ -104,6 +154,7 @@ namespace Yumi
     void AssetManager::TryLoadAsset(AssetRef assetRef)
     {
         SharedPtr<Asset> asset = assetRef.GetPtr().lock();
+
         const AssetData assetData = asset->GetAssetData();
         const char* fileName = assetData.Name.c_str();
 

@@ -14,7 +14,10 @@ RTTR_REGISTRATION
 
 namespace Yumi
 {
-    AssetRef::AssetRef() = default;
+    AssetRef::AssetRef()
+    {
+        Retarget(m_AssetId);
+    }
     
     AssetRef::AssetRef(Id assetId)
     {
@@ -60,7 +63,8 @@ namespace Yumi
     void AssetRef::Retarget(Id id)
     {
         m_AssetId = id;
-        m_Asset = GetAssetManager().GetAssetById(id);
+        if (Engine::HasInstance())
+            m_Asset = GetAssetManager().GetAssetById(id);
     }
 
     void AssetRef::Clear()

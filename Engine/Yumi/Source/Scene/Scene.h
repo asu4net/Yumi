@@ -88,4 +88,5 @@ namespace Yumi
     };
 
     YFORCE_LINK(Scene)
+    YDECLARE_ASSET_EXTENSION(Scene, yumi)
 }

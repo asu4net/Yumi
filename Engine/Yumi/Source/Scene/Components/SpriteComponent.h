@@ -22,6 +22,8 @@ namespace Yumi
         {
         }
 
+        SpriteComponent(const String& spriteAssetName);
+
         SpriteComponent(const Color tintColor)
             : TintColor(tintColor)
         {

@@ -1,10 +1,17 @@
 #include "SpriteComponent.h"
 #include "TransformComponent.h"
 #include "Scene\Actor.h"
+#include "Core\Engine.h"
+#include "Asset\AssetManager.h"
 
 namespace Yumi
 {
     YFORCE_LINK_IMPL(SpriteComponent);
+
+    SpriteComponent::SpriteComponent(const String& spriteAssetName)
+        : SpriteAssetRef(GetAssetManager().GetAssetByName(spriteAssetName))
+    {
+    }
 }
 
 RTTR_REGISTRATION
