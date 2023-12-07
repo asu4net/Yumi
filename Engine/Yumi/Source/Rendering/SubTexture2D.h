@@ -19,9 +19,8 @@ namespace Yumi
         AssetRef GetParentRef() const { return m_ParentRef; }
         const Array<Vector2, 4>& GetVertexUV() const { return m_VertexUV; }
         Vector2 GetSize() const { return m_Size; }
-
-        bool Load() override { return true; }
-        void Unload() override {};
+        
+        void PostLoad() override;
         
     private:
         AssetRef m_ParentRef;

@@ -24,9 +24,8 @@ namespace Yumi
 
         Animation() = default;
 
-        bool Load() override { return true; }
-        void Unload() override {}
-                
+        void PostLoad() override;
+        
         void SetTime(float time) { m_Time = time; }
         float GetTime() const { return m_Time; }
         

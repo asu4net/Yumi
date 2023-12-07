@@ -46,6 +46,11 @@ namespace Yumi
         SetUVCoords(uvMin, uvMax);
     }
 
+    void SubTexture2D::PostLoad()
+    {
+        m_ParentRef.Retarget();
+    }
+
     void SubTexture2D::SetUVCoords(const Vector2& uvMin, const Vector2& uvMax)
     {
         m_VertexUV[0] = { uvMin.x, uvMin.y }; // bottom-left

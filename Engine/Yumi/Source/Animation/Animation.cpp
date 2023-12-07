@@ -93,6 +93,14 @@ namespace Yumi
         PushKeysFromAtlas(animationRef, atlasRef, atlasTileSize, numOfTiles, keyTime, atlasIsHorizontal);
     }
 
+    void Animation::PostLoad()
+    {
+        for (Key& key : m_Keys)
+        {
+            key.KeyAssetRef.Retarget();
+        }
+    }
+
     void Animation::PushKey(const Key& key)
     {
         //YCHECK((key.KeyTime <= m_Time), "The KeyTime should be minor than the animation time");

@@ -16,7 +16,7 @@ namespace Yumi
 {
     AssetRef::AssetRef()
     {
-        Retarget(m_AssetId);
+        Retarget();
     }
     
     AssetRef::AssetRef(Id assetId)
