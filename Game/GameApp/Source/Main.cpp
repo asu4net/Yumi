@@ -96,4 +96,10 @@ void CreateActors()
     auto& spriteComponent = aspidActor.Add<SpriteComponent>();
     Animation::PushKeysFromAtlas("AspidFly [Animation]", "Aspid [Texture]", { 143, 123 }, 6);
     aspidActor.Add<AnimationComponent>(GetAssetManager().GetAssetByName("AspidFly [Animation]"), &spriteComponent.SpriteAssetRef);
+
+    Actor grid = scene.CreateActor({ "Grid" });
+    grid.GetTransform().Scale = Vector3::One * 30.f;
+    auto& gridSprite = grid.Add<SpriteComponent>("Checkerboard [Sprite]");
+    gridSprite.UVScale = Vector3::One * 30.f;
+    gridSprite.TintColor = Color::DarkGray;
 }

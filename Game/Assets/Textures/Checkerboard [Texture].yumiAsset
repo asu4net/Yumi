@@ -1,0 +1,16 @@
+{
+    "AssetData": {
+        "Name": "Checkerboard [Texture]",
+        "Path": "Assets/Textures/Checkerboard.png",
+        "AssetId": {
+            "IdHandler": 47382748947382478
+        },
+        "AssetType": "Texture2D"
+    },
+    "Settings": {
+        "MagFilter": "Nearest",
+        "MinFilter": "Linear",
+        "WrapModeU": "Repeat",
+        "WrapModeV": "Repeat"
+    }
+}
