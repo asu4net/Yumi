@@ -96,7 +96,7 @@ void CreateActors()
     cppActor.Add<ScriptComponent>(Type::get<MoveScript>());
 
     Actor aspidActor = scene.CreateActor({"Aspid", Vector3::Down});
-    auto& spriteComponent = aspidActor.Add<SpriteComponent>("Aspid", SpriteSource::SubSprite);
+    aspidActor.Add<SpriteComponent>("Aspid", SpriteSource::SubSprite);
     aspidActor.Add<AnimationComponent>("AspidFly");
 
     Actor grid = scene.CreateActor({ "Grid" });
