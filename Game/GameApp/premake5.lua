@@ -15,7 +15,8 @@ project "GameApp"
     {
         "Source/**.h",
         "Source/**.cpp",
-        "%{wks.location}/Game/Assets/**.glsl"
+        "%{wks.location}/Game/Assets/**.glsl",
+        "%{wks.location}/Game/Assets/**.yumiAsset"
     }
 
     includedirs
