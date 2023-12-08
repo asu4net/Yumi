@@ -19,6 +19,7 @@ namespace Yumi
         void Start();
         void Update();
         void FixedUpdate();
+        void SubmitGizmos();
         void Finish();
 
     private:

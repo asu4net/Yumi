@@ -113,6 +113,15 @@ namespace Yumi
         });
     }
 
+    void ScriptSystem::OnSubmitGizmos()
+    {
+        auto view = GetRegistry().view<ScriptComponent>();
+        view.each([&](entt::entity entity, const ScriptComponent& script) {
+            if (!script.ScriptInstance || !ScriptStatics::ShouldCallRuntimeMethods(GetActorFromEntity(entity))) return;
+            script.ScriptInstance->SubmitGizmos();
+        });
+    }
+
     void ScriptSystem::OnFinish()
     {
         auto view = GetRegistry().view<ScriptComponent>();

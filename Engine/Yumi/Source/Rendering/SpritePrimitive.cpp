@@ -121,24 +121,26 @@ namespace Yumi
             {
             case SpriteSource::Default:
                 m_VertexUVs = SpriteRef->GetVertexUVs();
-                return;
+                break;
             case SpriteSource::SubSprite:
             {
                 if (!SpriteRef->ContainsSubSprite(SubSpriteName))
                 {
                     m_VertexUVs = SpriteRef->GetVertexUVs();
-                    return;
+                    break;
                 }
                 m_VertexUVs = SpriteRef->GetSubSprite(SubSpriteName).VertexUVs;
             }
-                return;
+                break;
             default:
                 YCHECK(false, "Invalid source!");
-                return;
+                break;
             }
         }
-
-        m_VertexUVs = Math::GetDefaultQuadUVs();
+        else
+        {
+            m_VertexUVs = Math::GetDefaultQuadUVs();
+        }
 
         for (Vector2& vertexUV : m_VertexUVs)
         {

@@ -44,6 +44,10 @@ namespace Yumi
     {
     }
 
+    void System::OnSubmitGizmos()
+    {
+    }
+
     void System::OnFinish()
     {
     }

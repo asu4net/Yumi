@@ -52,6 +52,11 @@ namespace Yumi
         OnFixedUpdate();
     }
 
+    void Script::SubmitGizmos()
+    {
+        OnSubmitGizmos();
+    }
+
     void Script::Finish()
     {
         OnFinish();
@@ -79,6 +84,10 @@ namespace Yumi
     }
 
     void Script::OnFixedUpdate()
+    {
+    }
+
+    void Script::OnSubmitGizmos()
     {
     }
 

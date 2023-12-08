@@ -34,6 +34,23 @@ class ColorScript : public Script
 
     void OnUpdate()
     {
+        SpriteComponent& spriteComponent = Get<SpriteComponent>();
+
+        if (!SpacePressed && GetInput().IsKeyPressed(KEY_SPACE))
+        {
+            static bool bSwitch = false;
+            spriteComponent.TintColor = bSwitch ? Color::Blue : Color::Yellow;
+            bSwitch = !bSwitch;
+            SpacePressed = true;
+        }
+        else if (!GetInput().IsKeyPressed(KEY_SPACE))
+        {
+            SpacePressed = false;
+        }
+    }
+
+    void OnSubmitGizmos()
+    {
         SpritePrimitive lineSprite;
         lineSprite.TintColor = Color::Yellow;
         lineSprite.GenerateVertexData(SpriteShape::Line);
@@ -49,20 +66,6 @@ class ColorScript : public Script
         rectSprite.TintColor = Color::Clear;
         rectSprite.GenerateVertexData(SpriteShape::Rect);
         GetRenderer().SubmitSpritePrimitive(rectSprite);
-
-        SpriteComponent& spriteComponent = Get<SpriteComponent>();
-
-        if (!SpacePressed && GetInput().IsKeyPressed(KEY_SPACE))
-        {
-            static bool bSwitch = false;
-            spriteComponent.TintColor = bSwitch ? Color::Blue : Color::Yellow;
-            bSwitch = !bSwitch;
-            SpacePressed = true;
-        }
-        else if (!GetInput().IsKeyPressed(KEY_SPACE))
-        {
-            SpacePressed = false;
-        }
     }
 
     RTTR_ENABLE(Script)
@@ -97,9 +100,9 @@ void CreateActors()
     spriteComponent.Source = SpriteSource::SubSprite;
     auto& animationComponent = aspidActor.Add<AnimationComponent>("AspidFly", &spriteComponent.SubSpriteName);
 
-    /*Actor grid = scene.CreateActor({ "Grid" });
+    Actor grid = scene.CreateActor({ "Grid" });
     grid.GetTransform().Scale = Vector3::One * 30.f;
-    auto& gridSprite = grid.Add<SpriteComponent>("Checkerboard [Sprite]");
+    auto& gridSprite = grid.Add<SpriteComponent>("Checkerboard");
     gridSprite.UVScale = Vector3::One * 30.f;
-    gridSprite.TintColor = Color::DarkGray;*/
+    gridSprite.TintColor = Color::DarkGray;
 }

@@ -21,6 +21,7 @@ namespace Yumi
         virtual void OnStart();
         virtual void OnUpdate();
         virtual void OnFixedUpdate();
+        virtual void OnSubmitGizmos();
         virtual void OnFinish();
 
     private:

@@ -60,6 +60,7 @@ namespace Yumi
                 m_World->FixedUpdate();
             }
             
+            m_World->SubmitGizmos();
             m_Renderer->DrawPrimitives();
             
             //TODO: Move this to ImGui

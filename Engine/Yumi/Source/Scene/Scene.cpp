@@ -111,6 +111,12 @@ namespace Yumi
             system->OnFixedUpdate();
     }
 
+    void Scene::SubmitGizmos()
+    {
+        for (SharedPtr<System> system : m_Systems)
+            system->OnSubmitGizmos();
+    }
+
     void Scene::Finish()
     {
         for (SharedPtr<System> system : m_Systems)

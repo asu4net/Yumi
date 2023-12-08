@@ -75,6 +75,11 @@ namespace Yumi
         m_ActiveScene.lock()->FixedUpdate();
     }
 
+    void World::SubmitGizmos()
+    {
+        m_ActiveScene.lock()->SubmitGizmos();
+    }
+
     void World::Finish()
     {
         m_ActiveScene.lock()->Finish();

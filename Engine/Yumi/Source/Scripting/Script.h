@@ -46,6 +46,7 @@ namespace Yumi
         void Start();
         void Update();
         void FixedUpdate();
+        void SubmitGizmos();
         void Finish();
         void Destroy();
 
@@ -55,6 +56,7 @@ namespace Yumi
         virtual void OnUpdate();
         virtual void OnFinish();
         virtual void OnFixedUpdate();
+        virtual void OnSubmitGizmos();
         virtual void OnDestroy();
 
     private:

@@ -19,6 +19,7 @@ namespace Yumi
         void OnStart() override;
         void OnUpdate() override;
         void OnFixedUpdate() override;
+        void OnSubmitGizmos() override;
         void OnFinish() override;
     
     private:
