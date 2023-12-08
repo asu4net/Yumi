@@ -7,9 +7,8 @@ namespace Yumi
 {
     YFORCE_LINK_IMPL(AnimationComponent)
 
-    AnimationComponent::AnimationComponent(const String& animationAssetName, String* target)
+    AnimationComponent::AnimationComponent(const String& animationAssetName)
         : CurrentAnimation(GetAssetManager().GetAssetByName(animationAssetName))
-        , Target(target)
     {}
 }
 

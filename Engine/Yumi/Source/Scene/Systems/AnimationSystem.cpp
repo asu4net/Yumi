@@ -30,12 +30,12 @@ namespace Yumi
     void AnimationSystem::OnUpdate()
     {
         const auto view = GetRegistry().view<AnimationComponent>();
-        view.each([&](entt::entity entity, AnimationComponent& animationComponent) { UpdateAnimation(animationComponent); });
+        view.each([&](entt::entity entity, AnimationComponent& animationComponent) { UpdateAnimation(entity, animationComponent); });
     }
 
-    void AnimationSystem::UpdateAnimation(AnimationComponent& animationComponent)
+    void AnimationSystem::UpdateAnimation(entt::entity entity, AnimationComponent& animationComponent)
     {
-        if (!GetScene().IsRuntimeEnabled() || !animationComponent.IsPlaying || !animationComponent.CurrentAnimation.IsValid() || !animationComponent.Target)
+        if (!GetScene().IsRuntimeEnabled() || !animationComponent.IsPlaying || !animationComponent.CurrentAnimation.IsValid())
         {
             return;
         }
@@ -50,10 +50,16 @@ namespace Yumi
         animationComponent.CurrentTime += GetDeltaTime();
 
         const Animation::Key& currentKey = animation.GetKey(animationComponent.CurrentIndex);
-
+        
         if (animationComponent.CurrentTime >= currentKey.KeyTime)
         {
-            *animationComponent.Target = currentKey.KeyRef;
+            Actor actor = GetActorFromEntity(entity);
+
+            if (actor.Has<SpriteComponent>())
+            {
+                auto& spriteComponent = actor.Get<SpriteComponent>();
+                spriteComponent.SubSpriteName = currentKey.KeyRef;
+            }
             animationComponent.CurrentIndex++;
         }
 

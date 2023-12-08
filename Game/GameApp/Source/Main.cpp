@@ -97,7 +97,7 @@ void CreateActors()
 
     Actor aspidActor = scene.CreateActor({"Aspid", Vector3::Down});
     auto& spriteComponent = aspidActor.Add<SpriteComponent>("Aspid", SpriteSource::SubSprite);
-    aspidActor.Add<AnimationComponent>("AspidFly", &spriteComponent.SubSpriteName);
+    aspidActor.Add<AnimationComponent>("AspidFly");
 
     Actor grid = scene.CreateActor({ "Grid" });
     grid.GetTransform().Scale = Vector3::One * 30.f;

@@ -14,6 +14,6 @@ namespace Yumi
         void OnUpdate() override;
         
     private:
-        void UpdateAnimation(struct AnimationComponent& animationComponent);
+        void UpdateAnimation(entt::entity entity, struct AnimationComponent& animationComponent);
     };
 }
