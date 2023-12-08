@@ -80,26 +80,26 @@ namespace main_registration
 void CreateActors()
 {
     Scene& scene = GetWorld().GetActiveScene();
-    
+
     Actor emptySpriteActor = scene.CreateActor({ "Empty", Vector3::Left });
     emptySpriteActor.Add<SpriteComponent>(Color::LightRed);
     emptySpriteActor.Add<ScriptComponent>(Type::get<ColorScript>());
 
     Actor catActor = scene.CreateActor();
-    catActor.Add<SpriteComponent>("Bola [Sprite]");
+    catActor.Add<SpriteComponent>("Bola");
 
     Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
-    cppActor.Add<SpriteComponent>("Cpp [Sprite]");
+    cppActor.Add<SpriteComponent>("Cpp");
     cppActor.Add<ScriptComponent>(Type::get<MoveScript>());
 
-    Actor aspidActor = scene.CreateActor({ "Aspid", Vector3::Down});
-    auto& spriteComponent = aspidActor.Add<SpriteComponent>();
-    Animation::PushKeysFromAtlas("AspidFly [Animation]", "Aspid [Texture]", { 143, 123 }, 6);
-    aspidActor.Add<AnimationComponent>(GetAssetManager().GetAssetByName("AspidFly [Animation]"), &spriteComponent.SpriteAssetRef);
+    Actor aspidActor = scene.CreateActor({"Aspid", Vector3::Down});
+    auto& spriteComponent = aspidActor.Add<SpriteComponent>("Aspid");
+    spriteComponent.Source = SpriteSource::SubSprite;
+    auto& animationComponent = aspidActor.Add<AnimationComponent>("AspidFly", &spriteComponent.SubSpriteName);
 
-    Actor grid = scene.CreateActor({ "Grid" });
+    /*Actor grid = scene.CreateActor({ "Grid" });
     grid.GetTransform().Scale = Vector3::One * 30.f;
     auto& gridSprite = grid.Add<SpriteComponent>("Checkerboard [Sprite]");
     gridSprite.UVScale = Vector3::One * 30.f;
-    gridSprite.TintColor = Color::DarkGray;
+    gridSprite.TintColor = Color::DarkGray;*/
 }

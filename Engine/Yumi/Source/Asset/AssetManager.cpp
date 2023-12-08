@@ -1,5 +1,4 @@
 #include "AssetManager.h"
-#include "Rendering\Texture2D.h"
 #include "Rendering\Shader.h"
 
 namespace Yumi

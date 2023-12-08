@@ -53,7 +53,7 @@ namespace Yumi
 
         if (animationComponent.CurrentTime >= currentKey.KeyTime)
         {
-            *animationComponent.Target = currentKey.KeyAssetRef;
+            *animationComponent.Target = currentKey.KeyRef;
             animationComponent.CurrentIndex++;
         }
 

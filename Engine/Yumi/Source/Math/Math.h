@@ -8,6 +8,7 @@ namespace Yumi::Math
     // Quad
     const Array<Vector2, 4>& GetDefaultQuadUVs();
     const Array<Vector3, 4>& GetDefaultQuadVertexPositions();
-    void CalculateQuadVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions);
+    void FillQuadVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions);
     void FlipQuadVertexUVs(Flip flip, Array<Vector2, 4>& vertexUVs);
+    void FillQuadVertexUVs(const Vector2& uvMin, const Vector2& uvMax, Array<Vector2, 4>& vertexUVs);
 }

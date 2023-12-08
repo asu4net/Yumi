@@ -7,7 +7,7 @@ namespace Yumi
     {
         AssetRef CurrentAnimation;
         bool PlayOnStart = true;
-        AssetRef* Target = nullptr; //TODO: Esto en reflexión como que no va a funcionar, mal pensado
+        String* Target = nullptr; //TODO: Esto en reflexión como que no va a funcionar, mal pensado
         uint32_t CurrentIndex = 0;
         float CurrentTime = 0.f;
         bool LoopEnabled = true;
@@ -15,10 +15,12 @@ namespace Yumi
 
         AnimationComponent() = default;
 
-        AnimationComponent(const AssetRef& animationRef, AssetRef* target)
+        AnimationComponent(const AssetRef& animationRef, String* target)
             : CurrentAnimation(animationRef)
             , Target(target)
         {}
+
+        AnimationComponent(const String& animationAssetName, String* target);
 
         RTTR_ENABLE_NO_VIRTUAL
     };

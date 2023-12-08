@@ -53,7 +53,9 @@ namespace Yumi
         // ************************************
 
         // Vertex data
-        SharedPtr<Sprite> SpriteSource = nullptr;
+        SharedPtr<Sprite> SpriteRef = nullptr;
+        SpriteSource      Source = SpriteSource::Default;
+        String            SubSpriteName = "";
         float             Thickness = .05f;
         float             Fade = .01f;
         Vector2           Bounds = Vector2::Zero;

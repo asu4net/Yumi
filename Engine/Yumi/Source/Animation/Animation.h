@@ -9,28 +9,18 @@ namespace Yumi
     public:
         struct Key
         {
-            AssetRef KeyAssetRef;
+            String KeyRef;
             float KeyTime;
         };
 
-        static void PushKeysFromAtlas(const AssetRef& animationRef, const AssetRef& spriteAtlasRef,
-            const Vector2& atlasTileSize, const DynamicArray<Vector2>& atlasLocations, const DynamicArray<float>& keyTimes);
-
-        static void PushKeysFromAtlas(const AssetRef& animationRef, const AssetRef& spriteAtlasRef,
-            const Vector2& atlasTileSize, uint32_t numOfTiles, float keyTime = .1f, bool atlasIsHorizontal = true);
-
-        static void PushKeysFromAtlas(const String& animationName, const String& atlasName,
-            const Vector2& atlasTileSize, uint32_t numOfTiles, float keyTime = .1f, bool atlasIsHorizontal = true);
-
         Animation() = default;
-
-        void PostLoad() override;
         
         void SetTime(float time) { m_Time = time; }
         float GetTime() const { return m_Time; }
         
         void PushKey(const Key& key);
         void PopKey(uint32_t index);
+        void PushKeysFromSpriteSheet(const AssetRef spriteSheetRef, float keyTime = .1f);
         const Key& GetKey(uint32_t index) const;
         size_t GetSize() const;
         void AdjustTime();

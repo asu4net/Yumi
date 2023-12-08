@@ -1,27 +1,21 @@
 ﻿#pragma once
-
 #include "Asset/Asset.h"
 
 namespace Yumi
-{
-    enum class TextureMinFilter { Linear, Nearest };
-    enum class TextureMagFilter { Linear, Nearest };
-    enum class TextureWrapMode { Repeat, ClampToEdge };
-    enum class TextureCoordinate { U, V };
-    
+{   
     struct Texture2DSettings
     {
         uint32_t Width = 0;
         uint32_t Height = 0;
         uint32_t Channels = 0;
-        TextureMagFilter MagFilter{TextureMagFilter::Linear};
-        TextureMinFilter MinFilter{TextureMinFilter::Linear};
+        MagnificationFilter MagFilter{MagnificationFilter::Linear};
+        MinificationFilter MinFilter{MinificationFilter::Linear};
         TextureWrapMode WrapModeU{TextureWrapMode::Repeat};
         TextureWrapMode WrapModeV{TextureWrapMode::Repeat};
     };
 
     YFORCE_LINK(Texture2DSettings)
-        
+    
     class RendererTexture2D    
     {
     public:

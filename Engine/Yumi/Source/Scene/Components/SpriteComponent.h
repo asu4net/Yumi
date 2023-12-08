@@ -10,6 +10,8 @@ namespace Yumi
         int OrderInLayer = 0;
 
         AssetRef SpriteAssetRef;
+        SpriteSource Source = SpriteSource::Default;    
+        String SubSpriteName = "";
         Vector2 Size = Vector2::One;
         Color TintColor = Color::White;
         Flip FlipMode = Flip::None;

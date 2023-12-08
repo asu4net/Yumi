@@ -39,7 +39,7 @@ namespace Yumi::Math
         return vertexPositions;
     }
 
-    void CalculateQuadVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions)
+    void FillQuadVertexPositions(const Vector2& textureSize, Array<Vector3, 4>& vertexPositions)
     {
         static Vector2 s_VertexMag = Vector2::One / 2;
         Vector2 pos = s_VertexMag;
@@ -80,5 +80,13 @@ namespace Yumi::Math
             vertexUVs[2] = uv[1];
             vertexUVs[3] = uv[0];
         }
+    }
+
+    void FillQuadVertexUVs(const Vector2& uvMin, const Vector2& uvMax, Array<Vector2, 4>& vertexUVs)
+    {
+        vertexUVs[0] = { uvMin.x, uvMin.y }; // bottom-left
+        vertexUVs[1] = { uvMax.x, uvMin.y }; // bottom-right
+        vertexUVs[2] = { uvMax.x, uvMax.y }; // top-right
+        vertexUVs[3] = { uvMin.x, uvMax.y }; // top-left
     }
 }

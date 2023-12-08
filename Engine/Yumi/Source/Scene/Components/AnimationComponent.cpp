@@ -1,9 +1,16 @@
 #include "AnimationComponent.h"
 #include "Scene/Actor.h"
+#include "Core/Engine.h"
+#include "Asset/AssetManager.h"
 
 namespace Yumi
 {
     YFORCE_LINK_IMPL(AnimationComponent)
+
+    AnimationComponent::AnimationComponent(const String& animationAssetName, String* target)
+        : CurrentAnimation(GetAssetManager().GetAssetByName(animationAssetName))
+        , Target(target)
+    {}
 }
 
 RTTR_REGISTRATION

@@ -37,8 +37,10 @@ namespace Yumi
             primitive.UVScale = sprite.UVScale;
             primitive.Size = sprite.Size;
 
-            primitive.SpriteSource = sprite.SpriteAssetRef.IsValid() ? 
+            primitive.SpriteRef = sprite.SpriteAssetRef.IsValid() ? 
                 sprite.SpriteAssetRef.GetPtrAs<Sprite>().lock() : nullptr;
+            primitive.Source = sprite.Source;
+            primitive.SubSpriteName = sprite.SubSpriteName;
 
             primitive.GenerateVertexData();
             renderer.SubmitSpritePrimitive(primitive);

@@ -77,7 +77,30 @@ namespace Yumi
     
     void SpritePrimitive::UpdateLocalVertexPositions()
     {
-        m_LocalVertexPositions = SpriteSource ? SpriteSource->GetVertexPositions() : Math::GetDefaultQuadVertexPositions();
+        if (SpriteRef)
+        {
+            switch (Source)
+            {
+            case SpriteSource::Default:
+                m_LocalVertexPositions = SpriteRef->GetVertexPositions();
+                return;
+            case SpriteSource::SubSprite:
+            {
+                if (!SpriteRef->ContainsSubSprite(SubSpriteName))
+                {
+                    m_LocalVertexPositions = SpriteRef->GetVertexPositions();
+                    return;
+                }
+                m_LocalVertexPositions = SpriteRef->GetSubSprite(SubSpriteName).VertexPositions;
+            }
+                return;
+            default:
+                YCHECK(false, "Invalid source!");
+                return;
+            }
+        }
+
+        m_LocalVertexPositions = Math::GetDefaultQuadVertexPositions();
     }
     
     void SpritePrimitive::UpdateVertexPositions()
@@ -92,7 +115,30 @@ namespace Yumi
 
     void SpritePrimitive::UpdateVertexUVs()
     {
-        m_VertexUVs = SpriteSource ? SpriteSource->GetVertexUVs() : Math::GetDefaultQuadUVs();
+        if (SpriteRef)
+        {
+            switch (Source)
+            {
+            case SpriteSource::Default:
+                m_VertexUVs = SpriteRef->GetVertexUVs();
+                return;
+            case SpriteSource::SubSprite:
+            {
+                if (!SpriteRef->ContainsSubSprite(SubSpriteName))
+                {
+                    m_VertexUVs = SpriteRef->GetVertexUVs();
+                    return;
+                }
+                m_VertexUVs = SpriteRef->GetSubSprite(SubSpriteName).VertexUVs;
+            }
+                return;
+            default:
+                YCHECK(false, "Invalid source!");
+                return;
+            }
+        }
+
+        m_VertexUVs = Math::GetDefaultQuadUVs();
 
         for (Vector2& vertexUV : m_VertexUVs)
         {

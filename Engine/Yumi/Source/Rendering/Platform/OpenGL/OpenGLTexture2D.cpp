@@ -3,24 +3,24 @@
 
 namespace Yumi
 {
-    static void SetMagFilter(const uint32_t textureId, const TextureMagFilter magFilter)
+    static void SetMagFilter(const uint32_t textureId, const MagnificationFilter magFilter)
     {
         switch (magFilter)
         {
-        case TextureMagFilter::Linear:
+        case MagnificationFilter::Linear:
             glTextureParameteri(textureId, GL_TEXTURE_MAG_FILTER, GL_LINEAR); return;
-        case TextureMagFilter::Nearest:
+        case MagnificationFilter::Nearest:
             glTextureParameteri(textureId, GL_TEXTURE_MAG_FILTER, GL_NEAREST); return;
         }
     }
 
-    static void SetMinFilter(const uint32_t textureId, const TextureMinFilter magFilter)
+    static void SetMinFilter(const uint32_t textureId, const MinificationFilter magFilter)
     {
         switch (magFilter)
         {
-        case TextureMinFilter::Linear:
+        case MinificationFilter::Linear:
             glTextureParameteri(textureId, GL_TEXTURE_MIN_FILTER, GL_LINEAR); return;
-        case TextureMinFilter::Nearest:
+        case MinificationFilter::Nearest:
             glTextureParameteri(textureId, GL_TEXTURE_MIN_FILTER, GL_NEAREST); return;
         }
     }

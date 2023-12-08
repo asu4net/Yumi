@@ -1,41 +1,35 @@
 {
     "AssetData": {
-        "Name": "Checkerboard [Sprite]",
-        "Path": "NO_PATH",
+        "Name": "Bola",
+        "Path": "Assets/Sprites/Bola.jpg",
         "AssetId": {
-            "IdHandler": 9878765467878654567
+            "IdHandler": 18192631295402269877
         },
         "AssetType": "Sprite"
     },
-    "SubTextureRef": {
-        "AssetId": {
-            "IdHandler": 0
-        }
-    },
-    "TextureRef": {
-        "AssetId": {
-            "IdHandler": 47382748947382478
-        }
-    },
+    "MagFilter": "Linear",
+    "MinFilter": "Linear",
+    "WrapModeU": "Repeat",
+    "WrapModeV": "Repeat",
     "VertexPositions": [
         {
-            "x": -0.5,
-            "y": -0.5,
+            "x": -0.24513061344623566,
+            "y": -0.43578776717185974,
             "z": 0.0
         },
         {
-            "x": 0.5,
-            "y": -0.5,
+            "x": 0.24513061344623566,
+            "y": -0.43578776717185974,
             "z": 0.0
         },
         {
-            "x": 0.5,
-            "y": 0.5,
+            "x": 0.24513061344623566,
+            "y": 0.43578776717185974,
             "z": 0.0
         },
         {
-            "x": -0.5,
-            "y": 0.5,
+            "x": -0.24513061344623566,
+            "y": 0.43578776717185974,
             "z": 0.0
         }
     ],
@@ -56,5 +50,6 @@
             "x": 0.0,
             "y": 1.0
         }
-    ]
+    ],
+    "SubSprites": []
 }
