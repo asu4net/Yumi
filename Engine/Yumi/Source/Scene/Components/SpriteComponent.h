@@ -19,12 +19,13 @@ namespace Yumi
 
         SpriteComponent() = default;
 
-        SpriteComponent(const AssetRef& spriteAssetRef)
+        SpriteComponent(const AssetRef& spriteAssetRef, SpriteSource source = SpriteSource::Default)
             : SpriteAssetRef(spriteAssetRef)
+            , Source(source)
         {
         }
 
-        SpriteComponent(const String& spriteAssetName);
+        SpriteComponent(const String& spriteAssetName, SpriteSource source = SpriteSource::Default);
 
         SpriteComponent(const Color tintColor)
             : TintColor(tintColor)

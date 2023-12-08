@@ -96,9 +96,8 @@ void CreateActors()
     cppActor.Add<ScriptComponent>(Type::get<MoveScript>());
 
     Actor aspidActor = scene.CreateActor({"Aspid", Vector3::Down});
-    auto& spriteComponent = aspidActor.Add<SpriteComponent>("Aspid");
-    spriteComponent.Source = SpriteSource::SubSprite;
-    auto& animationComponent = aspidActor.Add<AnimationComponent>("AspidFly", &spriteComponent.SubSpriteName);
+    auto& spriteComponent = aspidActor.Add<SpriteComponent>("Aspid", SpriteSource::SubSprite);
+    aspidActor.Add<AnimationComponent>("AspidFly", &spriteComponent.SubSpriteName);
 
     Actor grid = scene.CreateActor({ "Grid" });
     grid.GetTransform().Scale = Vector3::One * 30.f;

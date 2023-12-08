@@ -8,8 +8,9 @@ namespace Yumi
 {
     YFORCE_LINK_IMPL(SpriteComponent);
 
-    SpriteComponent::SpriteComponent(const String& spriteAssetName)
+    SpriteComponent::SpriteComponent(const String& spriteAssetName, SpriteSource source)
         : SpriteAssetRef(GetAssetManager().GetAssetByName(spriteAssetName))
+        , Source(source)
     {
     }
 }
