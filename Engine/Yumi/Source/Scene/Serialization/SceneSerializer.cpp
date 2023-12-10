@@ -3,6 +3,8 @@
 #include "Scene\Actor.h"
 #include "Scene\Components\InformationComponent.h"
 #include "Scene\Components\TransformComponent.h"
+#include "Asset\AssetRef.h"
+#include "..\Components\SpriteComponent.h"
 
 RTTR_REGISTRATION
 {
@@ -16,7 +18,7 @@ namespace Yumi
 {
     SceneSerializer::SceneSerializer() = default;
 
-    SceneSerializer::SceneSerializer(const WeakPtr<Scene>& scene)
+    SceneSerializer::SceneSerializer(Scene* scene)
         : m_Scene(scene)
     {
     }
@@ -25,8 +27,7 @@ namespace Yumi
 
     Scene& SceneSerializer::GetScene() const
     {
-        YCHECK(!m_Scene.expired(), "The scene serializer needs a valid scene!");
-        return *m_Scene.lock();
+        return *m_Scene;
     }
 
     void SceneSerializer::Serialize()
@@ -173,8 +174,11 @@ namespace Yumi
                     continue;
 
                 Serialization::FromJson(componentDataStr, componentInstance);
+
                 auto componentType = ComponentReflection::GetComponentOfType(componentClassType);
+
                 componentType->AddComponent(actor, componentInstance);
+                
                 componentDataStr.clear();
             }
             continue;

@@ -5,7 +5,7 @@ RTTR_REGISTRATION
     using namespace Yumi;
 
     rttr::registration::class_<TransformComponent>("TransformComponent")
-        .constructor<>()
+        .constructor<>()(rttr::policy::ctor::as_object)
         .property("Position", &TransformComponent::Position)
         .property("Rotation", &TransformComponent::Rotation)
         .property("Scale", &TransformComponent::Scale);

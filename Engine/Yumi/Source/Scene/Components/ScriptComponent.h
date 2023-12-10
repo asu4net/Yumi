@@ -25,7 +25,7 @@ namespace Yumi
         String PrevScriptType;
         Actor OwnerActor;
         SharedPtr<Script> ScriptInstance;
-        SharedPtr<Scene> OwnerScene;
+        Scene* OwnerScene = nullptr;
 
         ScriptComponent() = default;
         

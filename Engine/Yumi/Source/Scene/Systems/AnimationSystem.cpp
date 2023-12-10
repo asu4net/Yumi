@@ -7,9 +7,17 @@
 
 namespace Yumi
 {
-    AnimationSystem::AnimationSystem(const SharedPtr<Scene>& scene)
+    AnimationSystem::AnimationSystem(Scene* scene)
         : System(scene)
     {
+        GetRegistry().on_construct<AnimationComponent>().connect<&AnimationSystem::OnAnimationComponentAdded>(this);
+    }
+
+    void AnimationSystem::OnAnimationComponentAdded(entt::registry&, const entt::entity entity)
+    {
+        Actor animationActor = GetActorFromEntity(entity);
+        AnimationComponent& animationComponent = animationActor.Get<AnimationComponent>();
+        animationComponent.CurrentAnimation.Retarget();
     }
 
     void AnimationSystem::OnStart()

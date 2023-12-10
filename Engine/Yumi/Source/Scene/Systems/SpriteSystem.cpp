@@ -7,9 +7,17 @@
 
 namespace Yumi
 {
-    SpriteSystem::SpriteSystem(const SharedPtr<Scene>& scene)
+    SpriteSystem::SpriteSystem(Scene* scene)
         : System(scene)
     {
+        GetRegistry().on_construct<SpriteComponent>().connect<&SpriteSystem::OnSpriteComponentAdded>(this);
+    }
+
+    void SpriteSystem::OnSpriteComponentAdded(entt::registry&, const entt::entity entity)
+    {
+        Actor spriteActor = GetActorFromEntity(entity);
+        SpriteComponent& spriteComponent = spriteActor.Get<SpriteComponent>();
+        spriteComponent.SpriteAssetRef.Retarget();
     }
 
     void SpriteSystem::OnUpdate()

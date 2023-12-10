@@ -7,7 +7,7 @@ RTTR_REGISTRATION
     using namespace Yumi;
 
     rttr::registration::class_<AssetRef>("AssetRef")
-        .constructor<>()
+        .constructor<>()(rttr::policy::ctor::as_object)
         .constructor<Id>()
         .property("AssetId", &AssetRef::m_AssetId);
 }
@@ -63,7 +63,7 @@ namespace Yumi
     void AssetRef::Retarget(Id id)
     {
         m_AssetId = id;
-        if (Engine::HasInstance())
+        if (Engine::HasInstance() && id != 0)
             m_Asset = GetAssetManager().GetAssetById(id);
     }
 

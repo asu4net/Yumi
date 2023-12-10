@@ -5,8 +5,8 @@ RTTR_REGISTRATION
     using namespace Yumi;
 
     rttr::registration::class_<Id>("Id")
-        .constructor<>()
-        .constructor<uint64_t>()
+        .constructor<>()(rttr::policy::ctor::as_object)
+        .constructor<uint64_t>()(rttr::policy::ctor::as_object)
         .property("IdHandler", &Id::m_IdHandler);
 }
 

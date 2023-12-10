@@ -17,7 +17,7 @@ RTTR_REGISTRATION
     );
     
     rttr::registration::class_<ScriptComponent>("ScriptComponent")
-        .constructor<>()
+        .constructor<>()(rttr::policy::ctor::as_object)
         .property("ScriptType", &ScriptComponent::ScriptType)
         .property("ExecutionOrder", &ScriptComponent::ExecutionOrder)
         .property("ExecutionContext", &ScriptComponent::ExecutionContext);

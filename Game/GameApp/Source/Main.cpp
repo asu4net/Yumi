@@ -2,13 +2,10 @@
 
 using namespace Yumi;
 
-void CreateActors();
-
 int main()
 {
     CreateEngine();
     InitEngine();
-    CreateActors();
     RunEngine();
     DestroyEngine();
 }
@@ -78,30 +75,4 @@ namespace main_registration
         rttr::registration::class_<MoveScript>("MoveScript").constructor<>();
         rttr::registration::class_<ColorScript>("ColorScript").constructor<>();
     }
-}
-
-void CreateActors()
-{
-    Scene& scene = GetWorld().GetActiveScene();
-
-    Actor emptySpriteActor = scene.CreateActor({ "Empty", Vector3::Left });
-    emptySpriteActor.Add<SpriteComponent>(Color::LightRed);
-    emptySpriteActor.Add<ScriptComponent>(Type::get<ColorScript>());
-
-    Actor catActor = scene.CreateActor();
-    catActor.Add<SpriteComponent>("Bola");
-
-    Actor cppActor = scene.CreateActor({"Cpp", Vector3::Right});
-    cppActor.Add<SpriteComponent>("Cpp");
-    cppActor.Add<ScriptComponent>(Type::get<MoveScript>());
-
-    Actor aspidActor = scene.CreateActor({"Aspid", Vector3::Down});
-    aspidActor.Add<SpriteComponent>("Aspid", SpriteSource::SubSprite);
-    aspidActor.Add<AnimationComponent>("AspidFly");
-
-    Actor grid = scene.CreateActor({ "Grid" });
-    grid.GetTransform().Scale = Vector3::One * 30.f;
-    auto& gridSprite = grid.Add<SpriteComponent>("Checkerboard");
-    gridSprite.UVScale = Vector3::One * 30.f;
-    gridSprite.TintColor = Color::DarkGray;
 }

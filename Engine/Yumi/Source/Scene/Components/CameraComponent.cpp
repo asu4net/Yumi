@@ -14,7 +14,7 @@ RTTR_REGISTRATION
     using namespace Yumi;
     
     rttr::registration::class_<CameraComponent>("CameraComponent")
-        .constructor<>()
+        .constructor<>()(rttr::policy::ctor::as_object)
         .property("Size", &CameraComponent::Size)
         .property("NearPlane", &CameraComponent::NearPlane)
         .property("FarPlane", &CameraComponent::FarPlane)

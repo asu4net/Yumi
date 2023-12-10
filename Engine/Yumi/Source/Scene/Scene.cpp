@@ -22,18 +22,55 @@ namespace Yumi
 {
     YFORCE_LINK_IMPL(Scene)
 
+    static constexpr char* s_SceneExtension = ".yumi";
+
     Scene::Scene()
         : m_Registry(CreateSharedPtr<entt::registry>())
+        , m_Serializer(this)
     {
+    }
+
+    Scene::~Scene()
+    {
+        for (SharedPtr<System> system : m_Systems)
+            system.reset();
+        m_Systems.clear();
     }
 
     bool Scene::Load()
     {
+        LoadDataFromFile();
         return true;
     }
 
     void Scene::Unload()
     {
+    }
+
+    void Scene::LoadDataFromFile()
+    {
+        std::ifstream sceneFile(GetAssetData().AbsolutePath + "/" + GetAssetData().Name + s_SceneExtension);
+        StringStream sceneStream;
+        sceneStream << sceneFile.rdbuf();
+        m_Data = sceneStream.str();
+    }
+
+    void Scene::SaveDataToFile()
+    {
+        std::ofstream sceneFileProject("../" + GetAssetData().Path + "/" + GetAssetData().Name + s_SceneExtension);
+        std::ofstream sceneFileBinaries(GetAssetData().AbsolutePath + "/" + GetAssetData().Name + s_SceneExtension);
+        sceneFileProject << m_Data;
+        sceneFileBinaries << m_Data;
+    }
+
+    void Scene::Serialize()
+    {
+        m_Serializer.Serialize();
+    }
+
+    void Scene::Deserialize()
+    {
+        m_Serializer.Deserialize();
     }
 
     std::pair<Id, entt::entity> Scene::CreateEntity(const Id specificId)
@@ -81,14 +118,14 @@ namespace Yumi
 
     void Scene::Prepare()
     {
-        m_Systems.push_back(CreateSharedPtr<ScriptSystem>(m_This));
-        m_Systems.push_back(CreateSharedPtr<AnimationSystem>(m_This));
-        m_Systems.push_back(CreateSharedPtr<CameraSystem>(m_This));
-        m_Systems.push_back(CreateSharedPtr<SpriteSystem>(m_This));
+        m_Systems.push_back(CreateSharedPtr<ScriptSystem>(this));
+        m_Systems.push_back(CreateSharedPtr<AnimationSystem>(this));
+        m_Systems.push_back(CreateSharedPtr<CameraSystem>(this));
+        m_Systems.push_back(CreateSharedPtr<SpriteSystem>(this));
 
         m_CameraSystem = GetSystemOfType<CameraSystem>();
         CreateFreeLookCamera();
-        m_Serializer = SceneSerializer(m_This);
+        Deserialize();
     }
     
     void Scene::Start()

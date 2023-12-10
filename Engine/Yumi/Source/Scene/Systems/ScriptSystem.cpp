@@ -51,7 +51,7 @@ namespace Yumi
             scriptInstance->Start();
     }
 
-    ScriptSystem::ScriptSystem(const SharedPtr<Scene>& scene)
+    ScriptSystem::ScriptSystem(Scene* scene)
         : System(scene)
     {
         GetRegistry().on_construct<ScriptComponent>().connect<&ScriptSystem::OnScriptComponentAdded>(this);

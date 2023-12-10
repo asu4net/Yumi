@@ -7,7 +7,7 @@
 namespace Yumi
 {
 
-    CameraSystem::CameraSystem(const SharedPtr<Scene>& scene)
+    CameraSystem::CameraSystem(Scene* scene)
         : System(scene)
     {
     }

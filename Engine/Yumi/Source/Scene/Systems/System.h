@@ -8,9 +8,9 @@ namespace Yumi
     class System
     {
     public:
-        System(const SharedPtr<Scene>& scene);
+        System(Scene* scene);
         
-        const SharedPtr<Scene>& GetScenePtr() const;
+        Scene* GetScenePtr() const;
         Scene& GetScene() const;
         entt::registry& GetRegistry() const;
 
@@ -25,6 +25,6 @@ namespace Yumi
         virtual void OnFinish();
 
     private:
-         SharedPtr<Scene> m_Scene;
+         Scene* m_Scene = nullptr;
     };
 }

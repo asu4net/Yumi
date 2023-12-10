@@ -15,7 +15,7 @@ namespace Yumi
     {
     public:
         SceneSerializer();
-        SceneSerializer(const WeakPtr<Scene>& scene);
+        SceneSerializer(Scene* scene);
         ~SceneSerializer();
 
         Scene& GetScene() const;
@@ -26,6 +26,6 @@ namespace Yumi
     private:
         void SerializeComponent(ComponentType& componentType, const Actor& actor, StringStream& outStream);
 
-        WeakPtr<Scene> m_Scene;
+        Scene* m_Scene = nullptr;
     };
 }

@@ -61,7 +61,7 @@ namespace Yumi
 
     private:
         Actor m_Actor;
-        SharedPtr<Scene> m_Scene;
+        Scene* m_Scene;
 
         friend class ScriptSystem;
         friend struct ScriptStatics;

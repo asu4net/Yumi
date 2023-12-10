@@ -20,7 +20,7 @@ RTTR_REGISTRATION
     using namespace Yumi;
     
     rttr::registration::class_<SpriteComponent>("SpriteComponent")
-        .constructor<>()
+        .constructor<>()(rttr::policy::ctor::as_object)
         .property("IsVisible", &SpriteComponent::IsVisible)
         .property("OrderInLayer", &SpriteComponent::OrderInLayer)
         .property("SpriteAssetRef", &SpriteComponent::SpriteAssetRef)

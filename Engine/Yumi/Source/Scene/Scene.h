@@ -22,6 +22,7 @@ namespace Yumi
     {
     public:
         Scene();
+        ~Scene();
 
         template<typename T>
         WeakPtr<T> GetSystemOfType()
@@ -40,10 +41,14 @@ namespace Yumi
 
         bool Load() override;
         void Unload() override;
+        
+        void LoadDataFromFile();
+        void SaveDataToFile();
+
+        void Serialize();
+        void Deserialize();
 
         String GetData() const { return m_Data; }
-
-        void SetScenePtr(const SharedPtr<Scene> scene) { m_This = scene; }
 
         WeakPtr<entt::registry> GetRegistry() const { return m_Registry; }
 
@@ -82,7 +87,6 @@ namespace Yumi
         uint32_t m_CreatedActorsCount = 0;
         SharedPtr<entt::registry> m_Registry;
         Map<Id, entt::entity> m_IdEntityMap;
-        SharedPtr<Scene> m_This;
 
         RTTR_ENABLE(Asset)
         friend class SceneSerializer;

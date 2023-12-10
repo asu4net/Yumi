@@ -17,7 +17,7 @@ RTTR_REGISTRATION
     using namespace Yumi;
 
     rttr::registration::class_<AnimationComponent>("AnimationComponent")
-        .constructor<>()
+        .constructor<>()(rttr::policy::ctor::as_object)
         .property("CurrentAnimation", &AnimationComponent::CurrentAnimation)
         .property("PlayOnStart", &AnimationComponent::PlayOnStart)
         .property("CurrentIndex", &AnimationComponent::CurrentIndex)

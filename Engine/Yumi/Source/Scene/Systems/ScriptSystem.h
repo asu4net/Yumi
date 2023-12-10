@@ -11,7 +11,7 @@ namespace Yumi
     public:
         static void UpdateScriptInstance(ScriptComponent& scriptComponent);
         
-        ScriptSystem(const SharedPtr<Scene>& scene);
+        ScriptSystem(Scene* scene);
         ~ScriptSystem();
 
         int GetExecutionOrder() const override { return SystemExecutionOrder::CameraSystemIndex; }

@@ -7,7 +7,7 @@ namespace Yumi
     class CameraSystem : public System
     {
     public:
-        CameraSystem(const SharedPtr<Scene>& scene);
+        CameraSystem(Scene* scene);
         
         void SetMainCameraActor(Actor actor);
         Actor GetMainCameraActor() const { return m_MainCameraActor; }

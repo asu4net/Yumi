@@ -51,12 +51,15 @@ namespace Yumi
         }
         else
         {
-            AssetRef emptySceneRef = assetManager.CreateAsset<Scene>("EmptyScene");
+            AssetRef emptySceneRef = assetManager.CreateAsset<Scene>({ "EmptyScene", "Assets/Scenes"});
+            SharedPtr<Scene> emptyScene = emptySceneRef.GetPtrAs<Scene>().lock();
+            AssetManager::SerializeAsset(emptyScene, "Assets/Scenes");
+            
             m_ActiveScene = emptySceneRef.GetPtrAs<Scene>();
-            m_ActiveScene.lock()->SetScenePtr(m_ActiveScene.lock());
         }
-
+        
         YLOG_TRACE("Scene opened! %s\n", m_ActiveScene.lock()->GetAssetData().Name.c_str());
+
         m_ActiveScene.lock()->Prepare();
     }
 
@@ -83,5 +86,6 @@ namespace Yumi
     void World::Finish()
     {
         m_ActiveScene.lock()->Finish();
+        m_ActiveScene.reset();
     }
 }

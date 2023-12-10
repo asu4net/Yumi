@@ -1,0 +1,408 @@
+#actor start
+#component info start
+{
+    "ComponentType": "InformationComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "Grid",
+    "ID": {
+        "IdHandler": 1613315939806561710
+    },
+    "IsSerializable": true
+}
+#component data end
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Scale": {
+        "x": 30.0,
+        "y": 30.0,
+        "z": 30.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "IsVisible": true,
+    "OrderInLayer": 0,
+    "SpriteAssetRef": {
+        "AssetId": {
+            "IdHandler": 3289389277897392
+        }
+    },
+    "Source": "Default",
+    "SubSpriteName": "",
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "TintColor": {
+        "r": 0.20000000298023224,
+        "g": 0.20000000298023224,
+        "b": 0.20000000298023224,
+        "a": 1.0
+    },
+    "FlipMode": "None",
+    "UVScale": {
+        "x": 30.0,
+        "y": 30.0
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "InformationComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "Aspid",
+    "ID": {
+        "IdHandler": 3062370006926620648
+    },
+    "IsSerializable": true
+}
+#component data end
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "AnimationComponent"
+}
+#component info end
+#component data start
+{
+    "CurrentAnimation": {
+        "AssetId": {
+            "IdHandler": 6710390242952465144
+        }
+    },
+    "PlayOnStart": true,
+    "CurrentIndex": 1,
+    "CurrentTime": 0.09728650748729706,
+    "LoopEnabled": true,
+    "IsPlaying": true
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "IsVisible": true,
+    "OrderInLayer": 10,
+    "SpriteAssetRef": {
+        "AssetId": {
+            "IdHandler": 7169056393874047641
+        }
+    },
+    "Source": "SubSprite",
+    "SubSpriteName": "",
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "TintColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+    },
+    "FlipMode": "None",
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "InformationComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "Cpp",
+    "ID": {
+        "IdHandler": 11816024332466923836
+    },
+    "IsSerializable": true
+}
+#component data end
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "ScriptComponent"
+}
+#component info end
+#component data start
+{
+    "ScriptType": "MoveScript",
+    "ExecutionOrder": 0,
+    "ExecutionContext": "Runtime"
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "IsVisible": true,
+    "OrderInLayer": 10,
+    "SpriteAssetRef": {
+        "AssetId": {
+            "IdHandler": 1174579054536346502
+        }
+    },
+    "Source": "Default",
+    "SubSpriteName": "",
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "TintColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+    },
+    "FlipMode": "None",
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "InformationComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "",
+    "ID": {
+        "IdHandler": 10501048343318707671
+    },
+    "IsSerializable": true
+}
+#component data end
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "IsVisible": true,
+    "OrderInLayer": 10,
+    "SpriteAssetRef": {
+        "AssetId": {
+            "IdHandler": 18192631295402269877
+        }
+    },
+    "Source": "Default",
+    "SubSpriteName": "",
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "TintColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+    },
+    "FlipMode": "None",
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    }
+}
+#component data end
+#actor end
+#actor start
+#component info start
+{
+    "ComponentType": "InformationComponent"
+}
+#component info end
+#component data start
+{
+    "Name": "Empty",
+    "ID": {
+        "IdHandler": 5945067909815428430
+    },
+    "IsSerializable": true
+}
+#component data end
+#component info start
+{
+    "ComponentType": "TransformComponent"
+}
+#component info end
+#component data start
+{
+    "Position": {
+        "x": -1.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+#component data end
+#component info start
+{
+    "ComponentType": "ScriptComponent"
+}
+#component info end
+#component data start
+{
+    "ScriptType": "ColorScript",
+    "ExecutionOrder": 0,
+    "ExecutionContext": "Runtime"
+}
+#component data end
+#component info start
+{
+    "ComponentType": "SpriteComponent"
+}
+#component info end
+#component data start
+{
+    "IsVisible": true,
+    "OrderInLayer": 10,
+    "SpriteAssetRef": {
+        "AssetId": {
+            "IdHandler": 13420620286411129829
+        }
+    },
+    "Source": "Default",
+    "SubSpriteName": "",
+    "Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "TintColor": {
+        "r": 1.0,
+        "g": 0.30000001192092896,
+        "b": 0.30000001192092896,
+        "a": 1.0
+    },
+    "FlipMode": "None",
+    "UVScale": {
+        "x": 1.0,
+        "y": 1.0
+    }
+}
+#component data end
+#actor end
